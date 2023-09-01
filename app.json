@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "intensivet-react-app",
+    "slug": "intensivet-react-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
