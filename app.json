@@ -1,10 +1,44 @@
 {
-  "expo": {
-    "name": "intensivet-react-app",
-    "slug": "intensivet-react-app",
-    "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
-  }
+    "expo": {
+        "version": "1.0.0",
+        "slug": "intensivet-react-app",
+        "icon": "./assets/logo-icon.png",
+        "name": "Intensivet Saúde Digital",
+        "splash": {
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff",
+            "image": "./assets//splash.png"
+        },
+        "notification": {
+            "icon": "./assets/logo-icon.png"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "android": {
+            "useNextNotificationsApi": true,
+            "permissions": [
+                "android.permission.CAMERA",
+                "android.permission.RECEIVE_BOOT_COMPLETED",
+                "android.permission.RECORD_AUDIO",
+                "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.WRITE_EXTERNAL_STORAGE"
+            ],
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/logo-icon.png",
+                "backgroundColor": "#FFFFFF"
+            },
+            "versionCode": 1,
+            "googleServicesFile": "./google-services.json"
+        },
+        "ios": {
+            "jsEngine": "jsc",
+            "buildNumber": "2.0.0",
+            "supportsTablet": true,
+            "usesIcloudStorage": true,
+            "entitlements": {
+                "com.apple.developer.networking.wifi-info": true
+            }
+        }
+    }
 }
