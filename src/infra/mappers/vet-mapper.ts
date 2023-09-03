@@ -1,5 +1,5 @@
-import { Vet } from "../entities/Vet"
-import { VetModel } from "../../infra/services/session/index.models"
+import { Vet } from "../../domain/entities/Vet"
+import { VetModel } from "../services/session/index.models"
 
 export class VetMapper {
     private constructor() { }

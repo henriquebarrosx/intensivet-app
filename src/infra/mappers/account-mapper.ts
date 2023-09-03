@@ -1,5 +1,5 @@
-import { Account } from "../entities/Account"
-import { AccountModel } from "../../infra/services/session/index.models"
+import { Account } from "../../domain/entities/Account"
+import { AccountModel } from "../services/session/index.models"
 
 export class AccountMapper {
     private constructor() { }

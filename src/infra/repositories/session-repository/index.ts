@@ -1,10 +1,11 @@
 import { AsyncStorageStatic } from "@react-native-async-storage/async-storage"
 
+import { VetMapper } from "../../mappers/vet-mapper"
+import { ClinicMapper } from "../../mappers/clinic-mapper"
+import { AccountMapper } from "../../mappers/account-mapper"
+
 import { SessionRepositoryGateway } from "./index.gateway"
 import { Session } from "../../../domain/entities/Session"
-import { VetMapper } from "../../../domain/mappers/vet-mapper"
-import { ClinicMapper } from "../../../domain/mappers/clinic-mapper"
-import { AccountMapper } from "../../../domain/mappers/account-mapper"
 import { AccountModel, ClinicModel, VetModel } from "../../services/session/index.models"
 
 export class SessionRepository implements SessionRepositoryGateway {

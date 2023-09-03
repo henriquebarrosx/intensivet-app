@@ -1,5 +1,5 @@
-import { Clinic } from "../entities/Clinic"
-import { ClinicModel } from "../../infra/services/session/index.models"
+import { Clinic } from "../../domain/entities/Clinic"
+import { ClinicModel } from "../services/session/index.models"
 
 export class ClinicMapper {
     private constructor() { }

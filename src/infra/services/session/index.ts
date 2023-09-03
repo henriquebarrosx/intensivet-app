@@ -1,9 +1,10 @@
+import { VetMapper } from "../../mappers/vet-mapper"
+import { ClinicMapper } from "../../mappers/clinic-mapper"
+import { AccountMapper } from "../../mappers/account-mapper"
+
 import { SessionServiceGateway } from "./index.gateway"
 import { Session } from "../../../domain/entities/Session"
-import { VetMapper } from "../../../domain/mappers/vet-mapper"
 import { SignInRequestModel, SessionModel } from "./index.models"
-import { ClinicMapper } from "../../../domain/mappers/clinic-mapper"
-import { AccountMapper } from "../../../domain/mappers/account-mapper"
 import { IHttpClient } from "../../adapters/axios-adapter/index.gateway"
 
 export class SessionService implements SessionServiceGateway {
