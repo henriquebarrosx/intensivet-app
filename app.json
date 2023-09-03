@@ -4,6 +4,7 @@
         "slug": "intensivet-react-app",
         "icon": "./assets/logo-icon.png",
         "name": "Intensivet Saúde Digital",
+        "jsEngine": "hermes",
         "splash": {
             "resizeMode": "contain",
             "backgroundColor": "#ffffff",
@@ -32,7 +33,7 @@
             "googleServicesFile": "./google-services.json"
         },
         "ios": {
-            "jsEngine": "jsc",
+            "jsEngine": "hermes",
             "buildNumber": "2.0.0",
             "supportsTablet": true,
             "usesIcloudStorage": true,
