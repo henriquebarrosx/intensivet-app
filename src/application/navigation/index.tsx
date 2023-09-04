@@ -1,15 +1,22 @@
-import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { NavigationContainer } from "@react-navigation/native"
 
-import { LoginScreenHOC } from "../screens/LoginScreen"
-import { SplashScreenHOC } from "../screens/SplashScreen"
 import { VetCasesScreenHOC } from "../screens/VetCasesScreen"
+import { SplashScreenHOC } from "../screens/SplashScreen"
+import { LoginScreenHOC } from "../screens/LoginScreen"
 
-const Stack = createNativeStackNavigator()
+export type RootStackParamList = {
+    SplashScreen: undefined
+    SignIn: undefined
+    Profile: undefined
+    VetCases: undefined
+}
+
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 const screenOptions = {
+    contentStyle: { backgroundColor: '#FFFFFF' },
     headerShown: false,
-    contentStyle: { backgroundColor: '#FFF' }
 }
 
 export function Routes() {
@@ -20,7 +27,7 @@ export function Routes() {
                 initialRouteName="SplashScreen"
             >
                 <Stack.Screen name={"SplashScreen"} component={SplashScreenHOC} />
-                <Stack.Screen name={"Login"} component={LoginScreenHOC} />
+                <Stack.Screen name={"SignIn"} component={LoginScreenHOC} />
                 <Stack.Screen name={"VetCases"} component={VetCasesScreenHOC} />
             </Stack.Navigator>
         </NavigationContainer>
