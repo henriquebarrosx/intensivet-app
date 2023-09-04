@@ -2,7 +2,6 @@ import { Platform, StyleSheet } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 import colors from '../../../utils/colors';
-import { INPUT_AREA_HEIGHT } from './viewModel';
 
 export const styles = StyleSheet.create({
   root: {

@@ -1,4 +1,3 @@
-import mime from "mime";
 import { useContext, useState } from "react";
 import { Message } from "../../schemas/Message";
 import { ChatContext } from "../../context/ChatContext";
@@ -9,81 +8,67 @@ import { sendFileMessage } from "../../services/network/chat";
 import { removeDuplicatedKeysFromMessage } from "../../utils/message";
 
 export const useViewModel = () => {
-  const { userData } = useContext(UserContext);
-  const { id: vetCaseId } = useVetCase().vetCase;
-  const { recording , setRecording, recordAudio } = useAudioRecord();
-  const { setMessages, virtualizedListRef, displaySendFeedback } = useContext(ChatContext);
-  
-  const [stopwatchSeconds, setStopwatchSeconds] = useState(0);
+    const { userData } = useContext(UserContext);
+    const { id: vetCaseId } = useVetCase().vetCase;
+    const { audioRecord, displayAudioRecordFeedback, setAudioRecord } = useAudioRecord();
+    const { setMessages, virtualizedListRef, displaySendFeedback } = useContext(ChatContext);
 
+    const [stopwatchSeconds, setStopwatchSeconds] = useState(0);
 
-  const handleStopWatchCallback = () => {
-    setStopwatchSeconds((prevValue) => prevValue + 1);
-  }
+    const handleStopWatchCallback = () => {
+        setStopwatchSeconds((prevValue) => prevValue + 1);
+    }
 
-  const formattedStopWatch = (): string => {
-    const minutes = Math.floor(stopwatchSeconds / 60).toString().padStart(2, '0');
-    const seconds = (stopwatchSeconds % 60).toString().padStart(2, '0');
-    return `${minutes}:${seconds}`;
-  }
+    const formattedStopWatch = (): string => {
+        const minutes = Math.floor(stopwatchSeconds / 60).toString().padStart(2, '0');
+        const seconds = (stopwatchSeconds % 60).toString().padStart(2, '0');
+        return `${minutes}:${seconds}`;
+    }
 
-  const onSend = async (): Promise<void> => {
-    setRecording(undefined);
+    const onSend = async (): Promise<void> => {
+        const accessToken = userData?.current_account?.access_token;
+        const assetFile = await audioRecord.stop()
 
-    await recording?.stopAndUnloadAsync();
-    const audioUri = recording?.getURI();
+        displayAudioRecordFeedback(false)
+        displaySendFeedback(true)
+        setAudioRecord()
 
-    setRecording(undefined);
-    const accessToken = userData?.current_account?.access_token;
+        try {
+            const response = await sendFileMessage({
+                vetCaseId,
+                accessToken,
+                file: assetFile,
+                onDownloadProgress: () => { },
+            });
 
-    try {
-      if (audioUri) {
-        displaySendFeedback(true);
-        recordAudio(false);
+            setMessages((prevMessages: Message[]) =>
+                removeDuplicatedKeysFromMessage([response, ...prevMessages])
+            );
 
-        const file = {
-          uri: audioUri,
-          name: audioUri.split('/').pop()!,
-          type: mime.getType(audioUri) as 'image' | 'video' | undefined,
+            virtualizedListRef?.current?.scrollToIndex({ index: 0 });
         }
 
-        const response = await sendFileMessage({
-          file,
-          vetCaseId,
-          accessToken,
-          fileType: 'audio',
-          onDownloadProgress: () => {},
-        });
+        catch (error) {
+            console.error(error);
+            console.error('There was an error after tries to upload a recorded audio');
+        }
 
-        setMessages((prevMessages: Message[]) =>
-          removeDuplicatedKeysFromMessage([response, ...prevMessages])
-        );
-
-        virtualizedListRef?.current?.scrollToIndex({ index: 0 });
-      }
+        finally {
+            displaySendFeedback(false);
+        }
     }
 
-    catch (error) {
-      console.error(error);
-      console.error('There was an error after tries to upload a recorded audio');
+    const onCancel = async (): Promise<void> => {
+        await audioRecord.cancel()
+        displayAudioRecordFeedback(false)
+        setAudioRecord(undefined)
     }
 
-    finally {
-      displaySendFeedback(false);
+    return {
+        onSend,
+        onCancel,
+        stopwatchSeconds,
+        handleStopWatchCallback,
+        formattedStopWatch: formattedStopWatch()
     }
-  }
-
-  const onCancel = async (): Promise<void> => {
-    await recording?.stopAndUnloadAsync();
-    setRecording(undefined);
-    recordAudio(false);
-  }
-
-  return {
-    onSend,
-    onCancel,
-    stopwatchSeconds,
-    handleStopWatchCallback,
-    formattedStopWatch: formattedStopWatch()
-  }
 }

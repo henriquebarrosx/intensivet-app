@@ -1,5 +1,6 @@
 import * as ImagePicker from "expo-image-picker"
 import { DeviceFile } from "./DeviceFile"
+import { Alert } from "react-native"
 
 export class Gallery {
     private async requestAsyncPermission(): Promise<boolean> {
@@ -17,7 +18,7 @@ export class Gallery {
         const hasGalleryAccessPermission = await this.requestAsyncPermission()
 
         if (!hasGalleryAccessPermission) {
-            console.log("[Callery] access denied.")
+            Alert.alert("Permissão necessária", "Para realizar o envio de fotos e/ou vídeos, é necessário acesso ao galeria do dispositivo")
             return
         }
 

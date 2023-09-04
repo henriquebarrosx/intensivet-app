@@ -8,36 +8,36 @@ import { PaperclipButton } from './PaperclipButton';
 import { RecordAudioButton } from './RecordAudioButton';
 
 interface Props {
-  onSend: () => void;
-  isPaperClipDisplayed: boolean;
+    onSend: () => void;
+    isPaperClipDisplayed: boolean;
 }
 
 const RightSide = ({ onSend, isPaperClipDisplayed }: Props) => {
-  const {
-    increaseIn,
-    increaseOut,
-    widthAnimation,
-    paperClipOpacity,
-    openAttachmentModal,
-  } = useViewModel();
+    const {
+        increaseIn,
+        increaseOut,
+        widthAnimation,
+        paperClipOpacity,
+        openAttachmentModal,
+    } = useViewModel();
 
-  useEffect(() => {  
-    isPaperClipDisplayed ? increaseIn() : increaseOut();
-    return () => increaseOut();
-  }, [isPaperClipDisplayed]);
+    useEffect(() => {
+        isPaperClipDisplayed ? increaseIn() : increaseOut();
+        return () => increaseOut();
+    }, [isPaperClipDisplayed]);
 
-  return (
-    <Animated.View style={[ styles.rootArea, { width: widthAnimation } ]}>
-      <PaperclipButton
-        isVisible={isPaperClipDisplayed}
-        contentOpacity={paperClipOpacity}
-        onPaperclipPress={openAttachmentModal}
-      />
+    return (
+        <Animated.View style={[styles.rootArea, { width: widthAnimation }]}>
+            <PaperclipButton
+                isVisible={isPaperClipDisplayed}
+                contentOpacity={paperClipOpacity}
+                onPaperclipPress={openAttachmentModal}
+            />
 
-      <RecordAudioButton isVisible={isPaperClipDisplayed} />
-      <SendButton isVisible={!isPaperClipDisplayed} onSendPress={onSend} />
-    </Animated.View>
-  );
+            <RecordAudioButton isVisible={isPaperClipDisplayed} />
+            <SendButton isVisible={!isPaperClipDisplayed} onSendPress={onSend} />
+        </Animated.View>
+    );
 }
 
 export default memo(RightSide);

@@ -13,7 +13,14 @@ export default function VideoPlayer({ uri }: Props) {
 
     useEffect(() => {
         video?.current?.playAsync()
-        return () => { video?.current?.stopAsync() }
+        return () => {
+            Promise.all(
+                [
+                    video?.current?.stopAsync(),
+                    video?.current?.unloadAsync()
+                ]
+            )
+        }
     }, [])
 
     return (

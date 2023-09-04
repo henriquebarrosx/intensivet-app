@@ -2,6 +2,7 @@ import * as ImagePicker from "expo-image-picker"
 import { Camera as ExpoCamera } from "expo-camera"
 
 import { DeviceFile } from "./DeviceFile"
+import { Alert } from "react-native"
 
 export class Camera {
     private async requestAsyncPermission(): Promise<boolean> {
@@ -19,6 +20,7 @@ export class Camera {
         const hasCameraPermission = await this.requestAsyncPermission()
 
         if (!hasCameraPermission) {
+            Alert.alert("Permissão necessária", "Para realizar a captura e envio de fotos, é necessário acesso ao câmera do dispositivo")
             console.log("Camera permission denied.")
             return
         }

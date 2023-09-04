@@ -9,7 +9,7 @@ import { RecordAudioAreaView } from "../../../components/RecordingAudioArea";
 import { AudioRecordProvider, useAudioRecord } from "../../../context/RecordAudio";
 
 const InputAreaComponent = () => {
-  const { isRecording } = useAudioRecord();
+  const { isRecordingAudio } = useAudioRecord();
 
   const {
     onSend,
@@ -33,14 +33,15 @@ const InputAreaComponent = () => {
     };
   }, []);
 
-  if (isRecording) {
+  if (isRecordingAudio) {
     return <RecordAudioAreaView />;
   }
 
   return (
     <KeyboardAvoidingView
       keyboardVerticalOffset={keyboardVerticalOffset}
-      behavior={Platform.OS === 'ios' ? 'position' : undefined}>
+      behavior={Platform.OS === 'ios' ? 'position' : undefined}
+    >
       <View style={[styles.root]}>
         <View style={styles.leftSide}>
           <TextInput
