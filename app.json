@@ -16,6 +16,26 @@
         "assetBundlePatterns": [
             "**/*"
         ],
+        "plugins": [
+            [
+                "expo-document-picker",
+                {
+                    "appleTeamId": "SK8DM654PP"
+                }
+            ],
+            [
+                "expo-image-picker",
+                {
+                    "photosPermission": "Permitir Intensivet Saúde Digital acessar sua câmera & fotos da galeria."
+                }
+            ],
+            [
+                "expo-camera",
+                {
+                    "cameraPermission": "Permitir Intensivet Saúde Digital acessar sua câmera."
+                }
+            ]
+        ],
         "android": {
             "useNextNotificationsApi": true,
             "permissions": [
@@ -39,6 +59,9 @@
             "usesIcloudStorage": true,
             "entitlements": {
                 "com.apple.developer.networking.wifi-info": true
+            },
+            "infoPlist": {
+                "NSCameraUsageDescription": "Nós precisamos disso para que você possa compartilhar arquivos com outros veterinários"
             }
         }
     }
