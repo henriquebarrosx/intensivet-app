@@ -1,10 +1,12 @@
 {
     "expo": {
         "version": "1.0.0",
-        "slug": "intensivet-react-app",
+        "slug": "intensivet",
+        "orientation": "portrait",
         "icon": "./assets/logo-icon.png",
         "name": "Intensivet Saúde Digital",
         "jsEngine": "hermes",
+        "runtimeVersion": "1.0.0",
         "splash": {
             "resizeMode": "contain",
             "backgroundColor": "#ffffff",
@@ -16,6 +18,15 @@
         "assetBundlePatterns": [
             "**/*"
         ],
+        "updates": {
+            "fallbackToCacheTimeout": 0,
+            "url": "https://u.expo.dev/369e150f-abfc-4e24-9ee5-88a2db8bd8a3"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "369e150f-abfc-4e24-9ee5-88a2db8bd8a3"
+            }
+        },
         "plugins": [
             [
                 "expo-document-picker",
