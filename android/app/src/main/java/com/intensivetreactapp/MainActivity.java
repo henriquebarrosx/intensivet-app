@@ -1,4 +1,4 @@
-package com.intensivetreactapp;
+package com.intensivetapp;
 
 import android.os.Build;
 import android.os.Bundle;

@@ -1,12 +1,12 @@
 // https://lottiefiles.com/46864-lovely-cats
-import React from 'react'
-import LottieView from 'lottie-react-native';
-import { useEmptyVetCaseList } from './script';
-import EmptyList from '../../../assets/emptyList.json';
-import { AnimationArea, Container, NoteArea, OpenNewCase, OpenNewCaseButton, Subtitle, Title } from './styles';
+import React from "react"
+import LottieView from "lottie-react-native"
+import { useEmptyVetCaseList } from "./script"
+import EmptyList from "../../../../assets/animations/emptyList.json"
+import { AnimationArea, Container, NoteArea, OpenNewCase, OpenNewCaseButton, Subtitle, Title } from "./styles"
 
 export function EmptyVetCaseList() {
-  const { openIntensivetWebPlatformIntoWebView } = useEmptyVetCaseList();
+  const { openIntensivetWebPlatformIntoWebView } = useEmptyVetCaseList()
 
   return (
     <Container>

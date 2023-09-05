@@ -1,4 +1,4 @@
-package com.intensivetreactapp;
+package com.intensivetapp;
 
 import android.app.Application;
 import android.content.res.Configuration;

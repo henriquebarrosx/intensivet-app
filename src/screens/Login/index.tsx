@@ -1,20 +1,20 @@
-import React, { useEffect } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import * as Notifications from "expo-notifications";
-import { useIsFocused } from '@react-navigation/native';
-import { View, KeyboardAvoidingView } from 'react-native';
+import React, { useEffect } from "react"
+import { StatusBar } from "expo-status-bar"
+import * as Notifications from "expo-notifications"
+import { useIsFocused } from "@react-navigation/native"
+import { View, KeyboardAvoidingView } from "react-native"
 
-import { styles } from './styles';
-import { useSignIn } from './viewModel';
-import { LogoArea } from './components/LogoArea';
-import { FormView } from './components/FormView';
-import ScreenView from '../../components/ScreenView';
-import { SubmitButton } from './components/SubmitButton';
-import { Notification } from '../../models/Notification';
+import { styles } from "./styles"
+import { useSignIn } from "./viewModel"
+import { LogoImage } from "./components/LogoImage"
+import { FormView } from "./components/FormView"
+import ScreenView from "../../components/ScreenView"
+import { SubmitButton } from "./components/SubmitButton"
+import { Notification } from "../../models/Notification"
 
 
 export const Login = () => {
-  const isCurrentScreenFocused = useIsFocused();
+  const isCurrentScreenFocused = useIsFocused()
 
   const {
     formData,
@@ -24,21 +24,21 @@ export const Login = () => {
     onLoginPress,
     setValidations,
     keyboardBehavior,
-  } = useSignIn();
+  } = useSignIn()
 
   useEffect(() => {
     if (isCurrentScreenFocused) {
-      const notification = new Notification();
-      Notifications.setNotificationHandler({ handleNotification: notification.getMuteNotificationConfig() });
+      const notification = new Notification()
+      Notifications.setNotificationHandler({ handleNotification: notification.getMuteNotificationConfig() })
     }
-  }, [isCurrentScreenFocused]);
+  }, [isCurrentScreenFocused])
 
   return (
     <ScreenView>
-      <StatusBar style={'dark'} />
+      <StatusBar style={"dark"} />
 
       <KeyboardAvoidingView style={styles.background} behavior={keyboardBehavior}>
-        <LogoArea />
+        <LogoImage />
 
         <View style={[styles.container]}>
           <FormView
@@ -55,5 +55,5 @@ export const Login = () => {
         </View>
       </KeyboardAvoidingView>
     </ScreenView>
-  );
+  )
 }

@@ -3,17 +3,17 @@
         "version": "1.0.0",
         "slug": "intensivet",
         "orientation": "portrait",
-        "icon": "./assets/logo-icon.png",
+        "icon": "./assets/images/logo-icon.png",
         "name": "Intensivet Saúde Digital",
         "jsEngine": "hermes",
         "runtimeVersion": "1.0.0",
         "splash": {
             "resizeMode": "contain",
             "backgroundColor": "#ffffff",
-            "image": "./assets//splash.png"
+            "image": "./assets/images/splash.png"
         },
         "notification": {
-            "icon": "./assets/logo-icon.png"
+            "icon": "./assets/images/logo-icon.png"
         },
         "assetBundlePatterns": [
             "**/*"
@@ -57,7 +57,7 @@
                 "android.permission.WRITE_EXTERNAL_STORAGE"
             ],
             "adaptiveIcon": {
-                "foregroundImage": "./assets/logo-icon.png",
+                "foregroundImage": "./assets/images/logo-icon.png",
                 "backgroundColor": "#FFFFFF"
             },
             "versionCode": 1,
@@ -65,7 +65,7 @@
         },
         "ios": {
             "jsEngine": "hermes",
-            "buildNumber": "2.0.0",
+            "buildNumber": "3.0.0",
             "supportsTablet": true,
             "usesIcloudStorage": true,
             "entitlements": {

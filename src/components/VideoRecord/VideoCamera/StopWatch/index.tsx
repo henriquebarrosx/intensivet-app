@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import LottieView from 'lottie-react-native';
 import React, { useEffect, useState } from 'react';
-import RecordAudioAnimation from "../../../../assets/recordingAudio.json"
+import RecordAudioAnimation from "../../../../../assets/animations/recordingAudio.json"
 
 import { styles } from './styles';
 

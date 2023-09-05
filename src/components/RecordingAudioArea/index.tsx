@@ -6,7 +6,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { styles } from "./styles";
 import colors from "../../utils/colors";
 import { useViewModel } from "./viewModel";
-import RecordAudioAnimation from "../../assets/recordingAudio.json"
+import RecordAudioAnimation from "../../../assets/animations/recordingAudio.json"
 
 var timeOut: any = null;
 const ONE_MINUTE = 1000;
