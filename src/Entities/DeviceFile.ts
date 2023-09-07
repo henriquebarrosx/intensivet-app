@@ -6,7 +6,10 @@ export class DeviceFile {
     ) { }
 
     static create(name: string | null | undefined, type: string = "", uri: string) {
-        if (!["image", "video", "audio"].includes(type)) throw new Error(`Incompatible device type file. Provided type: ${type}`)
+        if (!["image", "video", "audio", "file"].includes(type)) {
+            throw new Error(`Incompatible device type file. Provided type: ${type}`)
+        }
+
         const fileName = name ?? new Date().toISOString()
         return new DeviceFile(fileName, type, uri)
     }
