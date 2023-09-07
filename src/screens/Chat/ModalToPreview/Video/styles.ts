@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'ios' ? Constants.statusBarHeight : 0,
   },
   header: {
-    height: 45,
+    height: 64,
     marginTop: 16,
     alignItems: "center",
     flexDirection: "row",

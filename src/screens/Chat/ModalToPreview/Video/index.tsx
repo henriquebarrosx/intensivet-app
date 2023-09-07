@@ -31,7 +31,7 @@ function Template() {
 
   return (
     <Fragment>
-      <StatusBar barStyle={"light-content"} />
+      <StatusBar backgroundColor={"#000"} barStyle={"light-content"} />
 
       <Modal
         propagateSwipe
