@@ -8,9 +8,8 @@ export function LogoImage() {
   return (
     <View style={styles.container}>
       <Image
-        resizeMode="contain"
+        resizeMode="center"
         source={CompanyLogo}
-        style={styles.companyLogo}
       />
     </View>
   )
