@@ -6,7 +6,7 @@ export const BlueNoteArea = styled.View`
   padding: 16px 18px;
   align-self: center;
   border-radius: 12px;
-  transform: scaleY(-1);
+  transform: scaleY(1);
   border: 1px solid ${({ theme }) => theme.COLORS.primary};
   background-color: ${({ theme }) => theme.COLORS.lightPrimary};
 `;

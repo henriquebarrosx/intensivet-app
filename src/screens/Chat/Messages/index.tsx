@@ -12,49 +12,54 @@ import { Message as MessageModel } from "../../../schemas/Message"
 import ChatWallpaper from "../../../../assets/images/chat-wallpaper4.jpg"
 
 interface ListInterface {
-  index: number
-  item: MessageModel
+    index: number
+    item: MessageModel
 }
 
 export default function Messages() {
-  const [isDisplayingButton, displayButton] = useState(false)
-  const { messages, virtualizedListRef, onPaginate, isFetching, isSending } = useContext(ChatContext)
+    const [isDisplayingButton, displayButton] = useState(false)
+    const { messages, virtualizedListRef, onPaginate, isFetching, isSending } = useContext(ChatContext)
 
-  const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
-    return contentOffset.y >= 100
-  }
+    function shouldInvertList() {
+        if (messages.length === 0) return false
+        return true
+    }
 
-  const onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    isCloseToTop(nativeEvent) ? displayButton(true) : displayButton(false)
-  }
+    const isCloseToTop = ({ contentOffset }: NativeScrollEvent) => {
+        return contentOffset.y >= 100
+    }
 
-  return (
-    <ImageBackground source={ChatWallpaper} style={styles.root}>
-      <FetchingLoadingFeedback isVisible={isFetching} />
+    const onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+        isCloseToTop(nativeEvent) ? displayButton(true) : displayButton(false)
+    }
 
-      <VirtualizedList
-        windowSize={6}
-        data={messages}
-        onScroll={onScroll}
-        initialNumToRender={12}
-        maxToRenderPerBatch={12}
-        ref={virtualizedListRef}
-        onEndReached={onPaginate}
-        onEndReachedThreshold={0.8}
-        style={styles.virtualizedList}
-        inverted={Platform.OS == "ios"}
-        getItemCount={() => messages.length}
-        ListEmptyComponent={IntroductoryNote}
-        contentContainerStyle={{ paddingVertical: 20 }}
-        keyExtractor={(message: MessageModel) => message.id.toString()}
-        renderItem={({ item }: ListInterface) => <Message message={item} />}
-        getItem={(messages: MessageModel[], index: number) => messages[index]}
-      />
+    return (
+        <ImageBackground source={ChatWallpaper} style={styles.root}>
+            <FetchingLoadingFeedback isVisible={isFetching} />
 
-      <View style={styles.footerArea}>
-        {isDisplayingButton && <ScrollToEndButton />}
-        <SendingLoadingFeedback isVisible={isSending} />
-      </View>
-    </ImageBackground>
-  )
+            <VirtualizedList
+                windowSize={6}
+                data={messages}
+                onScroll={onScroll}
+                initialNumToRender={12}
+                maxToRenderPerBatch={12}
+                ref={virtualizedListRef}
+                onEndReached={onPaginate}
+                onEndReachedThreshold={0.8}
+                inverted={shouldInvertList()}
+                style={styles.virtualizedList}
+                getItemCount={() => messages.length}
+                ListEmptyComponent={IntroductoryNote}
+                contentContainerStyle={{ paddingVertical: 20 }}
+                keyExtractor={(message: MessageModel) => message.id.toString()}
+                renderItem={({ item }: ListInterface) => <Message message={item} />}
+                getItem={(messages: MessageModel[], index: number) => messages[index]}
+            />
+
+            <View style={styles.footerArea}>
+                {isDisplayingButton && <ScrollToEndButton />}
+                <SendingLoadingFeedback isVisible={isSending} />
+            </View>
+        </ImageBackground>
+    )
 }

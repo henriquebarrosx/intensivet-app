@@ -8,7 +8,7 @@ import { useVetCase } from "../../../context/VetCaseContext";
 import { useVetCases } from "../../../context/VetCasesContext";
 import { sendTextMessage } from "../../../services/network/chat";
 
-export const INPUT_AREA_HEIGHT = 32;
+export const INPUT_AREA_HEIGHT = 58;
 
 export const useViewModel = () => {
   const { updateVetCaseList } = useVetCases();
@@ -17,6 +17,7 @@ export const useViewModel = () => {
   const { setMessages, virtualizedListRef, displaySendFeedback } = useContext(ChatContext);
 
   const [inputText, setInputText] = useState('');
+  const [isFocused, setInputFocus] = useState(false);
   const [isSendButtonEnabled, makeSendButtonEnabled] = useState(true);
 
   const isEmptyMessage = !inputText.length;
@@ -56,15 +57,18 @@ export const useViewModel = () => {
   };
 
   function increaseIn(): void {
-    setKeyboardVerticalOffset(INPUT_AREA_HEIGHT + 26);
+    setKeyboardVerticalOffset(INPUT_AREA_HEIGHT);
+    setInputFocus(false)
   };
-  
+
   function increaseOut(): void {
     setKeyboardVerticalOffset(getBottomSpace());
+    setInputFocus(true)
   };
 
   return {
     onSend,
+    isFocused,
     inputText,
     increaseIn,
     increaseOut,
