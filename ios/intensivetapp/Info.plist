@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.0</string>
+	<string>3.0.5</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -37,6 +37,14 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Nós precisamos disso para que você possa tirar e compartilhar fotos e vídeos</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Nós precisamos disso para que você possa gravar e compartilhar mensagens de voz e vídeos com som</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Nós precisamos disso para que você possa compartilhar fotos e vídeos da sua galeria</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Nós precisamos disso para que você possa compartilhar fotos e vídeos da sua galeria</string>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

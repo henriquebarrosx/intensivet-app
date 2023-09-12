@@ -5,7 +5,7 @@ import { Alert } from "react-native"
 export class AudioRecord {
     data: Audio.Recording
 
-    private async requestAsyncPermission(): Promise<boolean> {
+    async requestAsyncPermission(): Promise<boolean> {
         console.log("[Microphone] Retrieving permission...")
         const currentPermission = await Audio.getPermissionsAsync()
 
@@ -34,9 +34,8 @@ export class AudioRecord {
         this.data.stopAndUnloadAsync()
         await Audio.setAudioModeAsync({ allowsRecordingIOS: false })
 
-        const assetUri = this.data.getURI()
-        const fileName = assetUri.split("/").pop()
-        return DeviceFile.create(fileName, "audio", assetUri)
+        const uri = this.data.getURI()
+        return DeviceFile.create({ uri, type: "audio" })
     }
 
     async cancel(): Promise<void> {

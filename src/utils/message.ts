@@ -1,22 +1,18 @@
-import * as ImagePicker from "expo-image-picker";
-
 import { Message } from '../schemas/Message';
 import { VetCase } from '../schemas/VetCase';
-import { UploadDocType, UploadFileSchema } from '../@types/common';
+import { DeviceFile } from "../Entities/DeviceFile";
 
 /*
   Observation: FormData already apply string format to fields.
   Convert those fields to string can generate bad promise call!
 */
 
-type FileUpload = ImagePicker.ImagePickerResult | UploadDocType | UploadFileSchema;
-
-export const formatFileMessage = (file: FileUpload, vetCaseId: number, type: string = 'image'): FormData => {
+export function formatFileMessage(file: DeviceFile, vetCaseId: number, kind: "image" | "audio" | "file" | "video"): FormData {
     const formData = new FormData();
 
     // @ts-ignore
     formData.append('vet_case_message[file]', file);
-    formData.append('vet_case_message[message_type]', type);
+    formData.append('vet_case_message[message_type]', kind);
     // @ts-ignore
     formData.append('vet_case_message[vet_case_id]', vetCaseId);
 

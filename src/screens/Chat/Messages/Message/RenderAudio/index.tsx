@@ -6,7 +6,6 @@ import theme from '../../../../../theme';
 import { Message } from "../../../../../schemas/Message";
 import { GroupPlayingFeedback } from './GroupPlayingFeedback';
 import { SoundStateIcon, TapArea, Container, LoadingFeedback } from './styles';
-import { requestAudioMicrophonePermission } from '../../../../../utils/permissions/microphone';
 
 enum AudioState {
   PAUSED = 'play',
@@ -55,10 +54,10 @@ function RenderAudio({ message }: Props) {
     await playAudioMessage();
   }
 
-  async function playAudioMessage(): Promise<void> {    
+  async function playAudioMessage(): Promise<void> {
     const { sound } = await Audio.Sound.createAsync({ uri: message.service_url });
     await sound.playAsync();
-    
+
     setAudioBuffer(sound);
     sound.setOnPlaybackStatusUpdate(audioStateListener)
   }
@@ -76,17 +75,9 @@ function RenderAudio({ message }: Props) {
   async function handleAudioReprodution(): Promise<void> {
     try {
       setLoading(true);
-
-      if (await requestAudioMicrophonePermission(false)) {
-        await handleSoundInTracker();
-        setLoading(false);
-        return;
-      } 
-  
-      Alert.alert(
-        'Permissão não autorizada',
-        'A permissão para uso do microfone foi negada!'
-      )
+      await handleSoundInTracker();
+      setLoading(false);
+      return;
     }
 
     catch {
@@ -99,9 +90,7 @@ function RenderAudio({ message }: Props) {
     return isSender ? theme.COLORS.white : theme.COLORS.gray;
   }
 
-  function shouldDisplayPlayingAudioFeedback(): boolean {
-    return soundStateIcon === AudioState.PLAYING;
-  }
+  const isPlaying = soundStateIcon === AudioState.PLAYING
 
   useEffect(() => {
     return () => {
@@ -117,8 +106,8 @@ function RenderAudio({ message }: Props) {
       </TapArea>
 
       <GroupPlayingFeedback
+        isPlaying={isPlaying}
         shouldDisplayWhiteLayout={message.is_sender}
-        isPlaying={shouldDisplayPlayingAudioFeedback()}
       />
     </Container>
   );

@@ -1,23 +1,35 @@
-import React from 'react';
-import theme from '../../../../../../theme';
-import { Container, PlayingIndicator } from './styles';
+import React from "react"
+import { Container } from "./styles"
+import theme from "../../../../../../theme"
+import { BarIndicator } from "react-native-indicators"
 
 interface Props {
-  isPlaying: boolean;
-  shouldDisplayWhiteLayout: boolean;
+    isPlaying: boolean
+    shouldDisplayWhiteLayout: boolean
 }
 
 export function GroupPlayingFeedback({ isPlaying, shouldDisplayWhiteLayout }: Props) {
-  function getLayoutColor(): string {
-    return shouldDisplayWhiteLayout ? theme.COLORS.white : theme.COLORS.gray;
-  }
+    const color = shouldDisplayWhiteLayout ? theme.COLORS.white : theme.COLORS.gray
 
-  return (
-    <Container>
-      <PlayingIndicator animating={isPlaying} color={getLayoutColor()} />
-      <PlayingIndicator animating={isPlaying} style={{ left: 22 }} color={getLayoutColor()} />
-      <PlayingIndicator animating={isPlaying} style={{ left: 44 }} color={getLayoutColor()} />
-      <PlayingIndicator animating={isPlaying} style={{ left: 66 }} color={getLayoutColor()} />
-    </Container>
-  )
+    const elements = [
+        { positionFromLeft: 0 },
+        { positionFromLeft: 22 },
+        { positionFromLeft: 44 },
+        { positionFromLeft: 66 },
+    ]
+
+    return (
+        <Container>
+            {elements.map(({ positionFromLeft }, index) =>
+                <BarIndicator
+                    size={16}
+                    key={index}
+                    color={color}
+                    animating={isPlaying}
+                    hidesWhenStopped={false}
+                    style={{ position: "absolute", left: positionFromLeft }}
+                />
+            )}
+        </Container>
+    )
 }

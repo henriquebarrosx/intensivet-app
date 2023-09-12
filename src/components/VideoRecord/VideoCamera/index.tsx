@@ -33,7 +33,6 @@ const VideoCamera = ({ onComplete }: Props) => {
                     type={cameraType}
                     style={styles.camera}
                     onCameraReady={cameraAsReady}
-                    flashMode={Camera.Constants.FlashMode}
                 />
                 : null}
 

@@ -29,8 +29,8 @@ export const useViewModel = () => {
 
             const response = await sendFileMessage({
                 accessToken,
-                vetCaseId: vetCaseContext.vetCase.id,
                 file: assetFile,
+                vetCaseId: vetCaseContext.vetCase.id,
                 onDownloadProgress: () => chatContext.displaySendFeedback(false),
             })
 

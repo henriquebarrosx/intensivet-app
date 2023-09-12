@@ -5,7 +5,7 @@ import { DeviceFile } from "./DeviceFile"
 import { Alert } from "react-native"
 
 export class Camera {
-    private async requestAsyncPermission(): Promise<boolean> {
+    async requestAsyncPermission(): Promise<boolean> {
         console.log("[Camera] Retrieving permission...")
         const currentPermission = await ExpoCamera.getCameraPermissionsAsync()
 
@@ -25,11 +25,16 @@ export class Camera {
             return
         }
 
-        const pictureResult = await ImagePicker.launchCameraAsync()
+        const pictureResult = await ImagePicker.launchCameraAsync({
+            allowsMultipleSelection: false,
+            allowsEditing: true,
+            selectionLimit: 1,
+            quality: 1,
+        })
 
         if (pictureResult.canceled) return
 
-        const { fileName, uri, type } = pictureResult.assets[0]
-        return DeviceFile.create(fileName, type, uri);
+        const { uri, fileName: name, type = "image" } = pictureResult.assets[0]
+        return DeviceFile.create({ name, uri, type })
     }
 }

@@ -1,16 +1,18 @@
-import * as ImagePicker from "expo-image-picker"
-import { DeviceFile } from "./DeviceFile"
 import { Alert } from "react-native"
+import * as ImagePicker from "expo-image-picker"
+import * as MediaLibrary from "expo-media-library"
+
+import { DeviceFile } from "./DeviceFile"
 
 export class Gallery {
-    private async requestAsyncPermission(): Promise<boolean> {
+    async requestAsyncPermission(): Promise<boolean> {
         console.log("[Gallery] Retrieving permission...")
-        const currentPermission = await ImagePicker.getMediaLibraryPermissionsAsync()
+        const currentPermission = await MediaLibrary.getPermissionsAsync()
 
         if (currentPermission.granted) return true
 
         console.log("[Gallery] Requesting permission...")
-        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+        const permissionResult = await MediaLibrary.requestPermissionsAsync()
         return permissionResult.granted;
     }
 
@@ -31,7 +33,7 @@ export class Gallery {
 
         if (result.canceled) return
 
-        const { fileName, uri, type } = result.assets[0]
-        return DeviceFile.create(fileName, type, uri);
+        const { fileName: name, uri, type } = result.assets[0]
+        return DeviceFile.create({ name, uri, type })
     }
 }

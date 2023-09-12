@@ -45,6 +45,14 @@
                 {
                     "cameraPermission": "Permitir Intensivet Saúde Digital acessar sua câmera."
                 }
+            ],
+            [
+                "expo-media-library",
+                {
+                    "photosPermission": "Permitir Intensivet Saúde Digital acessar sua galeria.",
+                    "savePhotosPermission": "Permitir Intensivet Saúde Digital salvar fotos.",
+                    "isAccessMediaLocationEnabled": true
+                }
             ]
         ],
         "android": {
@@ -65,7 +73,7 @@
         },
         "ios": {
             "jsEngine": "hermes",
-            "buildNumber": "3.0.0",
+            "buildNumber": "3.0.5",
             "supportsTablet": true,
             "usesIcloudStorage": true,
             "entitlements": {
