@@ -5,7 +5,7 @@ import { markMessagesAsRead } from "../../services/network/vetCaseMessage/markMe
 
 export const useViewModel = () => {
   const { vetCase } = useVetCase();
-  const { userData } = useContext(UserContext);
+  const { sessionData: userData } = useContext(UserContext);
 
   const markVetCaseMessageAsRead = async () => {
     const accessToken = userData?.current_account.access_token!;

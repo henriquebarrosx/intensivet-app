@@ -1,8 +1,8 @@
-import { useBadfullyResponse } from "./error";
+import { useRejectedResponseInterceptor } from "./error";
 import { useSuccessfullyResponse } from "./success";
 
 export const responseInterceptor = () => {
-  const { onErrorResponse } = useBadfullyResponse();
+  const { onErrorResponse } = useRejectedResponseInterceptor();
   const { onSuccessResponse } = useSuccessfullyResponse();
 
   return { onSuccessResponse, onErrorResponse };

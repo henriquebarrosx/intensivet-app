@@ -12,7 +12,7 @@ export const INPUT_AREA_HEIGHT = 58;
 
 export const useViewModel = () => {
   const { updateVetCaseList } = useVetCases();
-  const { userData } = useContext(UserContext);
+  const { sessionData: userData } = useContext(UserContext);
   const { id: vetCaseId } = useVetCase().vetCase;
   const { setMessages, virtualizedListRef, displaySendFeedback } = useContext(ChatContext);
 

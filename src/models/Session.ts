@@ -5,19 +5,17 @@ import { removeExpoToken } from '../services/network/notification';
 
 const STORAGE_KEY = '@intensivetAppSession';
 
-export class Session {
-  async get(): Promise<User | null> {
-    const storage = await AsyncStorage.getItem(STORAGE_KEY)
-    return storage ? JSON.parse(storage) : null;
-  }
+export class SessionRepository {
+    async get(): Promise<User | null> {
+        const storage = await AsyncStorage.getItem(STORAGE_KEY)
+        return storage ? JSON.parse(storage) : null;
+    }
 
-  set(params: any): Promise<void> {
-    return AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(params))
-  }
+    async save(params: any): Promise<void> {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(params))
+    }
 
-  async clear() {
-    const accessToken = (await this.get())?.current_account.access_token!;
-    await removeExpoToken(accessToken);
-    return AsyncStorage.clear();
-  }
+    async clear() {
+        await AsyncStorage.clear()
+    }
 }

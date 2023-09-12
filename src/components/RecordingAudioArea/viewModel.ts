@@ -8,7 +8,7 @@ import { sendFileMessage } from "../../services/network/chat";
 import { removeDuplicatedKeysFromMessage } from "../../utils/message";
 
 export const useViewModel = () => {
-    const { userData } = useContext(UserContext);
+    const { sessionData: userData } = useContext(UserContext);
     const { id: vetCaseId } = useVetCase().vetCase;
     const { audioRecord, displayAudioRecordFeedback, setAudioRecord } = useAudioRecord();
     const { setMessages, virtualizedListRef, displaySendFeedback } = useContext(ChatContext);

@@ -17,5 +17,5 @@ export function PublicRoutes() {
 
 const screenOptions: NativeStackNavigationOptions = {
   headerShown: false,
-  contentStyle: {  backgroundColor: '#FFF' }
+  contentStyle: { backgroundColor: '#FFF' }
 }

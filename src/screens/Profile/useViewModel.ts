@@ -1,44 +1,37 @@
-import { Alert } from "react-native";
-import { useContext, useState } from "react";
-
-import { Session } from "../../models/Session";
-import { UserContext } from "../../context/UserContext";
-import { disablePushNotification, enablePushNotification } from "../../utils/notification";
+import { useState } from "react"
+import { Alert } from "react-native"
+import { useSession } from "../../context/UserContext"
+import { disablePushNotification, enablePushNotification } from "../../utils/notification"
 
 export const useViewModel = () => {
-  const { userData, setUserData } = useContext(UserContext);
-  const  [shouldReceiveNotification, setNotificationState] = useState(!!userData?.expoToken);
+    const deviceSession = useSession()
+    const [isNotificationsEnabled, setNotificationState] = useState(!!deviceSession.sessionData?.expoToken)
 
-  const removeCurrentSession = async (): Promise<void> => {
-    await new Session().clear();
-    setUserData(null);
-  }
+    const userThumbnail = deviceSession.sessionData?.current_account?.thumbnail
 
-  const handlePushNotification = async (shouldReceiveNotification: boolean) => {
-    try {
-      if (shouldReceiveNotification) {
-        const expoToken = await enablePushNotification();
-        setUserData((prevState) => ({ ...prevState!, expoToken }));
-        return;
-      }
-      
-      await disablePushNotification();
-      setUserData((prevState) => ({ ...prevState!, expoToken: '' }));
+    async function removeCurrentSession(): Promise<void> {
+        await deviceSession.clear()
     }
 
-    catch {
-      Alert.alert(
-        'Sentimos muito',
-        'Houve um problema ao configurar as notificações'
-      )
-    }
-  }
+    async function handlePushNotification(isEnabled: boolean): Promise<void> {
+        try {
+            const expoToken = await (isEnabled ? enablePushNotification() : disablePushNotification())
+            deviceSession.update({ expoToken: expoToken || "" })
+        }
 
-  return {
-    setNotificationState,
-    removeCurrentSession,
-    handlePushNotification,
-    shouldReceiveNotification,
-    userThumbnail: userData?.current_account?.thumbnail,
-  }
+        catch {
+            Alert.alert(
+                'Sentimos muito',
+                'Houve um problema ao configurar as notificações'
+            )
+        }
+    }
+
+    return {
+        handlePushNotification,
+        removeCurrentSession,
+        setNotificationState,
+        isNotificationsEnabled,
+        userThumbnail,
+    }
 }

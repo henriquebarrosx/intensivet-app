@@ -1,54 +1,44 @@
-import { LogBox } from 'react-native';
-import 'react-native-gesture-handler';
-import React, { useContext } from 'react';
-import * as SplashScreen from 'expo-splash-screen';
-import { ThemeProvider } from 'styled-components/native';
-import { useFonts, Inter_700Bold, Inter_500Medium, Inter_400Regular } from '@expo-google-fonts/inter';
+import "react-native-gesture-handler"
+import React, { useEffect } from "react"
+import * as SplashScreen from "expo-splash-screen"
+import { ThemeProvider } from "styled-components/native"
+import { useFonts, Inter_700Bold, Inter_500Medium, Inter_400Regular } from "@expo-google-fonts/inter"
 
-import THEME from './src/theme';
-import Route from './src/routes/index.routes';
-import { ChatProvider } from './src/context/ChatContext';
-import { VetCaseProvider } from './src/context/VetCaseContext';
-import { VetCasesProvider } from './src/context/VetCasesContext';
-import { UserContext, SessionProvider } from './src/context/UserContext';
-import { NotificationProvider } from './src/context/NotificationContext';
-import { VetCaseIndicatorsProvider } from './src/context/VetCaseIndicators';
-import { ErrorsFeedbackProvider } from './src/context/ErrorsFeedbackContext';
+import THEME from "./src/theme"
+import { API } from "./src/services/axios"
+import Route from "./src/routes/index.routes"
+import { ChatProvider } from "./src/context/ChatContext"
+import { VetCaseProvider } from "./src/context/VetCaseContext"
+import { VetCasesProvider } from "./src/context/VetCasesContext"
+import { useNetworkInterceptor } from "./src/services/interceptors"
+import { SessionProvider, useSession } from "./src/context/UserContext"
+import { NotificationProvider } from "./src/context/NotificationContext"
+import { VetCaseIndicatorsProvider } from "./src/context/VetCaseIndicators"
+import { ErrorsFeedbackProvider } from "./src/context/ErrorsFeedbackContext"
 
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync()
 
-const App = () => {
-    const { userData } = useContext(UserContext);
-    const isAuthenticated = !!userData?.current_account?.access_token;
+function App() {
+    const deviceSession = useSession()
+    const { onRequest, onResponse } = useNetworkInterceptor()
+    const [isFontsLoaded] = useFonts({ Inter_700Bold, Inter_500Medium, Inter_400Regular })
 
-    /* 
-      Ignorar o timming inválido do Pusher no ambientes android.
-      https://stackoverflow.com/questions/44603362/setting-a-timer-for-a-long-period-of-time-i-e-multiple-minutes
-    */
-    LogBox.ignoreLogs(['Setting a timer for a long period of time']);
-    LogBox.ignoreAllLogs();
+    useEffect(() => {
+        API.interceptors.request.use(onRequest.onSuccess)
+        API.interceptors.response.use(onResponse.onSuccessResponse, onResponse.onErrorResponse)
+    }, [])
 
-    const [fontsLoaded] = useFonts({
-        Inter_700Bold,
-        Inter_500Medium,
-        Inter_400Regular,
-    });
-
-    if (fontsLoaded) {
-        return (
-            <ThemeProvider theme={THEME}>
-                <VetCasesProvider>
-                    <VetCaseProvider>
-                        <ChatProvider>
-                            <Route isAuthenticated={isAuthenticated} />
-                        </ChatProvider>
-                    </VetCaseProvider>
-                </VetCasesProvider>
-            </ThemeProvider>
-        );
-    }
-
-    return null
+    return isFontsLoaded ? (
+        <ThemeProvider theme={THEME}>
+            <VetCasesProvider>
+                <VetCaseProvider>
+                    <ChatProvider>
+                        <Route isAuthenticated={deviceSession.isAuthenticated} />
+                    </ChatProvider>
+                </VetCaseProvider>
+            </VetCasesProvider>
+        </ThemeProvider>
+    ) : null
 }
 
 export default () => (

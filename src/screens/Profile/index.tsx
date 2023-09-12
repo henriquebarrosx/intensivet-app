@@ -14,14 +14,14 @@ import { ActionsArea, ActionText, ButtonArea, Divider, DoctorEmail, DoctorName, 
 
 export default function Profile() {
   const isCurrentScreenFocused = useIsFocused();
-  const { userData } = useContext(UserContext);
+  const { sessionData: userData } = useContext(UserContext);
   const { notificationListener, responseNotificationListener } = useContext(NotificationContext);
 
   const {
     userThumbnail,
     removeCurrentSession,
     handlePushNotification,
-    shouldReceiveNotification,
+    isNotificationsEnabled: shouldReceiveNotification,
   } = useViewModel();
 
   useEffect(() => {

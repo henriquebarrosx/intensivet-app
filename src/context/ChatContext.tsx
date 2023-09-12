@@ -40,7 +40,7 @@ export const ChatContext = createContext<ChatContextType>({} as ChatContextType)
 
 export function ChatProvider({ children }: WithChildren) {
     const { vetCase } = useVetCase();
-    const { userData } = useContext(UserContext);
+    const { sessionData: userData } = useContext(UserContext);
 
     const [isSending, displaySendFeedback] = useState(false);
     const [isFetching, displayFetchFeedback] = useState(false);

@@ -18,7 +18,7 @@ export const useViewModel = () => {
     async function uploadAssetFromCamera() {
         const deviceCamera = new Camera()
         const assetFile = await deviceCamera.takePicture()
-        const accessToken = sessionContext.userData?.current_account.access_token
+        const accessToken = sessionContext.sessionData?.current_account.access_token
 
         fileAttachmentModalContext.displayModal(false);
 

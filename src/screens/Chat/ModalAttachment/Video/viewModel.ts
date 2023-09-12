@@ -19,7 +19,7 @@ export const useViewModel = () => {
     const navigation = useNavigation()
     const { updateVetCaseList } = useVetCases()
     const chatContext = useContext(ChatContext)
-    const { userData } = useContext(UserContext)
+    const { sessionData: userData } = useContext(UserContext)
     const { id: vetCaseId } = useVetCase().vetCase
     const { displayModal } = useContext(FileAttachmentModalContext)
 

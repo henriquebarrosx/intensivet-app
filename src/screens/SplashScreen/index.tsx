@@ -1,18 +1,14 @@
-import { useContext, useEffect } from "react";
-import { UserContext } from "../../context/UserContext";
-import { useIsFocused } from "@react-navigation/native";
+import { useEffect } from "react"
+import { useIsFocused } from "@react-navigation/native"
+import { useSession } from "../../context/UserContext"
 
-const SplashScreen = () => {
-  const isFocused = useIsFocused();
-  const { handleUserSession } = useContext(UserContext);
+export default function SplashScreen() {
+    const isFocused = useIsFocused()
+    const { retrieve } = useSession()
 
-  useEffect(() => {
-    if (isFocused) {
-      handleUserSession();
-    }
-  }, [isFocused])
+    useEffect(() => {
+        if (isFocused) retrieve()
+    }, [isFocused])
 
-  return null;
+    return null
 }
-
-export default SplashScreen;

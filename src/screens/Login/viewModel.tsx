@@ -12,7 +12,7 @@ export interface Form { email: string; password: string; }
 const defaultFormSchema: Form = { email: '', password: '' };
 
 export function useSignIn() {
-  const { setUserSession } = useContext(UserContext);
+  const { save: setUserSession } = useContext(UserContext);
   const { makeRefreshVetCaseList } = useVetCaseIndicators();
 
   const [formData, onFormChange] = useState(defaultFormSchema);
@@ -64,7 +64,7 @@ export function useSignIn() {
 
 async function isValidForm(formData: Form, setValidation: (validation: Partial<Form>) => void): Promise<boolean | undefined> {
   try {
-    const schema: yup.SchemaOf<Form> = yup.object().shape({
+    const schema = yup.object().shape({
       password: yup.string().required('Campo obrigatório'),
       email: yup.string().required('Campo obrigatório').email('Email possui formato inválido'),
     });
