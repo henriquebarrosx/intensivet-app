@@ -7,7 +7,7 @@ import { styles } from "./styles";
 import { Message } from "../../../../../schemas/Message";
 import { MessageContext } from "../../../../../context/MessageContext";
 
-function RenderImage({ message }: { message: Message }) {
+function RenderVideoThumbnail({ message }: { message: Message }) {
     const { setMessage, displayVideoPreview } = useContext(MessageContext);
     const [videoPreview, setVideoPreview] = useState<string | null>(null);
 
@@ -17,19 +17,23 @@ function RenderImage({ message }: { message: Message }) {
     };
 
     async function generateThumbnail(): Promise<void> {
-        const { uri } = await VideoThumbnails.getThumbnailAsync(message.service_url, { quality: 0.1 });
-        setVideoPreview(uri);
+        const { uri } = await VideoThumbnails.getThumbnailAsync(
+            message.service_url,
+            { quality: 0.3, time: 15000 }
+        )
+
+        setVideoPreview(uri)
     };
 
     useEffect(() => {
-        generateThumbnail();
-    }, []);
+        generateThumbnail()
+    }, [])
 
     return (
         <TouchableOpacity style={styles.root} onPress={previewImage}>
             <Image
                 style={styles.image}
-                source={{ uri: videoPreview!, cache: "force-cache" }}
+                source={{ uri: videoPreview!, cache: "force-cache", scale: 0.5 }}
             />
 
             <View style={styles.playButtonContainer}>
@@ -44,4 +48,4 @@ function RenderImage({ message }: { message: Message }) {
     );
 }
 
-export default memo(RenderImage);
+export default memo(RenderVideoThumbnail);

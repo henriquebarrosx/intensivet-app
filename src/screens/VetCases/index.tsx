@@ -1,4 +1,5 @@
 import * as Notifications from "expo-notifications"
+import { useIsFocused } from "@react-navigation/native"
 import React, { useContext, useEffect, useState } from "react"
 
 import Filter from "./Filter"
@@ -18,6 +19,7 @@ import { NotificationContext } from "../../context/NotificationContext"
 import { OrderVetCaseContext, OrderVetCaseProvider } from "../../context/OrderVetCases"
 
 function VetCases() {
+    const isFocused = useIsFocused()
     const { fetchVetCaseList } = useVetCaseList()
     const vetCasesFilter = useContext(OrderVetCaseContext)
 
@@ -26,17 +28,21 @@ function VetCases() {
     const { pusherService, notificationListener, responseNotificationListener } = useContext(NotificationContext)
 
     useEffect(() => {
-        const DEFAULT_PAGE = 1
-        fetchVetCaseList(DEFAULT_PAGE, vetCasesFilter.selected)
-    }, [])
+        if (isFocused) {
+            const DEFAULT_PAGE = 1
+            fetchVetCaseList(DEFAULT_PAGE, vetCasesFilter.selected)
+        }
+    }, [isFocused])
 
     useEffect(() => {
-        const notification = new Notification()
+        if (isFocused) {
+            const notification = new Notification()
 
-        Notifications.setNotificationHandler({
-            handleNotification: notification.getUnmuteNotificationConfig()
-        })
-    }, [])
+            Notifications.setNotificationHandler({
+                handleNotification: notification.getUnmuteNotificationConfig()
+            })
+        }
+    }, [isFocused])
 
     useEffect(() => {
         pusherService.current.subscribe(channelName(userData!))

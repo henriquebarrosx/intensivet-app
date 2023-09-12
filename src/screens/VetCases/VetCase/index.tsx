@@ -21,7 +21,7 @@ export default memo(({ item }: Props) => {
 
   function navigateToChat(): void {
     setVetCase(item);
-    
+
     navigation.navigate('Chat', {
       vetCaseId: item.id,
       petName: item.pet.name,
@@ -46,16 +46,16 @@ export default memo(({ item }: Props) => {
   }, [thereIsUnreadMessages]);
 
   const Template = () => {
-    return selected === OrderBy.LAST_MESSAGE 
+    return selected === OrderBy.LAST_MESSAGE
       ? <ReceivedMessages
-          vetCase={item}
-          timeStyle={timeStyle}
-          lastUpdate={lastUpdate}
-          navigateToChat={navigateToChat}
-          thereIsUnreadMessages={thereIsUnreadMessages}
-        />
+        vetCase={item}
+        timeStyle={timeStyle}
+        lastUpdate={lastUpdate}
+        navigateToChat={navigateToChat}
+        thereIsUnreadMessages={thereIsUnreadMessages}
+      />
       : <SlaMessages vetCase={item} navigateToChat={navigateToChat} />
   };
-  
+
   return <Template />
 });
