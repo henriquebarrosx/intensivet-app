@@ -55,7 +55,7 @@ Caso você não queira depender de um aparelho externo É interessante que toda 
 
 ```bash
 # Clone o repositório
-$ git clone git@github.com:nywton/intensivet-react.git
+$ git clone git@github.com:nywton/intensivet-react-app.git
 
 # Entre na pasta
 $ cd intensivet-react-app
