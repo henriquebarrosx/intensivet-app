@@ -1,8 +1,7 @@
 import * as ExpoDocumentPicker from "expo-document-picker"
+import { DeviceFile } from "../../domain/entities/device-file"
 
-import { DeviceFile } from "./DeviceFile"
-
-export class DocumentPicker {
+export class DeviceDocumentPickerAdapter {
     async pick(): Promise<DeviceFile | undefined> {
         const documentResult = await ExpoDocumentPicker.getDocumentAsync({
             copyToCacheDirectory: false,

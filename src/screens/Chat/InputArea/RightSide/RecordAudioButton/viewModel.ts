@@ -1,12 +1,12 @@
 import { useAudioRecord } from '../../../../../context/RecordAudio';
-import { AudioRecord } from '../../../../../Entities/AudioRecord';
+import { AudioRecordAdapter } from '../../../../../infra/adapters/audio-record';
 
 export const useViewModel = () => {
     const { displayAudioRecordFeedback, setAudioRecord } = useAudioRecord();
 
     async function onRecord() {
         try {
-            const audioRecord = new AudioRecord()
+            const audioRecord = new AudioRecordAdapter()
             await audioRecord.start()
             displayAudioRecordFeedback(true)
             setAudioRecord(audioRecord)

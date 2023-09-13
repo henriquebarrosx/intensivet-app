@@ -1,7 +1,7 @@
 import { API } from "../../axios"
 import { Message } from "../../../schemas/Message"
-import { DeviceFile } from "../../../Entities/DeviceFile"
 import { formatFileMessage } from "../../../utils/message"
+import { DeviceFile } from "../../../domain/entities/device-file"
 
 interface SendFileMessage {
     file: DeviceFile

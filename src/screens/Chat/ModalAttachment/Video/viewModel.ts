@@ -2,18 +2,18 @@ import { useContext } from "react"
 import { Alert } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
-import { Camera } from "../../../../Entities/Camera"
 import { Message } from "../../../../schemas/Message"
-import { Gallery } from "../../../../Entities/Gallery"
-import { DeviceFile } from "../../../../Entities/DeviceFile"
-import { AudioRecord } from "../../../../Entities/AudioRecord"
 import { ChatContext } from "../../../../context/ChatContext"
 import { UserContext } from "../../../../context/UserContext"
 import { useVetCase } from "../../../../context/VetCaseContext"
 import { useVetCases } from "../../../../context/VetCasesContext"
 import { sendFileMessage } from "../../../../services/network/chat"
+import { DeviceFile } from "../../../../domain/entities/device-file"
 import { removeDuplicatedKeysFromMessage } from "../../../../utils/message"
 import { FileAttachmentModalContext } from "../../../../context/AttachModal"
+import { AudioRecordAdapter } from "../../../../infra/adapters/audio-record"
+import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera"
+import { DeviceGalleryAdapter } from "../../../../infra/adapters/device-gallery"
 
 export const useViewModel = () => {
     const navigation = useNavigation()
@@ -24,9 +24,9 @@ export const useViewModel = () => {
     const { displayModal } = useContext(FileAttachmentModalContext)
 
     const recordVideo = async (): Promise<void> => {
-        const camera = new Camera()
-        const gallery = new Gallery()
-        const microphone = new AudioRecord()
+        const camera = new DeviceCameraAdapter()
+        const gallery = new DeviceGalleryAdapter()
+        const microphone = new AudioRecordAdapter()
 
         const hasCameraPermission = await camera.requestAsyncPermission()
         const hasMicrophonePermission = await microphone.requestAsyncPermission()

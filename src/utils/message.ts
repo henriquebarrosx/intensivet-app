@@ -1,6 +1,6 @@
 import { Message } from '../schemas/Message';
 import { VetCase } from '../schemas/VetCase';
-import { DeviceFile } from "../Entities/DeviceFile";
+import { DeviceFile } from "../domain/entities/device-file";
 
 /*
   Observation: FormData already apply string format to fields.

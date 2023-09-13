@@ -1,8 +1,8 @@
 import { Audio } from "expo-av"
-import { DeviceFile } from "./DeviceFile"
 import { Alert } from "react-native"
+import { DeviceFile } from "../../domain/entities/device-file"
 
-export class AudioRecord {
+export class AudioRecordAdapter {
     data: Audio.Recording
 
     async requestAsyncPermission(): Promise<boolean> {
@@ -16,7 +16,7 @@ export class AudioRecord {
         return permissionResult.granted;
     }
 
-    async start(): Promise<AudioRecord> {
+    async start(): Promise<AudioRecordAdapter> {
         const hasGalleryAccessPermission = await this.requestAsyncPermission()
 
         if (!hasGalleryAccessPermission) {

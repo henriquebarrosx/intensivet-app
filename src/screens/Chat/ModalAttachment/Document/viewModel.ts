@@ -6,9 +6,9 @@ import { UserContext } from '../../../../context/UserContext'
 import { useVetCase } from '../../../../context/VetCaseContext'
 import { useVetCases } from '../../../../context/VetCasesContext'
 import { sendFileMessage } from '../../../../services/network/chat'
-import { DocumentPicker } from '../../../../Entities/DocumentPicker'
 import { removeDuplicatedKeysFromMessage } from '../../../../utils/message'
 import { FileAttachmentModalContext } from '../../../../context/AttachModal'
+import { DeviceDocumentPickerAdapter } from '../../../../infra/adapters/device-document-picker'
 
 export const useViewModel = () => {
     const { updateVetCaseList } = useVetCases()
@@ -18,7 +18,7 @@ export const useViewModel = () => {
     const { setMessages, virtualizedListRef, displaySendFeedback } = useContext(ChatContext)
 
     async function uploadDocumentFile() {
-        const documentPicker = new DocumentPicker()
+        const documentPicker = new DeviceDocumentPickerAdapter()
         const documentFile = await documentPicker.pick()
         const accessToken = userData?.current_account?.access_token
 

@@ -1,4 +1,3 @@
-import { Camera } from "../../../../Entities/Camera";
 import { Message } from '../../../../schemas/Message';
 import { useChat } from '../../../../context/ChatContext';
 import { useSession } from '../../../../context/UserContext';
@@ -7,6 +6,7 @@ import { useVetCases } from '../../../../context/VetCasesContext';
 import { sendFileMessage } from '../../../../services/network/chat';
 import { useFileAttachmentModal } from '../../../../context/AttachModal';
 import { removeDuplicatedKeysFromMessage } from '../../../../utils/message';
+import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera";
 
 export const useViewModel = () => {
     const chatContext = useChat()
@@ -16,7 +16,7 @@ export const useViewModel = () => {
     const fileAttachmentModalContext = useFileAttachmentModal()
 
     async function uploadAssetFromCamera() {
-        const deviceCamera = new Camera()
+        const deviceCamera = new DeviceCameraAdapter()
         const assetFile = await deviceCamera.takePicture()
         const accessToken = sessionContext.sessionData?.current_account.access_token
 

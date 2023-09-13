@@ -2,9 +2,9 @@ import { Alert } from "react-native"
 import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from "expo-media-library"
 
-import { DeviceFile } from "./DeviceFile"
+import { DeviceFile } from "../../domain/entities/device-file"
 
-export class Gallery {
+export class DeviceGalleryAdapter {
     async requestAsyncPermission(): Promise<boolean> {
         console.log("[Gallery] Retrieving permission...")
         const currentPermission = await MediaLibrary.getPermissionsAsync()

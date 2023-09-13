@@ -1,10 +1,10 @@
+import { Alert } from "react-native"
 import * as ImagePicker from "expo-image-picker"
 import { Camera as ExpoCamera } from "expo-camera"
 
-import { DeviceFile } from "./DeviceFile"
-import { Alert } from "react-native"
+import { DeviceFile } from "../../domain/entities/device-file"
 
-export class Camera {
+export class DeviceCameraAdapter {
     async requestAsyncPermission(): Promise<boolean> {
         console.log("[Camera] Retrieving permission...")
         const currentPermission = await ExpoCamera.getCameraPermissionsAsync()
