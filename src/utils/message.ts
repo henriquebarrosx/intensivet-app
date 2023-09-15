@@ -1,5 +1,5 @@
-import { Message } from '../schemas/Message';
-import { VetCase } from '../schemas/VetCase';
+import { VetCaseModel } from '../schemas/VetCase';
+import { Message } from '../domain/entities/message';
 import { DeviceFile } from "../domain/entities/device-file";
 
 /*
@@ -29,8 +29,8 @@ export const removeDuplicatedKeysFromMessage = (messages: Message[]): Message[] 
     return Array.from(items.values())
 }
 
-export const removeDuplicatedKeysFromCases = (vetCases: VetCase[]): VetCase[] => {
-    const items = new Map<number, VetCase>()
+export const removeDuplicatedKeysFromCases = (vetCases: VetCaseModel[]): VetCaseModel[] => {
+    const items = new Map<number, VetCaseModel>()
 
     vetCases.forEach((vetCase) => {
         items.set(vetCase.id, vetCase)

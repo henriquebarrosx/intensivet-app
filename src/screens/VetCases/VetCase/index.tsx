@@ -5,12 +5,12 @@ import React, { memo, useContext, useMemo } from "react";
 
 import SlaMessages from "./SlaMessages";
 import ReceivedMessages from "./ReceivedMessages";
-import { OrderBy, VetCase } from "../../../schemas/VetCase";
+import { VetCaseOrderTypeEnum, VetCaseModel } from "../../../schemas/VetCase";
 import { useVetCase } from "../../../context/VetCaseContext";
 import { OrderVetCaseContext } from "../../../context/OrderVetCases";
 
 export interface Props {
-  item: VetCase;
+  item: VetCaseModel;
 }
 
 export default memo(({ item }: Props) => {
@@ -46,7 +46,7 @@ export default memo(({ item }: Props) => {
   }, [thereIsUnreadMessages]);
 
   const Template = () => {
-    return selected === OrderBy.LAST_MESSAGE
+    return selected === VetCaseOrderTypeEnum.LAST_MESSAGE
       ? <ReceivedMessages
         vetCase={item}
         timeStyle={timeStyle}

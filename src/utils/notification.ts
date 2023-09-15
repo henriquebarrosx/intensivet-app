@@ -2,7 +2,7 @@ import Constants from "expo-constants";
 import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
 
-import { SessionRepository } from "../models/Session";
+import { SessionRepository } from "../infra/repositories/session";
 import { removeExpoToken, saveExpoToken } from "../services/network/notification";
 
 export const addRequiredAndroidSettings = () => {

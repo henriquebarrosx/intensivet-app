@@ -1,7 +1,7 @@
 import { useContext } from "react"
 
-import { Message } from "../../../../schemas/Message"
-import { ChatContext } from "../../../../context/ChatContext"
+import { MessageModel } from "../../../../schemas/Message"
+import { ChatContext, useChat } from "../../../../context/ChatContext"
 import { UserContext } from "../../../../context/UserContext"
 import { useVetCase } from "../../../../context/VetCaseContext"
 import { useVetCases } from "../../../../context/VetCasesContext"
@@ -9,13 +9,14 @@ import { sendFileMessage } from "../../../../services/network/chat"
 import { removeDuplicatedKeysFromMessage } from "../../../../utils/message"
 import { FileAttachmentModalContext } from "../../../../context/AttachModal"
 import { DeviceGalleryAdapter } from "../../../../infra/adapters/device-gallery"
+import { MessageMapper } from "../../../../infra/mappers/message-mapper"
 
 export const useViewModel = () => {
+    const chatViewModel = useChat()
     const { updateVetCaseList } = useVetCases()
     const { sessionData: userData } = useContext(UserContext)
     const { id: vetCaseId } = useVetCase().vetCase
     const { displayModal } = useContext(FileAttachmentModalContext)
-    const { setMessages, virtualizedListRef, displaySendFeedback } = useContext(ChatContext)
 
     async function uploadGalleryAssetMedia() {
         const gallery = new DeviceGalleryAdapter()
@@ -26,19 +27,16 @@ export const useViewModel = () => {
 
         try {
             if (assetFile) {
-                displaySendFeedback(true)
+                chatViewModel.displaySendFeedback(true)
 
                 const response = await sendFileMessage({
                     vetCaseId,
                     accessToken,
                     file: assetFile,
-                    onDownloadProgress: () => displaySendFeedback(false),
+                    onDownloadProgress: () => chatViewModel.displaySendFeedback(false),
                 })
 
-                setMessages((prevMessages: Message[]) =>
-                    removeDuplicatedKeysFromMessage([response, ...prevMessages])
-                )
-
+                await chatViewModel.insertMessage(MessageMapper.map(response, true))
                 updateVetCaseList(response)
             }
         }
@@ -48,8 +46,8 @@ export const useViewModel = () => {
         }
 
         finally {
-            virtualizedListRef?.current?.scrollToIndex({ index: 0 })
-            displaySendFeedback(false)
+            chatViewModel.scrollToBottom()
+            chatViewModel.displaySendFeedback(false)
         }
     }
 

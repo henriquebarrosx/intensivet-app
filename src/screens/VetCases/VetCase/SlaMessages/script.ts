@@ -1,7 +1,7 @@
-import {VetCase} from "../../../../schemas/VetCase";
-import {priorities} from "../../../../utils/priorities";
+import { VetCaseModel } from "../../../../schemas/VetCase";
+import { priorities } from "../../../../utils/priorities";
 
-export function useSlaMessage(vetCase: VetCase) {
+export function useSlaMessage(vetCase: VetCaseModel) {
   const isFullCase = !!vetCase.priority;
   const bubbleTitle = getBubbleTittle();
   const priorityColor = getPriorityColor();
@@ -9,7 +9,7 @@ export function useSlaMessage(vetCase: VetCase) {
 
   function getContainerStyle(): Record<string, string> {
     const bgColor = isFullCase ? '#afece482' : '#acace973';
-    return {backgroundColor: bgColor};
+    return { backgroundColor: bgColor };
   }
 
   function getPriorityColor(): string {

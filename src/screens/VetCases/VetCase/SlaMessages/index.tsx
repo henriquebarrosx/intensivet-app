@@ -5,11 +5,11 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { styles } from "./styles";
 import { useTimer } from "./useTimer";
 import { useSlaMessage } from "./script";
-import { VetCase } from "../../../../schemas/VetCase";
-import {useIsFocused} from "@react-navigation/native";
+import { VetCaseModel } from "../../../../schemas/VetCase";
+import { useIsFocused } from "@react-navigation/native";
 
 interface Props {
-  vetCase: VetCase;
+  vetCase: VetCaseModel;
   navigateToChat: () => void;
 }
 

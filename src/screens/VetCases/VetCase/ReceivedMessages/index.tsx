@@ -3,11 +3,11 @@ import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
 import { Avatar } from './Avatar';
 import { LastMessage } from './LastMessage';
-import { VetCase } from '../../../../schemas/VetCase';
+import { VetCaseModel } from '../../../../schemas/VetCase';
 
 interface Props {
   timeStyle: any;
-  vetCase: VetCase;
+  vetCase: VetCaseModel;
   lastUpdate: string;
   navigateToChat: () => void;
   thereIsUnreadMessages: boolean;

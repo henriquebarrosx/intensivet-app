@@ -11,18 +11,18 @@ import React, {
   SetStateAction,
 } from 'react';
 
-import { Message } from '../schemas/Message';
+import { MessageModel } from '../schemas/Message';
 import { WithChildren } from '../@types/common';
-import { PaginationType } from '../schemas/Pagination';
-import { VetCase as VetCaseModel } from '../schemas/VetCase';
+import { Pagination } from '../schemas/Pagination';
+import { VetCaseModel as VetCaseModel } from '../schemas/VetCase';
 import { updateTotalUnreadMessagesAndLastMessage } from '../utils/chat/messages';
 
 interface VetCaseContextType {
-  pagination: PaginationType;
-  setPagination: Dispatch<SetStateAction<PaginationType>>;
+  pagination: Pagination;
+  setPagination: Dispatch<SetStateAction<Pagination>>;
   vetCases: VetCaseModel[];
   setVetCases: Dispatch<React.SetStateAction<VetCaseModel[]>>;
-  updateVetCaseList: (lastMessage: Message) => void;
+  updateVetCaseList: (lastMessage: MessageModel) => void;
   virtualizedListRef: RefObject<VirtualizedList<VetCaseModel>>;
 }
 
@@ -31,9 +31,9 @@ export const VetCasesContext = createContext<VetCaseContextType>({} as VetCaseCo
 export function VetCasesProvider({ children }: WithChildren) {
   const [vetCases, setVetCases] = useState<VetCaseModel[]>([]);
   const virtualizedListRef = useRef<VirtualizedList<VetCaseModel>>(null);
-  const [pagination, setPagination] = useState<PaginationType>({} as PaginationType);
+  const [pagination, setPagination] = useState<Pagination>({} as Pagination);
 
-  const updateVetCaseList = useCallback((lastMessage: Message) => {
+  const updateVetCaseList = useCallback((lastMessage: MessageModel) => {
     setVetCases((currentVetCaseList) => currentVetCaseList.map(vetCase => {
       const isTheVetCaseToBeUpdated = lastMessage.vet_case_id === vetCase.id;
       return isTheVetCaseToBeUpdated ? updateTotalUnreadMessagesAndLastMessage(vetCase, lastMessage) : vetCase;

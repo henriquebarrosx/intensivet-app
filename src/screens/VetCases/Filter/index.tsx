@@ -1,8 +1,8 @@
 import React, { memo, useContext } from "react";
 
 import { useVetCaseList } from "../script";
-import { OrderBy } from "../../../schemas/VetCase";
-import {useSession} from "../../../context/UserContext";
+import { VetCaseOrderTypeEnum } from "../../../schemas/VetCase";
+import { useSession } from "../../../context/UserContext";
 import { OrderVetCaseContext } from "../../../context/OrderVetCases";
 import { useErrorsFeedback } from "../../../context/ErrorsFeedbackContext";
 import { Content, FilterOptionButton, FilterText, HorizontalScrollViewArea } from "./styles";
@@ -14,15 +14,15 @@ function VetCaseFilter() {
   const { selected, changeSelected } = useContext(OrderVetCaseContext);
 
   async function orderByLastMessage(): Promise<void> {
-    changeSelected(OrderBy.LAST_MESSAGE);
+    changeSelected(VetCaseOrderTypeEnum.LAST_MESSAGE);
     closeUnexpectedErrorModal({ toRefresh: true });
-    await fetchVetCaseList(1, OrderBy.LAST_MESSAGE);
+    await fetchVetCaseList(1, VetCaseOrderTypeEnum.LAST_MESSAGE);
   }
 
   async function orderBySla(): Promise<void> {
-    changeSelected(OrderBy.SLA);
+    changeSelected(VetCaseOrderTypeEnum.SLA);
     closeUnexpectedErrorModal({ toRefresh: true });
-    await fetchVetCaseList(1, OrderBy.SLA);
+    await fetchVetCaseList(1, VetCaseOrderTypeEnum.SLA);
   }
 
   function getFilterLabelByAccountRole(): string {
@@ -32,14 +32,14 @@ function VetCaseFilter() {
   return (
     <Content>
       <HorizontalScrollViewArea showsHorizontalScrollIndicator={false}>
-        <FilterOptionButton onPress={orderByLastMessage} isSelected={selected === OrderBy.LAST_MESSAGE}>
-          <FilterText isSelected={selected === OrderBy.LAST_MESSAGE}>
+        <FilterOptionButton onPress={orderByLastMessage} isSelected={selected === VetCaseOrderTypeEnum.LAST_MESSAGE}>
+          <FilterText isSelected={selected === VetCaseOrderTypeEnum.LAST_MESSAGE}>
             Mensagens Recebidas
           </FilterText>
         </FilterOptionButton>
 
-        <FilterOptionButton onPress={orderBySla} isSelected={selected === OrderBy.SLA}>
-          <FilterText isSelected={selected === OrderBy.SLA}>
+        <FilterOptionButton onPress={orderBySla} isSelected={selected === VetCaseOrderTypeEnum.SLA}>
+          <FilterText isSelected={selected === VetCaseOrderTypeEnum.SLA}>
             {getFilterLabelByAccountRole()}
           </FilterText>
         </FilterOptionButton>

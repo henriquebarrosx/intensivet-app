@@ -1,20 +1,21 @@
 import { useContext, useState } from "react";
 import { getBottomSpace } from 'react-native-iphone-x-helper'
 
-import { Message } from "../../../schemas/Message";
-import { ChatContext } from "../../../context/ChatContext";
+import { useChat } from "../../../context/ChatContext";
+import { MessageModel } from "../../../schemas/Message";
 import { UserContext } from "../../../context/UserContext";
 import { useVetCase } from "../../../context/VetCaseContext";
 import { useVetCases } from "../../../context/VetCasesContext";
 import { sendTextMessage } from "../../../services/network/chat";
+import { MessageMapper } from "../../../infra/mappers/message-mapper";
 
 export const INPUT_AREA_HEIGHT = 58;
 
 export const useViewModel = () => {
+  const chatViewModel = useChat()
   const { updateVetCaseList } = useVetCases();
   const { sessionData: userData } = useContext(UserContext);
   const { id: vetCaseId } = useVetCase().vetCase;
-  const { setMessages, virtualizedListRef, displaySendFeedback } = useContext(ChatContext);
 
   const [inputText, setInputText] = useState('');
   const [isFocused, setInputFocus] = useState(false);
@@ -28,7 +29,7 @@ export const useViewModel = () => {
 
     try {
       if (inputText && isSendButtonEnabled) {
-        displaySendFeedback(true);
+        chatViewModel.displaySendFeedback(true);
         makeSendButtonEnabled(false);
 
         const response = await sendTextMessage({
@@ -37,8 +38,8 @@ export const useViewModel = () => {
           message: inputText,
         });
 
-        setMessages((prevMessages: Message[]) => [response, ...prevMessages]);
-        virtualizedListRef?.current?.scrollToIndex({ index: 0 });
+        await chatViewModel.insertMessage(MessageMapper.map(response, true))
+        chatViewModel.scrollToBottom()
 
         updateVetCaseList(response);
       }
@@ -51,7 +52,7 @@ export const useViewModel = () => {
 
     finally {
       makeSendButtonEnabled(true);
-      displaySendFeedback(false);
+      chatViewModel.displaySendFeedback(false);
       setInputText('');
     }
   };

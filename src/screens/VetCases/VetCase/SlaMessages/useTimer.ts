@@ -1,17 +1,17 @@
 import { useContext, useState } from "react";
 
-import { VetCase} from "../../../../schemas/VetCase";
+import { VetCaseModel } from "../../../../schemas/VetCase";
 import { UserContext } from "../../../../context/UserContext";
 import { formattingRespondedAt, formattingSlaAt } from "../../../../utils/timers";
 
 let countDown: NodeJS.Timeout;
 const ONE_MINUTE: number = 60000;
 
-export function useTimer(vetCase: VetCase) {
+export function useTimer(vetCase: VetCaseModel) {
   const { isAdmin } = useContext(UserContext);
   const [timeLeft, setTimeLeft] = useState<string>(getCurrentTimer());
 
-  const vetCaseTimer = isAdmin ? vetCase.sla_at: vetCase.responded_at;
+  const vetCaseTimer = isAdmin ? vetCase.sla_at : vetCase.responded_at;
 
   function getCurrentTimer(): string {
     if (vetCaseTimer) {

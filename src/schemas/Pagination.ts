@@ -1,4 +1,4 @@
-export interface PaginationType {
+export interface Pagination {
   next: number | null;
   limit: number | null;
   current: number | null;

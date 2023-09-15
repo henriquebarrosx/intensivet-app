@@ -1,5 +1,6 @@
 {
     "expo": {
+        "main": "index.js",
         "version": "1.0.0",
         "slug": "intensivet",
         "orientation": "portrait",

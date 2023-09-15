@@ -1,4 +1,4 @@
-export interface VetCase {
+export interface VetCaseModel {
   vet: Vet;
   pet: Pet;
   id: number;
@@ -68,7 +68,7 @@ export interface Clinic {
   }
 }
 
-export enum OrderBy {
+export enum VetCaseOrderTypeEnum {
   SLA = 'by_sla',
   LAST_MESSAGE = 'last_message'
 }

@@ -4,7 +4,7 @@ import React, { useState, createContext, useContext } from "react"
 import { User } from "../schemas/Account"
 import { WithChildren } from "../@types/common"
 import { navigationRef } from "../utils/navigation"
-import { SessionRepository } from "../models/Session"
+import { SessionRepository } from "../infra/repositories/session"
 
 interface UserContextType {
     isAdmin: boolean

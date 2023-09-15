@@ -1,6 +1,7 @@
+import { Message } from "../domain/entities/message";
 import { Account } from "./Account";
 
-export interface Message {
+export interface MessageModel {
   id: number;
   file: string;
   message: string;

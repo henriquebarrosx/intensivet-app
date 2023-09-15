@@ -1,15 +1,14 @@
-import { Message } from '../../../../schemas/Message';
-import { useChat } from '../../../../context/ChatContext';
-import { useSession } from '../../../../context/UserContext';
-import { useVetCase } from '../../../../context/VetCaseContext';
-import { useVetCases } from '../../../../context/VetCasesContext';
-import { sendFileMessage } from '../../../../services/network/chat';
-import { useFileAttachmentModal } from '../../../../context/AttachModal';
-import { removeDuplicatedKeysFromMessage } from '../../../../utils/message';
-import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera";
+import { useChat } from "../../../../context/ChatContext"
+import { useSession } from "../../../../context/UserContext"
+import { useVetCase } from "../../../../context/VetCaseContext"
+import { useVetCases } from "../../../../context/VetCasesContext"
+import { sendFileMessage } from "../../../../services/network/chat"
+import { useFileAttachmentModal } from "../../../../context/AttachModal"
+import { MessageMapper } from "../../../../infra/mappers/message-mapper"
+import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera"
 
 export const useViewModel = () => {
-    const chatContext = useChat()
+    const chatViewModel = useChat()
     const sessionContext = useSession()
     const vetCaseContext = useVetCase()
     const vetCasesContext = useVetCases()
@@ -20,36 +19,33 @@ export const useViewModel = () => {
         const assetFile = await deviceCamera.takePicture()
         const accessToken = sessionContext.sessionData?.current_account.access_token
 
-        fileAttachmentModalContext.displayModal(false);
+        fileAttachmentModalContext.displayModal(false)
 
         if (!assetFile) return
 
         try {
-            chatContext.displaySendFeedback(true)
+            chatViewModel.displaySendFeedback(true)
 
             const response = await sendFileMessage({
                 accessToken,
                 file: assetFile,
                 vetCaseId: vetCaseContext.vetCase.id,
-                onDownloadProgress: () => chatContext.displaySendFeedback(false),
+                onDownloadProgress: () => chatViewModel.displaySendFeedback(false),
             })
 
-            chatContext.setMessages((prevMessages: Message[]) =>
-                removeDuplicatedKeysFromMessage([response, ...prevMessages])
-            )
-
+            await chatViewModel.insertMessage(MessageMapper.map(response, true))
             vetCasesContext.updateVetCaseList(response)
         }
 
         catch (error) {
-            console.error('Upload media from gallery fails', error);
+            console.error("[vet case messages] upload fails", error)
         }
 
         finally {
-            chatContext.virtualizedListRef?.current?.scrollToIndex({ index: 0 });
-            chatContext.displaySendFeedback(false);
+            chatViewModel.scrollToBottom()
+            chatViewModel.displaySendFeedback(false)
         }
-    };
+    }
 
-    return { uploadAssetFromCamera };
+    return { uploadAssetFromCamera }
 }

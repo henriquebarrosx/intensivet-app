@@ -1,5 +1,5 @@
 import { API } from "../../axios"
-import { Message } from "../../../schemas/Message"
+import { MessageModel } from "../../../schemas/Message"
 import { formatFileMessage } from "../../../utils/message"
 import { DeviceFile } from "../../../domain/entities/device-file"
 
@@ -10,7 +10,7 @@ interface SendFileMessage {
     accessToken: string | undefined
 }
 
-export const sendFileMessage = async (params: SendFileMessage): Promise<Message> => {
+export const sendFileMessage = async (params: SendFileMessage): Promise<MessageModel> => {
     const { vetCaseId, file, accessToken, onDownloadProgress } = params
 
     const promiseUrl = `/api/v2/vet_cases/${vetCaseId}/vet_case_messages`
@@ -31,7 +31,7 @@ interface SendTextMessage {
     accessToken: string | undefined
 }
 
-export const sendTextMessage = async (params: SendTextMessage): Promise<Message> => {
+export const sendTextMessage = async (params: SendTextMessage): Promise<MessageModel> => {
     const { vetCaseId, accessToken, message } = params
 
     const promiseUrl = `/api/v2/vet_cases/${vetCaseId}/vet_case_messages`

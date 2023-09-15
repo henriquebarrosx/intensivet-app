@@ -1,6 +1,6 @@
 import React from "react"
 import { Container } from "./styles"
-import theme from "../../../../../../theme"
+import theme from "../../../../../theme"
 import { BarIndicator } from "react-native-indicators"
 
 interface Props {

@@ -1,50 +1,40 @@
-import { AxiosResponse } from "axios";
-import { OrderBy, VetCase } from '../../schemas/VetCase';
-import { PaginationType } from "../../schemas/Pagination";
-import { useVetCases } from "../../context/VetCasesContext";
-import { fetchVetCases } from '../../services/network/vetCase';
-import { useVetCaseIndicators } from "../../context/VetCaseIndicators";
-
-interface VetCasesResponse {
-  vet_cases: VetCase[];
-  pagination: PaginationType;
-}
+import { useVetCases } from "../../context/VetCasesContext"
+import { VetCaseOrderTypeEnum } from '../../schemas/VetCase'
+import { httpClient } from "../../infra/adapters/http-client-adapter"
+import { useVetCaseIndicators } from "../../context/VetCaseIndicators"
+import { VetCaseService } from "../../infra/services/vet-case-service"
 
 export function useVetCaseList() {
-  const { makeRefreshVetCaseList } = useVetCaseIndicators();
-  const { setVetCases, pagination, setPagination } = useVetCases();
+    const vetCasesViewModel = useVetCases()
+    const { makeRefreshVetCaseList } = useVetCaseIndicators()
 
-  async function fetchVetCaseList(page = 1, orderBy = OrderBy.LAST_MESSAGE): Promise<void> {
-    startFetchingVetCaseListFeedback();
+    async function fetchVetCaseList(page = 1, orderBy = VetCaseOrderTypeEnum.LAST_MESSAGE): Promise<void> {
 
-    fetchVetCases({ page, orderBy })
-      .then(updateVetCaseList)
-      .catch(handleBadCallbacks)
-      .finally(stopFetchingVetCaseListFeedback)
-  }
+        try {
+            makeRefreshVetCaseList(true)
 
-  function updateVetCaseList({ data }: AxiosResponse<VetCasesResponse>): void {
-    setVetCases(data.vet_cases);
-    setPagination(data?.pagination);
-  }
+            const vetCaseService = new VetCaseService(httpClient)
+            const [items, pagination] = await vetCaseService.findAll(page, orderBy)
 
-  function startFetchingVetCaseListFeedback(): void {
-    makeRefreshVetCaseList(true);
-  }
+            vetCasesViewModel.setVetCases(items)
+            vetCasesViewModel.setPagination(pagination)
+        }
 
-  function stopFetchingVetCaseListFeedback(): void {
-    makeRefreshVetCaseList(false);
-  }
+        catch (error) {
+            console.error("[vet cases] error finding vet cases", error)
+            vetCasesViewModel.setVetCases([])
+        }
 
-  function handleBadCallbacks(): void {
-    setVetCases([]);
-  }
-
-  function onPaginate(): void {
-    if (pagination.next) {
-      fetchVetCaseList(pagination.next);
+        finally {
+            makeRefreshVetCaseList(false)
+        }
     }
-  };
 
-  return { fetchVetCaseList, onPaginate }
+    function onPaginate(): void {
+        if (vetCasesViewModel.pagination?.next) {
+            fetchVetCaseList(vetCasesViewModel.pagination.next)
+        }
+    }
+
+    return { fetchVetCaseList, onPaginate }
 }

@@ -1,13 +1,13 @@
 import { Text, View, StyleSheet } from "react-native";
 import React, { memo, useMemo, useCallback } from "react";
-import { MessageType, VetCase } from "../../../../schemas/VetCase";
+import { MessageType, VetCaseModel } from "../../../../schemas/VetCase";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 interface Props {
-  vetCase: VetCase;
+  vetCase: VetCaseModel;
 }
 
-const LastMessageComponent = ({vetCase}: Props) => {
+const LastMessageComponent = ({ vetCase }: Props) => {
   const isTextMessageType = useMemo(() => isTextMessage(vetCase), [vetCase]);
 
   const lastMessage = useMemo(() => {
@@ -45,28 +45,28 @@ const LastMessageComponent = ({vetCase}: Props) => {
   return <Template />;
 }
 
-const isImageMessage = (vetCase: VetCase) => {
+const isImageMessage = (vetCase: VetCaseModel) => {
   return vetCase?.last_message?.message_type === MessageType.IMAGE;
 }
 
-const isVideoMessage = (vetCase: VetCase) => {
+const isVideoMessage = (vetCase: VetCaseModel) => {
   return vetCase?.last_message?.message_type === MessageType.VIDEO;
 }
 
-const isFileMessage = (vetCase: VetCase) => {
+const isFileMessage = (vetCase: VetCaseModel) => {
   return vetCase?.last_message?.message_type === MessageType.FILE;
 }
 
-const isAudioMessage = (vetCase: VetCase) => {
+const isAudioMessage = (vetCase: VetCaseModel) => {
   return vetCase?.last_message?.message_type === MessageType.AUDIO;
 }
 
-const isTextMessage = (vetCase: VetCase): boolean => {
+const isTextMessage = (vetCase: VetCaseModel): boolean => {
   const isText = vetCase?.last_message?.message_type === MessageType.TEXT;
   return !vetCase?.last_message || !!isText;
 }
 
-const getTextMessage = (vetCase: VetCase): string => {
+const getTextMessage = (vetCase: VetCaseModel): string => {
   return vetCase?.last_message?.message || `${vetCase.vet.doctor_name} iniciou um novo caso`;
 }
 

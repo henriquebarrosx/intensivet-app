@@ -2,23 +2,22 @@ import { useContext } from "react"
 import { Alert } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
-import { Message } from "../../../../schemas/Message"
-import { ChatContext } from "../../../../context/ChatContext"
+import { useChat } from "../../../../context/ChatContext"
 import { UserContext } from "../../../../context/UserContext"
 import { useVetCase } from "../../../../context/VetCaseContext"
 import { useVetCases } from "../../../../context/VetCasesContext"
 import { sendFileMessage } from "../../../../services/network/chat"
 import { DeviceFile } from "../../../../domain/entities/device-file"
-import { removeDuplicatedKeysFromMessage } from "../../../../utils/message"
+import { MessageMapper } from "../../../../infra/mappers/message-mapper"
 import { FileAttachmentModalContext } from "../../../../context/AttachModal"
 import { AudioRecordAdapter } from "../../../../infra/adapters/audio-record"
 import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera"
 import { DeviceGalleryAdapter } from "../../../../infra/adapters/device-gallery"
 
 export const useViewModel = () => {
+    const chatContext = useChat()
     const navigation = useNavigation()
     const { updateVetCaseList } = useVetCases()
-    const chatContext = useContext(ChatContext)
     const { sessionData: userData } = useContext(UserContext)
     const { id: vetCaseId } = useVetCase().vetCase
     const { displayModal } = useContext(FileAttachmentModalContext)
@@ -58,14 +57,10 @@ export const useViewModel = () => {
                 onDownloadProgress: () => chatContext.displaySendFeedback(false),
             })
 
-            chatContext.setMessages((prevMessages: Message[]) =>
-                removeDuplicatedKeysFromMessage([response, ...prevMessages])
-            )
-
+            chatContext.insertMessage(MessageMapper.map(response, true))
             /* Remove route params to avoid any unexpected side effect */
             navigation.setParams({ videoUri: '' })
-            chatContext.virtualizedListRef?.current?.scrollToIndex({ index: 0 })
-
+            chatContext.scrollToBottom()
             updateVetCaseList(response)
         }
 

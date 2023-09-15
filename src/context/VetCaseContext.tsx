@@ -3,7 +3,7 @@ import React, { Dispatch, useState, useContext, createContext, useEffect } from 
 import { API } from '../services/axios';
 import { UserContext } from './UserContext';
 import { WithChildren } from '../@types/common';
-import { VetCase as VetCaseModel } from '../schemas/VetCase';
+import { VetCaseModel as VetCaseModel } from '../schemas/VetCase';
 
 interface VetCaseContextType {
   vetCase: VetCaseModel;

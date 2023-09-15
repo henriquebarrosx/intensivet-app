@@ -1,4 +1,4 @@
-import { SessionRepository } from "../../../models/Session"
+import { SessionRepository } from "../../../infra/repositories/session"
 
 export const requestInterceptor = () => {
     async function onSuccess(request: any) {

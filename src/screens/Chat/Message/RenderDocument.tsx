@@ -3,8 +3,8 @@ import { useNavigation } from "@react-navigation/native"
 import { Text, StyleSheet, TouchableOpacity } from "react-native"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import colors from "../../../../utils/colors"
-import { Message } from "../../../../schemas/Message"
+import colors from "../../../utils/colors"
+import { Message } from "../../../domain/entities/message"
 
 interface RenderDocumentProps {
     message: Message
@@ -12,18 +12,18 @@ interface RenderDocumentProps {
 
 export default memo(({ message }: RenderDocumentProps) => {
     const navigation = useNavigation()
-    const documentColors = message.is_sender ? colors.white : colors.primary
+    const documentColors = message.isSender ? colors.white : colors.primary
 
     async function openResource() {
         navigation.navigate("WebPage", {
-            source: message.service_url,
-            screenTitle: message.account.doctor_name,
+            source: message.file.uri,
+            screenTitle: message.account.doctorName,
         })
     }
 
     function getIconName() {
         const foundIcon = icons.find(({ endsWith }) => {
-            return endsWith === message.file_name.split(".").pop()
+            return endsWith === message.file.name.split(".").pop()
         })
 
         return foundIcon?.icon || "file"
@@ -34,7 +34,7 @@ export default memo(({ message }: RenderDocumentProps) => {
             <MaterialCommunityIcons size={32} color={documentColors} name={getIconName()} />
 
             <Text ellipsizeMode="tail" numberOfLines={1} style={[styles.text, { color: documentColors }]}>
-                {message.file_name}
+                {message.file.name}
             </Text>
         </TouchableOpacity>
     )
