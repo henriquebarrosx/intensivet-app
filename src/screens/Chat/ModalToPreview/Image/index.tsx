@@ -1,28 +1,32 @@
-import Modal from "react-native-modal";
-import { TouchableOpacity } from "react-native";
-import { View, Text, StatusBar} from "react-native";
-import React, { memo, Fragment, useContext } from "react";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Modal from "react-native-modal"
+import { TouchableOpacity } from "react-native"
+import { View, Text, StatusBar } from "react-native"
+import React, { memo, Fragment, useContext } from "react"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import { styles } from "./styles";
-import { datetime } from "../../../../utils/dates";
-import ImageView from "../../../../components/ImageView";
-import { MessageContext } from "../../../../context/MessageContext";
+import { styles } from "./styles"
+import ImageView from "../../../../components/ImageView"
+import { MessageContext } from "../../../../context/MessageContext"
+import { localDate } from "../../../../infra/adapters/local-date-adapter"
+import { LocalDateFormatEnum } from "../../../../infra/adapters/local-date-adapter/index.gateway"
 
 function ImagePreview() {
-  const { displayingImagePreview } = useContext(MessageContext);
-  return displayingImagePreview ? <Template /> : null;
+  const { displayingImagePreview } = useContext(MessageContext)
+  return displayingImagePreview ? <Template /> : null
 }
 
 function Template() {
-  const { message, setMessage, displayImagePreview, displayingImagePreview } = useContext(MessageContext);
+  const { message, setMessage, displayImagePreview, displayingImagePreview } = useContext(MessageContext)
 
   function closeModal() {
-    setMessage(null);
-    displayImagePreview(false);
-  };
+    setMessage(null)
+    displayImagePreview(false)
+  }
 
-  const timeStamp = datetime(message?.created_at!);
+  const createdAtDateTime = localDate.format(
+    message.createdAt,
+    LocalDateFormatEnum.datetime
+  )
 
   return (
     <Fragment>
@@ -33,7 +37,7 @@ function Template() {
         style={styles.modal}
         animationIn="fadeIn"
         animationOut="fadeOut"
-        swipeDirection={'right'}
+        swipeDirection={"right"}
         onSwipeComplete={closeModal}
         onBackdropPress={closeModal}
         onBackButtonPress={closeModal}
@@ -47,19 +51,19 @@ function Template() {
 
             <View style={styles.headerRightSide}>
               <Text style={styles.doctorName}>
-                {message?.account.doctor_name}
+                {message?.account.doctorName}
               </Text>
 
-              <Text style={styles.timestamp}>{timeStamp}</Text>
+              <Text style={styles.timestamp}>{createdAtDateTime}</Text>
             </View>
           </View>
 
-          <ImageView uri={message?.service_url!} resizeMode="contain" />
+          <ImageView uri={message?.attachment.uri!} resizeMode="contain" />
         </View>
       </Modal>
     </Fragment>
-  );
+  )
 }
 
-export default memo(ImagePreview);
+export default memo(ImagePreview)
 

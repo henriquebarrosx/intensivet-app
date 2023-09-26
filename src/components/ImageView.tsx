@@ -1,7 +1,7 @@
-import { SkypeIndicator } from "react-native-indicators"
-import React, { memo, useCallback, useState } from "react"
-import { View, Image, StyleSheet, Dimensions, ImageProps, ImageResizeMode } from "react-native"
+import React, { useState } from "react"
+import { View, Image, StyleSheet, Dimensions, ImageProps, ImageResizeMode, ActivityIndicator } from "react-native"
 
+import DefaultImage from "../../assets/images/blur-image.avif"
 import FallbackImage from "../../assets/images/default-fallback-image.png"
 
 type Props = {
@@ -11,35 +11,42 @@ type Props = {
 
 // https://github.com/react-native-netinfo/react-native-netinfo
 
-export default memo(({ uri, resizeMode }: Props) => {
-    const [closedProgress, setProgress] = useState<boolean>(true);
-    const [thumbnail, setResource] = useState<ImageProps | any>({ uri, cache: "force-cache" });
+export default function ImageView({ uri, resizeMode }: Props) {
+    const [closedProgress, setProgress] = useState<boolean>(true)
+    const [thumbnail, setResource] = useState<ImageProps | any>({ uri })
 
-    const closeProgress = useCallback(() => {
-        setProgress(false);
-    }, []);
+    function closeProgress() {
+        setProgress(false)
+    }
 
-    const onError = useCallback(() => {
-        setProgress(false);
-        setResource(FallbackImage);
-    }, [FallbackImage]);
+    function onError() {
+        setProgress(false)
+        setResource(FallbackImage)
+    }
 
     return (
         <View style={styles.content}>
+            {closedProgress &&
+                <ActivityIndicator
+                    color="#FFFFFF"
+                    style={styles.progress}
+                />
+            }
+
             <Image
                 onError={onError}
                 source={thumbnail}
                 style={styles.picture}
                 resizeMode={resizeMode}
                 onLoadEnd={closeProgress}
+                defaultSource={DefaultImage}
+                progressiveRenderingEnabled
                 loadingIndicatorSource={thumbnail}
-                progressiveRenderingEnabled={true}
-            />
 
-            {closedProgress && <SkypeIndicator color="white" style={styles.progress} />}
+            />
         </View>
     );
-});
+}
 
 const styles = StyleSheet.create({
     content: {
@@ -55,7 +62,7 @@ const styles = StyleSheet.create({
         maxHeight: Dimensions.get("window").height,
     },
     progress: {
-        paddingTop: 20,
+        zIndex: 999,
         alignSelf: "center",
         position: "absolute",
     },

@@ -1,6 +1,6 @@
+import { ActivityIndicator } from "react-native"
 import * as Notifications from "expo-notifications";
 import { useIsFocused } from "@react-navigation/native";
-import { UIActivityIndicator } from 'react-native-indicators';
 import React, { useCallback, useContext, useEffect, useLayoutEffect } from "react";
 import { Ionicons, MaterialCommunityIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons';
 
@@ -64,7 +64,7 @@ export function AboutAnimal() {
             </Visibility>
 
             <Visibility isVisible={isLoadingIndicatorDisplayed}>
-              <UIActivityIndicator size={32} color={"#FFFFFF"} />
+              <ActivityIndicator size={32} color={"#FFFFFF"} />
             </Visibility>
           </BoxPetIconArea>
 

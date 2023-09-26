@@ -2,17 +2,18 @@ import { StyleSheet } from "react-native"
 
 export const styles = StyleSheet.create({
     root: {
-        maxHeight: 250,
+        width: 250,
+        height: 250,
         paddingVertical: 8,
         paddingHorizontal: 8,
         justifyContent: "center",
     },
     image: {
-        height: 220,
-        minWidth: 250,
+        width: 230,
+        height: 240,
         borderWidth: 0,
         borderRadius: 6,
-        maxWidth: "100%",
+        alignSelf: "center",
         borderColor: "transparent",
     },
     progress: {

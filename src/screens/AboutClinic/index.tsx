@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { ScrollView, ActivityIndicator } from "react-native";
 import * as Notifications from "expo-notifications";
 import { useIsFocused } from "@react-navigation/native";
 import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons';
@@ -9,7 +9,6 @@ import { useViewModel } from "./viewModel";
 import ScreenView from "../../components/ScreenView";
 import { Notification } from '../../models/Notification';
 import { Visibility } from "../../components/Visibility";
-import { UIActivityIndicator } from "react-native-indicators";
 import { InformationBox } from "../../components/InformationBox";
 import { SectionInfoTitle } from "../../components/SectionInfoTitle";
 import { Subtitle, Title, HeaderArea, AbsoluteArea } from "./styles";
@@ -58,7 +57,7 @@ export function AboutClinic() {
       <ScrollView>
         <Visibility isVisible={isLoadingIndicatorDisplayed}>
           <AbsoluteArea>
-            <UIActivityIndicator color='#757575' />
+            <ActivityIndicator color='#757575' />
           </AbsoluteArea>
         </Visibility>
 

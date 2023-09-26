@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { UIActivityIndicator } from "react-native-indicators";
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
 import colors from '../../../utils/colors';
 import { useVetCaseIndicators } from '../../../context/VetCaseIndicators';
@@ -12,7 +11,7 @@ const RefreshIndicator = memo(() => {
   if (isRefreshingVetCaseList) {
     return (
       <View style={styles.containter}>
-        <UIActivityIndicator color={colors.gray} size={32} />
+        <ActivityIndicator color={colors.gray} size={32} />
       </View>
     )
   }

@@ -1,7 +1,7 @@
-import { ScrollView } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Notifications from "expo-notifications";
 import { useIsFocused } from "@react-navigation/native";
+import { ScrollView, ActivityIndicator } from "react-native";
 import React, { useCallback, useContext, useEffect, useLayoutEffect } from "react";
 
 import { useViewModel } from './viewModel';
@@ -11,7 +11,6 @@ import { NotificationContext } from "../../context/NotificationContext";
 import { DetailedInformationBox } from "../../components/DetailedInformationBox";
 import { Visibility } from "../../components/Visibility";
 import { AbsoluteArea } from "./styles";
-import { UIActivityIndicator } from "react-native-indicators";
 
 export function AboutCategory() {
   const isCurrentScreenFocused = useIsFocused();
@@ -51,7 +50,7 @@ export function AboutCategory() {
       <ScrollView>
         <Visibility isVisible={isLoadingIndicatorDisplayed}>
           <AbsoluteArea>
-            <UIActivityIndicator color='#757575' />
+            <ActivityIndicator color='#757575' />
           </AbsoluteArea>
         </Visibility>
 

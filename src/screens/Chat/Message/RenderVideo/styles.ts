@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     root: {
         position: "relative",
-        maxHeight: 250,
+        width: 250,
+        height: 250,
         paddingVertical: 8,
         paddingHorizontal: 8,
         justifyContent: "center",

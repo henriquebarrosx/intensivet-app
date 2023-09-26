@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { ScrollView, ActivityIndicator } from "react-native";
 import * as Notifications from "expo-notifications";
 import { useIsFocused } from "@react-navigation/native";
 import React, { useCallback, useContext, useEffect, useLayoutEffect } from "react";
@@ -15,7 +15,6 @@ import { DetailedInformationBox } from '../../components/DetailedInformationBox'
 import { SectionInfoTitle } from "../../components/SectionInfoTitle";
 import { Visibility } from "../../components/Visibility";
 import { AbsoluteArea } from "../AboutClinic/styles";
-import { UIActivityIndicator } from "react-native-indicators";
 
 export function VeterinarianRecords() {
   const isCurrentScreenFocused = useIsFocused();
@@ -54,7 +53,7 @@ export function VeterinarianRecords() {
       <ScrollView>
         <Visibility isVisible={isLoadingIndicatorDisplayed}>
           <AbsoluteArea>
-            <UIActivityIndicator color='#757575' />
+            <ActivityIndicator color='#757575' />
           </AbsoluteArea>
         </Visibility>
 

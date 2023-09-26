@@ -41,7 +41,7 @@ export function VetCasesProvider({ children }: WithChildren) {
                     message: message.message,
                     created_at: message.created_at,
                     message_type: message.message_type,
-                    file_name: message?.attachment?.file_name
+                    file_name: message?.file_name
                 },
                 unread_updates: vetCase.unread_updates += 1,
                 unread_messages: vetCase.unread_messages += 1,

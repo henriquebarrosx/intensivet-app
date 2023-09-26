@@ -54,7 +54,7 @@ export function ChatProvider({ children }: WithChildren) {
             console.log("[messages] fetching messages...")
             const [items, pagination] = await messagesService.findAllByVetCase(vetCase.id, fromPage)
             const nonDuplicatedMessages = removeDuplicatedKeysFromMessage([...messages, ...items])
-            console.log(`[messages] found ${nonDuplicatedMessages.length} messages of ${pagination.total_count}`)
+            console.log(`[messages] found ${nonDuplicatedMessages.length} messages of ${pagination?.total_count}`)
 
             updatePagination(pagination)
             updateMessageList(nonDuplicatedMessages)
