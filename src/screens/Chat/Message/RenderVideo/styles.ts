@@ -2,19 +2,23 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     root: {
-        padding: 8,
+        position: "relative",
         maxHeight: 250,
-        marginBottom: 12,
-        height: 250,
-        width: 265,
+        paddingVertical: 8,
+        paddingHorizontal: 8,
+        justifyContent: "center",
+    },
+    image: {
+        height: 220,
+        minWidth: 250,
         borderWidth: 0,
         borderRadius: 6,
         maxWidth: "100%",
-        alignSelf: "center",
         borderColor: "transparent",
     },
     playButtonContainer: {
-        top: "50%",
+        top: "40%",
+        right: "42%",
         width: 50,
         height: 50,
         opacity: 0.8,
@@ -26,5 +30,10 @@ export const styles = StyleSheet.create({
     },
     icon: {
         alignSelf: "center",
+    },
+    progress: {
+        marginTop: 20,
+        alignSelf: "center",
+        position: "absolute",
     },
 });

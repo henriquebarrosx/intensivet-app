@@ -4,13 +4,12 @@ import { DeviceFile } from "./device-file"
 export class Message {
     id: number
     vetCaseId: number
-    file?: DeviceFile
-    account: Account
     message: string
     type: string
-    isSent: boolean
-    isSender: boolean
+    attachment?: DeviceFile
+    account: Account
     isAdmin: boolean
+    isSender: boolean
     createdAt: Date
     updatedAt: Date
 
@@ -20,7 +19,7 @@ export class Message {
     }
 
     withFile(value: DeviceFile): Message {
-        this.file = value
+        this.attachment = value
         return this
     }
 
@@ -41,11 +40,6 @@ export class Message {
 
     withType(value: string): Message {
         this.type = value
-        return this
-    }
-
-    withSentFlag(value: boolean): Message {
-        this.isSent = value
         return this
     }
 

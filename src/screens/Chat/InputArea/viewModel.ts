@@ -13,7 +13,7 @@ export const INPUT_AREA_HEIGHT = 58;
 
 export const useViewModel = () => {
   const chatViewModel = useChat()
-  const { updateVetCaseList } = useVetCases();
+  const vetCasesViewModel = useVetCases();
   const { sessionData: userData } = useContext(UserContext);
   const { id: vetCaseId } = useVetCase().vetCase;
 
@@ -38,10 +38,9 @@ export const useViewModel = () => {
           message: inputText,
         });
 
-        await chatViewModel.insertMessage(MessageMapper.map(response, true))
+        await chatViewModel.insertMessage(MessageMapper.apply(response))
+        vetCasesViewModel.updateLastMessage(response)
         chatViewModel.scrollToBottom()
-
-        updateVetCaseList(response);
       }
     }
 

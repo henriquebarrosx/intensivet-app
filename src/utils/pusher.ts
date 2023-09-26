@@ -1,5 +1,5 @@
-import { User } from "../schemas/Account";
-import { CHANNELS } from "../schemas/Pusher";
+import { User } from "../schemas/Account"
+import { CHANNELS } from "../schemas/Pusher"
 
 /*
   Admin account should listen changes from admin channel.
@@ -7,7 +7,7 @@ import { CHANNELS } from "../schemas/Pusher";
 
   The other role accounts has the same behavior, but the opposite channels.
 */
-export function channelName(account: Partial<User>): string {
-  const isCurrentAccountAdmin = account.current_account?.role === 'admin';
-  return isCurrentAccountAdmin ? CHANNELS.ADMIN : CHANNELS.CLINIC + account?.clinic?.id;
+export function getChannelName(account: Partial<User>): string {
+    const isCurrentAccountAdmin = account.current_account?.role === "admin"
+    return isCurrentAccountAdmin ? CHANNELS.ADMIN : CHANNELS.CLINIC + account?.clinic?.id
 }

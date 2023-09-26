@@ -13,7 +13,7 @@ export class MessageService {
             `/api/v2/vet_cases/${vetCaseId}/vet_case_messages?page=${page}`
         )
 
-        const messages = response.vet_case_messages.map((messageData) => MessageMapper.map(messageData, true))
+        const messages = response.vet_case_messages.map(MessageMapper.apply)
         return [messages, response.pagination]
     }
 
@@ -22,6 +22,6 @@ export class MessageService {
             `/api/v2/vet_cases/${vetCaseId}/vet_case_messages/${messageId}`
         )
 
-        return MessageMapper.map(messageData, true)
+        return MessageMapper.apply(messageData)
     }
 }

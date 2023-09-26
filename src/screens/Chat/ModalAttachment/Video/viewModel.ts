@@ -17,7 +17,7 @@ import { DeviceGalleryAdapter } from "../../../../infra/adapters/device-gallery"
 export const useViewModel = () => {
     const chatContext = useChat()
     const navigation = useNavigation()
-    const { updateVetCaseList } = useVetCases()
+    const vetCasesViewModel = useVetCases()
     const { sessionData: userData } = useContext(UserContext)
     const { id: vetCaseId } = useVetCase().vetCase
     const { displayModal } = useContext(FileAttachmentModalContext)
@@ -57,11 +57,11 @@ export const useViewModel = () => {
                 onDownloadProgress: () => chatContext.displaySendFeedback(false),
             })
 
-            chatContext.insertMessage(MessageMapper.map(response, true))
+            chatContext.insertMessage(MessageMapper.apply(response))
             /* Remove route params to avoid any unexpected side effect */
             navigation.setParams({ videoUri: '' })
+            vetCasesViewModel.updateLastMessage(response, true)
             chatContext.scrollToBottom()
-            updateVetCaseList(response)
         }
 
         catch (error) {

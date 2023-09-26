@@ -40,7 +40,7 @@ export const useViewModel = () => {
                 onDownloadProgress: () => { },
             })
 
-            await chatViewModel.insertMessage(MessageMapper.map(response, true))
+            await chatViewModel.insertMessage(MessageMapper.apply(response))
             chatViewModel.scrollToBottom()
         }
 

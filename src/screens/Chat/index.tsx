@@ -6,7 +6,6 @@ import { Notification as NotificationEvent } from "expo-notifications"
 import Messages from "./Messages"
 import { ContentArea } from "./styles"
 import { InputArea } from "./InputArea"
-import { useViewModel } from "./viewModel"
 import ModalAttachment from "./ModalAttachment"
 import { useChat } from "../../context/ChatContext"
 import { MessageModel } from "../../schemas/Message"
@@ -25,14 +24,13 @@ interface Props {
     route: { params: { videoUri: string } }
 }
 
-const Chat = (props: Props) => {
+function Chat(props: Props) {
     const isCurrentScreenFocused = useIsFocused()
     const videoUri = props?.route?.params?.videoUri
 
     const chatViewModel = useChat()
-    const { vetCase } = useVetCase()
-    const { updateVetCaseList } = useVetCases()
-    const { markVetCaseMessageAsRead } = useViewModel()
+    const vetCaseViewModel = useVetCase()
+    const vetCasesViewModel = useVetCases()
     const { pusherService, notificationListener, responseNotificationListener } = useContext(NotificationContext)
 
     useEffect(() => {
@@ -44,27 +42,31 @@ const Chat = (props: Props) => {
 
         return () => {
             /*
-            The chat screen keep receiving messages. So, it"s important that all vet case messages
-            only be marked as read when component be unmounted!
+                The chat screen keep receiving messages. So, it"s important that all vet case messages
+                only be marked as read when component be unmounted!
             */
             chatViewModel.cleanChat()
-            markVetCaseMessageAsRead()
+            vetCaseViewModel.markVetCaseMessageAsRead()
         }
     }, [])
 
     useEffect(() => {
         if (isCurrentScreenFocused) {
-            pusherService.current.bind(CHANNELS_EVENTS.NEW_MESSAGE, async (message: MessageModel) => {
-                await chatViewModel.fetchMessage(message.id)
-                updateVetCaseList(message)
+            pusherService.current.bind(CHANNELS_EVENTS.NEW_MESSAGE, (message: MessageModel) => {
+                vetCasesViewModel.updateLastMessage(message)
+                chatViewModel.receiveNewMessage(message)
             })
 
-            notificationListener.current = Notifications.addNotificationReceivedListener((event: NotificationEvent) => {
-                const notification = new Notification(event, vetCase.id)
-                Notifications.setNotificationHandler({ handleNotification: notification.getNoficiationHandler() })
-            })
+            notificationListener.current = Notifications
+                .addNotificationReceivedListener((event: NotificationEvent) => {
+                    const notification = new Notification(event, vetCaseViewModel.vetCase.id)
+                    Notifications.setNotificationHandler({
+                        handleNotification: notification.getNoficiationHandler()
+                    })
+                })
 
-            responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(() => { })
+            responseNotificationListener.current = Notifications
+                .addNotificationResponseReceivedListener(() => { })
 
             return () => {
                 pusherService.current.unsubscribe(CHANNELS_EVENTS.NEW_MESSAGE)

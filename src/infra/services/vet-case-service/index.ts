@@ -13,4 +13,10 @@ export class VetCaseService {
 
         return [response.vet_cases, response.pagination]
     }
+
+    async readMessages(vetCaseId: number): Promise<void> {
+        await this.httpClient.get<FindAllVetCasesResponse>(
+            `/vet_cases/${vetCaseId}/unread_messages`
+        )
+    }
 }

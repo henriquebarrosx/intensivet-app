@@ -11,7 +11,7 @@ interface SenderProps {
 export const Container = styled.View<SenderProps>`
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding-top: ${({ isSender }) => isSender ? 8 : 6}px;
   padding-left: ${({ isSender }) => isSender ? 8 : 0}px;
 `;
@@ -32,7 +32,7 @@ interface SoundStateIconProps extends SenderProps {
 
 export const SoundStateIcon = styled(MaterialCommunityIcons).attrs({
   size: 28,
-})<SoundStateIconProps>`
+}) <SoundStateIconProps>`
   display: ${({ isVisible }) => isVisible ? 'flex' : 'none'};
   color: ${({ theme, isSender }) => isSender ? theme.COLORS.white : theme.COLORS.gray};
 `;
@@ -43,7 +43,7 @@ interface LoadingFeedbackProps extends SenderProps {
 
 export const LoadingFeedback = styled(UIActivityIndicator).attrs({
   size: 28,
-})<LoadingFeedbackProps>`
+}) <LoadingFeedbackProps>`
   position: absolute;
   display: ${({ isVisible }) => isVisible ? 'flex' : 'none'};
   color: ${({ theme, isSender }) => isSender ? theme.COLORS.chatUnlessAdminMessage : theme.COLORS.white};

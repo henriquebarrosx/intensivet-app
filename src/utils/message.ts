@@ -11,7 +11,7 @@ export function formatFileMessage(file: DeviceFile, vetCaseId: number, kind: "im
     const formData = new FormData();
 
     // @ts-ignore
-    formData.append('vet_case_message[file]', file);
+    formData.append('vet_case_message[file]', { name: file.name, type: file.type, uri: file.uri });
     formData.append('vet_case_message[message_type]', kind);
     // @ts-ignore
     formData.append('vet_case_message[vet_case_id]', vetCaseId);

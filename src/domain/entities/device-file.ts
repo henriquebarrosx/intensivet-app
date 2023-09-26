@@ -4,13 +4,15 @@ export class DeviceFile {
         readonly name: string,
         readonly type: string,
         readonly uri: string,
-        readonly kind: "image" | "audio" | "file" | "video"
+        readonly kind: "image" | "audio" | "file" | "video",
+        readonly preview: string
     ) { }
 
-    static create({ name = new Date().toISOString(), mimeType, type, uri, id = Math.random() }: Input) {
+    static create({ mimeType, type, uri, name, id = Math.random(), preview = "" }: Input) {
         if (!uri) throw new Error("Device file must to have URI")
         const fileType = mimeType ?? DeviceFile.extractMimeTypeFromURI(uri, type)
-        return new DeviceFile(id, name, fileType, uri, type)
+        const fileName = name || new Date().toISOString()
+        return new DeviceFile(id, fileName, fileType, uri, type, preview)
     }
 
     private static extractMimeTypeFromURI(uri: string, type: string) {
@@ -23,6 +25,7 @@ type Input = {
     id?: number
     uri: string
     name?: string
+    preview?: string
     mimeType?: string
     type: "image" | "video" | "file" | "audio"
 }

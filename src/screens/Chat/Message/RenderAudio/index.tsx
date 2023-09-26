@@ -54,7 +54,7 @@ function RenderAudio({ message }: Props) {
     }
 
     async function playAudioMessage(): Promise<void> {
-        const { sound } = await Audio.Sound.createAsync({ uri: message.file.uri });
+        const { sound } = await Audio.Sound.createAsync({ uri: message.attachment.uri });
         await sound.playAsync();
 
         setAudioBuffer(sound);

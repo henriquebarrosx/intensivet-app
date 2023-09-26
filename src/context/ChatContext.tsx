@@ -3,8 +3,10 @@ import React, { useRef, useState, useContext, createContext, RefObject } from "r
 
 import { useVetCase } from "./VetCaseContext"
 import { WithChildren } from "../@types/common"
+import { MessageModel } from "../schemas/Message"
 import { Pagination } from "../schemas/Pagination"
 import { Message } from "../domain/entities/message"
+import { MessageMapper } from "../infra/mappers/message-mapper"
 import { removeDuplicatedKeysFromMessage } from "../utils/message"
 import { MessageService } from "../infra/services/message-service"
 import { httpClient } from "../infra/adapters/http-client-adapter"
@@ -21,6 +23,7 @@ type ChatContextGateway = {
     displayFetchLoader(isFetching: boolean): void
     insertMessage(message: Message): Promise<void>
     fetchMessage(messageId: number): Promise<void>
+    receiveNewMessage(message: MessageModel): void
     fetchMessages(fromPage?: number, stopLoadingWhenFinish?: boolean): Promise<void>
 }
 
@@ -37,6 +40,12 @@ export function ChatProvider({ children }: WithChildren) {
     const [messages, updateMessageList] = useState<Message[]>([])
     const [pagination, updatePagination] = useState<Pagination | null>(null)
     const virtualizedListRef = useRef<VirtualizedList<Message>>(null)
+
+    function receiveNewMessage(message: MessageModel): void {
+        console.log("New message received: ", message)
+        const items = removeDuplicatedKeysFromMessage([...messages, MessageMapper.apply(message)])
+        updateMessageList(items)
+    }
 
     async function fetchMessages(fromPage: number = 1, stopLoadingWhenFinish: boolean = true) {
         try {
@@ -116,6 +125,7 @@ export function ChatProvider({ children }: WithChildren) {
                 insertMessage,
                 scrollToBottom,
                 handlePagination,
+                receiveNewMessage,
                 displayFetchLoader,
                 displaySendFeedback,
             }}

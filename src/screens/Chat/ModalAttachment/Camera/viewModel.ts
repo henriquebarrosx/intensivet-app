@@ -11,7 +11,7 @@ export const useViewModel = () => {
     const chatViewModel = useChat()
     const sessionContext = useSession()
     const vetCaseContext = useVetCase()
-    const vetCasesContext = useVetCases()
+    const vetCasesViewModel = useVetCases()
     const fileAttachmentModalContext = useFileAttachmentModal()
 
     async function uploadAssetFromCamera() {
@@ -33,8 +33,8 @@ export const useViewModel = () => {
                 onDownloadProgress: () => chatViewModel.displaySendFeedback(false),
             })
 
-            await chatViewModel.insertMessage(MessageMapper.map(response, true))
-            vetCasesContext.updateVetCaseList(response)
+            await chatViewModel.insertMessage(MessageMapper.apply(response))
+            vetCasesViewModel.updateLastMessage(response, true)
         }
 
         catch (error) {

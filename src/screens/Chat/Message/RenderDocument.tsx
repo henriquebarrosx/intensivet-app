@@ -16,14 +16,14 @@ export default memo(({ message }: RenderDocumentProps) => {
 
     async function openResource() {
         navigation.navigate("WebPage", {
-            source: message.file.uri,
+            source: message.attachment.uri,
             screenTitle: message.account.doctorName,
         })
     }
 
     function getIconName() {
         const foundIcon = icons.find(({ endsWith }) => {
-            return endsWith === message.file.name.split(".").pop()
+            return endsWith === message.attachment.name.split(".").pop()
         })
 
         return foundIcon?.icon || "file"
@@ -34,7 +34,7 @@ export default memo(({ message }: RenderDocumentProps) => {
             <MaterialCommunityIcons size={32} color={documentColors} name={getIconName()} />
 
             <Text ellipsizeMode="tail" numberOfLines={1} style={[styles.text, { color: documentColors }]}>
-                {message.file.name}
+                {message.attachment.name}
             </Text>
         </TouchableOpacity>
     )

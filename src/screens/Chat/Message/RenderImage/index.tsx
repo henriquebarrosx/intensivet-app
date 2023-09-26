@@ -16,14 +16,14 @@ export default function RenderImage({ message }: Props) {
     function previewImage(): void {
         navigation.navigate('WebPage', {
             screenTitle: message.account.doctorName,
-            source: message.file.uri,
+            source: message.attachment.uri,
         })
     }
 
     return (
         <TouchableOpacity style={styles.root} onPress={previewImage}>
             <View style={styles.image}>
-                <ImageView uri={message.file.uri} resizeMode="cover" />
+                <ImageView uri={message.attachment.uri} resizeMode="cover" />
             </View>
         </TouchableOpacity>
     )

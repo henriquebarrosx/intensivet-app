@@ -6,7 +6,7 @@ import { DeviceFile } from "../../domain/entities/device-file"
 export class MessageMapper {
     private constructor() { }
 
-    static map(messageData: MessageModel, isSent: boolean) {
+    static apply(messageData: MessageModel) {
         const account = new Account()
             .withId(messageData.account.id)
             .withDoctorName(messageData.account.doctor_name)
@@ -20,14 +20,14 @@ export class MessageMapper {
             .withCreatedAt(messageData.created_at)
             .withSenderFlag(messageData.is_sender)
             .withAdminFlag(messageData.is_admin)
-            .withSentFlag(isSent)
 
-        if (messageData.service_url && messageData.message_type) {
+        if (messageData?.service_url && messageData.message_type) {
             if (messageData.message_type !== "text") {
                 const file = DeviceFile.create({
                     uri: messageData.service_url,
                     name: messageData.file_name,
                     type: messageData.message_type as any,
+                    preview: messageData?.video_thumbnail_url,
                 })
 
                 message.withFile(file)

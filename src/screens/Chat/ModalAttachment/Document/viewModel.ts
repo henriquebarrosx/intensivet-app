@@ -10,7 +10,7 @@ import { DeviceDocumentPickerAdapter } from "../../../../infra/adapters/device-d
 
 export const useViewModel = () => {
     const chatViewModel = useChat()
-    const { updateVetCaseList } = useVetCases()
+    const vetCasesViewModel = useVetCases()
     const { sessionData: userData } = useContext(UserContext)
     const { id: vetCaseId } = useVetCase().vetCase
     const { displayModal } = useContext(FileAttachmentModalContext)
@@ -33,8 +33,8 @@ export const useViewModel = () => {
                     onDownloadProgress: () => chatViewModel.displaySendFeedback(false),
                 })
 
-                await chatViewModel.insertMessage(MessageMapper.map(response, true))
-                updateVetCaseList(response)
+                await chatViewModel.insertMessage(MessageMapper.apply(response))
+                vetCasesViewModel.updateLastMessage(response, true)
             }
         }
 

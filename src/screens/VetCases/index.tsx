@@ -7,19 +7,22 @@ import Header from "./Header"
 import ListView from "./ListView"
 import { useVetCaseList } from "./script"
 import TryAgainButton from "./TryAgainButton"
-import { channelName } from "../../utils/pusher"
+import { getChannelName } from "../../utils/pusher"
 import RefreshIndicator from "./RefreshIndicator"
 import ScrollToTopButton from "./ScrollToTopButton"
 import ScreenView from "../../components/ScreenView"
+import { VetCaseModel } from "../../schemas/VetCase"
+import { MessageModel } from "../../schemas/Message"
 import { CHANNELS_EVENTS } from "../../schemas/Pusher"
 import { UserContext } from "../../context/UserContext"
 import { Notification } from '../../models/Notification'
-import { VetCaseChannel } from "../../schemas/VetCaseChannel"
+import { useVetCases } from "../../context/VetCasesContext"
 import { NotificationContext } from "../../context/NotificationContext"
 import { OrderVetCaseContext, OrderVetCaseProvider } from "../../context/OrderVetCases"
 
 function VetCases() {
     const isFocused = useIsFocused()
+    const vetCasesViewModel = useVetCases()
     const { fetchVetCaseList } = useVetCaseList()
     const vetCasesFilter = useContext(OrderVetCaseContext)
 
@@ -45,25 +48,31 @@ function VetCases() {
     }, [isFocused])
 
     useEffect(() => {
-        pusherService.current.subscribe(channelName(userData!))
+        pusherService.current.subscribe(getChannelName(userData!))
 
-        notificationListener.current = Notifications.addNotificationReceivedListener(() => { })
-        responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(() => { })
+        notificationListener.current = Notifications.addNotificationReceivedListener((event) => {
+            console.log({ notificationReceived: event })
+        })
+        responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener((event) => {
+            console.log({ notificationResponse: event })
+        })
 
         return () => {
-            pusherService.current.unsubscribe(channelName(userData!))
+            pusherService.current.unsubscribe(getChannelName(userData!))
             Notifications.removeNotificationSubscription(notificationListener.current)
             Notifications.removeNotificationSubscription(responseNotificationListener.current)
         }
     }, [])
 
     useEffect(() => {
-        pusherService.current.bind(CHANNELS_EVENTS.NEW_CASE, (_: VetCaseChannel) => {
-            fetchVetCaseList()
+        pusherService.current.bind(CHANNELS_EVENTS.NEW_CASE, (vetCase: VetCaseModel) => {
+            console.log("[push notification]: New vet case received")
+            vetCasesViewModel.addNewVetCase(vetCase)
         })
 
-        pusherService.current.bind(CHANNELS_EVENTS.NEW_MESSAGE, (_: VetCaseChannel) => {
-            fetchVetCaseList()
+        pusherService.current.bind(CHANNELS_EVENTS.NEW_MESSAGE, (message: MessageModel) => {
+            console.log("[push notification]: New message received")
+            vetCasesViewModel.updateLastMessage(message)
         })
     }, [])
 
