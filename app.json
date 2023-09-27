@@ -74,7 +74,7 @@
         },
         "ios": {
             "jsEngine": "hermes",
-            "buildNumber": "3.0.6",
+            "buildNumber": "3.0.7",
             "supportsTablet": true,
             "usesIcloudStorage": true,
             "entitlements": {
