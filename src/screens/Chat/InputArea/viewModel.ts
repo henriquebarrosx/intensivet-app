@@ -1,79 +1,76 @@
-import { useContext, useState } from "react";
-import { getBottomSpace } from 'react-native-iphone-x-helper'
+import { useState } from "react"
+import { getBottomSpace } from "react-native-iphone-x-helper"
 
-import { useChat } from "../../../context/ChatContext";
-import { MessageModel } from "../../../schemas/Message";
-import { UserContext } from "../../../context/UserContext";
-import { useVetCase } from "../../../context/VetCaseContext";
-import { useVetCases } from "../../../context/VetCasesContext";
-import { sendTextMessage } from "../../../services/network/chat";
-import { MessageMapper } from "../../../infra/mappers/message-mapper";
+import { useChat } from "../../../context/ChatContext"
+import { useVetCase } from "../../../context/VetCaseContext"
+import { useVetCases } from "../../../context/VetCasesContext"
+import { MessageMapper } from "../../../infra/mappers/message-mapper"
+import { MessageService } from "../../../infra/services/message-service"
+import { httpClient } from "../../../infra/adapters/http-client-adapter"
 
-export const INPUT_AREA_HEIGHT = 58;
+export const INPUT_AREA_HEIGHT = 58
 
 export const useViewModel = () => {
-  const chatViewModel = useChat()
-  const vetCasesViewModel = useVetCases();
-  const { sessionData: userData } = useContext(UserContext);
-  const { id: vetCaseId } = useVetCase().vetCase;
+    const chatViewModel = useChat()
+    const vetCasesViewModel = useVetCases()
+    const { id: vetCaseId } = useVetCase().vetCase
 
-  const [inputText, setInputText] = useState('');
-  const [isFocused, setInputFocus] = useState(false);
-  const [isSendButtonEnabled, makeSendButtonEnabled] = useState(true);
+    const [inputText, setInputText] = useState("")
+    const [isFocused, setInputFocus] = useState(false)
+    const [isSendButtonEnabled, makeSendButtonEnabled] = useState(true)
 
-  const isEmptyMessage = !inputText.length;
-  const [keyboardVerticalOffset, setKeyboardVerticalOffset] = useState(getBottomSpace());
+    const isEmptyMessage = !inputText.length
+    const [keyboardVerticalOffset, setKeyboardVerticalOffset] = useState(getBottomSpace())
 
-  const onSend = async () => {
-    const accessToken = userData?.current_account?.access_token;
+    const onSend = async () => {
+        try {
+            if (inputText && isSendButtonEnabled) {
+                chatViewModel.displaySendFeedback(true)
+                makeSendButtonEnabled(false)
 
-    try {
-      if (inputText && isSendButtonEnabled) {
-        chatViewModel.displaySendFeedback(true);
-        makeSendButtonEnabled(false);
+                const messageService = new MessageService(httpClient)
 
-        const response = await sendTextMessage({
-          vetCaseId,
-          accessToken,
-          message: inputText,
-        });
+                const response = await messageService.create(
+                    vetCaseId,
+                    { message: inputText }
+                )
 
-        await chatViewModel.insertMessage(MessageMapper.apply(response))
-        vetCasesViewModel.updateLastMessage(response)
-        chatViewModel.scrollToBottom()
-      }
+                await chatViewModel.insertMessage(MessageMapper.apply(response))
+                vetCasesViewModel.updateLastMessage(response)
+                chatViewModel.scrollToBottom()
+            }
+        }
+
+        catch (error) {
+            console.error("Houve um problema ao enviar mensagem de texto")
+            console.error(error)
+        }
+
+        finally {
+            makeSendButtonEnabled(true)
+            chatViewModel.displaySendFeedback(false)
+            setInputText("")
+        }
     }
 
-    catch (error) {
-      console.error('Houve um problema ao enviar mensagem de texto');
-      console.error(error);
+    function increaseIn(): void {
+        setKeyboardVerticalOffset(INPUT_AREA_HEIGHT)
+        setInputFocus(false)
     }
 
-    finally {
-      makeSendButtonEnabled(true);
-      chatViewModel.displaySendFeedback(false);
-      setInputText('');
+    function increaseOut(): void {
+        setKeyboardVerticalOffset(getBottomSpace())
+        setInputFocus(true)
     }
-  };
 
-  function increaseIn(): void {
-    setKeyboardVerticalOffset(INPUT_AREA_HEIGHT);
-    setInputFocus(false)
-  };
-
-  function increaseOut(): void {
-    setKeyboardVerticalOffset(getBottomSpace());
-    setInputFocus(true)
-  };
-
-  return {
-    onSend,
-    isFocused,
-    inputText,
-    increaseIn,
-    increaseOut,
-    setInputText,
-    isEmptyMessage,
-    keyboardVerticalOffset,
-  };
+    return {
+        onSend,
+        isFocused,
+        inputText,
+        increaseIn,
+        increaseOut,
+        setInputText,
+        isEmptyMessage,
+        keyboardVerticalOffset,
+    }
 }

@@ -1,14 +1,13 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { useChat } from "../../context/ChatContext"
-import { UserContext } from "../../context/UserContext"
 import { useVetCase } from "../../context/VetCaseContext"
 import { useAudioRecord } from "../../context/RecordAudio"
-import { sendFileMessage } from "../../services/network/chat"
 import { MessageMapper } from "../../infra/mappers/message-mapper"
+import { MessageService } from "../../infra/services/message-service"
+import { httpClient } from "../../infra/adapters/http-client-adapter"
 
 export const useViewModel = () => {
     const chatViewModel = useChat()
-    const { sessionData: userData } = useContext(UserContext)
     const { id: vetCaseId } = useVetCase().vetCase
     const { audioRecord, displayAudioRecordFeedback, setAudioRecord } = useAudioRecord()
 
@@ -25,20 +24,19 @@ export const useViewModel = () => {
     }
 
     const onSend = async (): Promise<void> => {
-        const accessToken = userData?.current_account?.access_token
-        const assetFile = await audioRecord.stop()
-
-        chatViewModel.displaySendFeedback(true)
-        displayAudioRecordFeedback(false)
-        setAudioRecord()
-
         try {
-            const response = await sendFileMessage({
+            const assetFile = await audioRecord.stop()
+            chatViewModel.displaySendFeedback(true)
+            displayAudioRecordFeedback(false)
+            setAudioRecord()
+
+            const messageService = new MessageService(httpClient)
+
+            const response = await messageService.create(
                 vetCaseId,
-                accessToken,
-                file: assetFile,
-                onDownloadProgress: () => { },
-            })
+                { file: assetFile },
+                () => chatViewModel.displaySendFeedback(false)
+            )
 
             await chatViewModel.insertMessage(MessageMapper.apply(response))
             chatViewModel.scrollToBottom()

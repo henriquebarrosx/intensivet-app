@@ -3,12 +3,12 @@ import { Alert } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
 import { useChat } from "../../../../context/ChatContext"
-import { UserContext } from "../../../../context/UserContext"
 import { useVetCase } from "../../../../context/VetCaseContext"
 import { useVetCases } from "../../../../context/VetCasesContext"
-import { sendFileMessage } from "../../../../services/network/chat"
 import { DeviceFile } from "../../../../domain/entities/device-file"
 import { MessageMapper } from "../../../../infra/mappers/message-mapper"
+import { MessageService } from "../../../../infra/services/message-service"
+import { httpClient } from "../../../../infra/adapters/http-client-adapter"
 import { FileAttachmentModalContext } from "../../../../context/AttachModal"
 import { AudioRecordAdapter } from "../../../../infra/adapters/audio-record"
 import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera"
@@ -18,7 +18,6 @@ export const useViewModel = () => {
     const chatContext = useChat()
     const navigation = useNavigation()
     const vetCasesViewModel = useVetCases()
-    const { sessionData: userData } = useContext(UserContext)
     const { id: vetCaseId } = useVetCase().vetCase
     const { displayModal } = useContext(FileAttachmentModalContext)
 
@@ -44,18 +43,18 @@ export const useViewModel = () => {
     }
 
     const handleRecordedVideo = async (uri: string) => {
-        const accessToken = userData?.current_account?.access_token
         chatContext.displaySendFeedback(true)
 
         try {
             const deviceFile = DeviceFile.create({ uri, type: "video" })
 
-            const response = await sendFileMessage({
+            const messageService = new MessageService(httpClient)
+
+            const response = await messageService.create(
                 vetCaseId,
-                accessToken,
-                file: deviceFile,
-                onDownloadProgress: () => chatContext.displaySendFeedback(false),
-            })
+                { file: deviceFile },
+                () => chatContext.displaySendFeedback(false)
+            )
 
             chatContext.insertMessage(MessageMapper.apply(response))
             /* Remove route params to avoid any unexpected side effect */

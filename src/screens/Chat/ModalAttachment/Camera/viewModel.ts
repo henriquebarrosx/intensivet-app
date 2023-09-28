@@ -1,15 +1,14 @@
 import { useChat } from "../../../../context/ChatContext"
-import { useSession } from "../../../../context/UserContext"
 import { useVetCase } from "../../../../context/VetCaseContext"
 import { useVetCases } from "../../../../context/VetCasesContext"
-import { sendFileMessage } from "../../../../services/network/chat"
 import { useFileAttachmentModal } from "../../../../context/AttachModal"
 import { MessageMapper } from "../../../../infra/mappers/message-mapper"
+import { MessageService } from "../../../../infra/services/message-service"
+import { httpClient } from "../../../../infra/adapters/http-client-adapter"
 import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera"
 
 export const useViewModel = () => {
     const chatViewModel = useChat()
-    const sessionContext = useSession()
     const vetCaseContext = useVetCase()
     const vetCasesViewModel = useVetCases()
     const fileAttachmentModalContext = useFileAttachmentModal()
@@ -17,7 +16,6 @@ export const useViewModel = () => {
     async function uploadAssetFromCamera() {
         const deviceCamera = new DeviceCameraAdapter()
         const assetFile = await deviceCamera.takePicture()
-        const accessToken = sessionContext.sessionData?.current_account.access_token
 
         fileAttachmentModalContext.displayModal(false)
 
@@ -26,12 +24,13 @@ export const useViewModel = () => {
         try {
             chatViewModel.displaySendFeedback(true)
 
-            const response = await sendFileMessage({
-                accessToken,
-                file: assetFile,
-                vetCaseId: vetCaseContext.vetCase.id,
-                onDownloadProgress: () => chatViewModel.displaySendFeedback(false),
-            })
+            const messageService = new MessageService(httpClient)
+
+            const response = await messageService.create(
+                vetCaseContext.vetCase.id,
+                { file: assetFile },
+                () => chatViewModel.displaySendFeedback(false)
+            )
 
             await chatViewModel.insertMessage(MessageMapper.apply(response))
             vetCasesViewModel.updateLastMessage(response, true)

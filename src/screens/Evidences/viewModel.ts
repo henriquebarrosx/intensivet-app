@@ -4,65 +4,86 @@ import { useNavigation } from "@react-navigation/native";
 import { API } from "../../services/axios";
 import { useVetCase } from "../../context/VetCaseContext";
 import { EvidencesType } from "../../schemas/VetCaseDetails";
+import { httpClient } from "../../infra/adapters/http-client-adapter"
+import { VetCaseService } from "../../infra/services/vet-case-service"
 
 export const useViewModel = () => {
-  const { vetCase } = useVetCase();
-  const navigation = useNavigation();
+    const { vetCase } = useVetCase();
+    const navigation = useNavigation();
 
-  const [evidences, setEvidences] = useState<EvidencesType[]>([]);
-  const [isFetchingEvidences, displayFetchFeedback] = useState<boolean>(true);
+    const [evidences, setEvidences] = useState<EvidencesType[]>([]);
+    const [isFetchingEvidences, displayFetchFeedback] = useState<boolean>(true);
 
-  async function fetchVetCaseDetails(): Promise<void> {
-    displayFetchFeedback(true);
+    async function fetchVetCaseDetails(): Promise<void> {
+        try {
+            console.log(
+                "[VET CASE] GET Requested",
+                { endpoint: `/api/v2/vet_cases/${vetCase.id}` }
+            )
 
-    const { data } = await API.get(`/api/v2/vet_cases/${vetCase.id}`);
-    setEvidences([...data?.chat_evidences, ...data?.evidences]);
+            displayFetchFeedback(true)
 
-    displayFetchFeedback(false);
-  }
+            const vetCaseService = new VetCaseService(httpClient)
+            const response = await vetCaseService.findOne(vetCase.id)
 
-  function openEvidenceFile(source: string): void {
-    navigation.navigate('WebPage', { screenTitle: 'Evidências', source: source });
-  }
+            setEvidences([...response?.chat_evidences, ...response?.evidences])
+        }
 
-  function isEvidencesNotFoundTextVisible(): boolean {
-    return evidences.length === 0 && !isFetchingEvidences;
-  }
+        catch (error) {
+            console.error(
+                "[VET CASE] GET Requested",
+                { endpoint: `/api/v2/vet_cases/${vetCase.id}` },
+                { error }
+            )
+        }
 
-  function getEvidenceIcon({ type }: { type: string }): string {
-    if (type.endsWith('pdf')) {
-      return 'file-pdf-box';
+        finally {
+            displayFetchFeedback(false)
+        }
     }
 
-    if (type.endsWith('csv') || type.endsWith('xlsx')) {
-      return 'file-excel';
+    function openEvidenceFile(source: string): void {
+        navigation.navigate('WebPage', { screenTitle: 'Evidências', source: source });
     }
 
-    if (type.endsWith('docx')) {
-      return 'word';
+    function isEvidencesNotFoundTextVisible(): boolean {
+        return evidences.length === 0 && !isFetchingEvidences;
     }
 
-    if (type.endsWith('mp3')) {
-      return 'music'
+    function getEvidenceIcon({ type }: { type: string }): string {
+        if (type.endsWith('pdf')) {
+            return 'file-pdf-box';
+        }
+
+        if (type.endsWith('csv') || type.endsWith('xlsx')) {
+            return 'file-excel';
+        }
+
+        if (type.endsWith('docx')) {
+            return 'word';
+        }
+
+        if (type.endsWith('mp3')) {
+            return 'music'
+        }
+
+        if (type.startsWith('video')) {
+            return 'video'
+        }
+
+        if (type.startsWith('image')) {
+            return 'image'
+        }
+
+        return 'file'
     }
 
-    if (type.startsWith('video')) {
-      return 'video'
+    return {
+        evidences,
+        getEvidenceIcon,
+        openEvidenceFile,
+        fetchVetCaseDetails,
+        isFetchingEvidences,
+        isEvidencesNotFoundTextVisible: isEvidencesNotFoundTextVisible(),
     }
-
-    if (type.startsWith('image')) {
-      return 'image'
-    }
-
-    return 'file'
-  }
-
-  return {
-    evidences,
-    getEvidenceIcon,
-    openEvidenceFile,
-    fetchVetCaseDetails,
-    isFetchingEvidences,
-    isEvidencesNotFoundTextVisible: isEvidencesNotFoundTextVisible(),
-  }
 }
