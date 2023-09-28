@@ -28,6 +28,12 @@ function App() {
         httpClient.configRequestIntercept(onRequest.onSuccess)
         httpClient.configResponseIntercept(onResponse.onSuccessResponse, onResponse.onErrorResponse)
 
+        /*
+            DEPRECATED
+
+            A configuração abaixo deve ser removida quando todas as chamadas http
+            forem realizadas pelo módulo httpClient acima.
+        */
         API.interceptors.request.use(onRequest.onSuccess)
         API.interceptors.response.use(onResponse.onSuccessResponse, onResponse.onErrorResponse)
     }, [])
