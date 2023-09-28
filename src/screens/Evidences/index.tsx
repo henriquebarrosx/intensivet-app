@@ -49,7 +49,7 @@ export function Evidences() {
         <ScreenView>
             <Visibility isVisible={isFetchingEvidences}>
                 <AbsoluteArea>
-                    <ActivityIndicator color="#757575" />
+                    <ActivityIndicator size={32} color="#757575" />
                 </AbsoluteArea>
             </Visibility>
 

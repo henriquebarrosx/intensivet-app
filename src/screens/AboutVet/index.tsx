@@ -58,7 +58,7 @@ export function AboutVet() {
       <ScrollView>
         <Visibility isVisible={isLoadingIndicatorDisplayed}>
           <AbsoluteArea>
-            <ActivityIndicator color='#757575' />
+            <ActivityIndicator size={32} color='#757575' />
           </AbsoluteArea>
         </Visibility>
 
