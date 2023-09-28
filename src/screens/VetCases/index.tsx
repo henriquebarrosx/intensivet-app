@@ -50,12 +50,8 @@ function VetCases() {
     useEffect(() => {
         pusherService.current.subscribe(getChannelName(userData!))
 
-        notificationListener.current = Notifications.addNotificationReceivedListener((event) => {
-            console.log({ notificationReceived: event })
-        })
-        responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener((event) => {
-            console.log({ notificationResponse: event })
-        })
+        notificationListener.current = Notifications.addNotificationReceivedListener(() => { })
+        responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(() => { })
 
         return () => {
             pusherService.current.unsubscribe(getChannelName(userData!))
@@ -66,12 +62,10 @@ function VetCases() {
 
     useEffect(() => {
         pusherService.current.bind(CHANNELS_EVENTS.NEW_CASE, (vetCase: VetCaseModel) => {
-            console.log("[push notification]: New vet case received")
             vetCasesViewModel.addNewVetCase(vetCase)
         })
 
         pusherService.current.bind(CHANNELS_EVENTS.NEW_MESSAGE, (message: MessageModel) => {
-            console.log("[push notification]: New message received")
             vetCasesViewModel.updateLastMessage(message)
         })
     }, [])

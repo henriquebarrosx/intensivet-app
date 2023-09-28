@@ -9,7 +9,6 @@ export function useVetCaseList() {
     const { makeRefreshVetCaseList } = useVetCaseIndicators()
 
     async function fetchVetCaseList(page = 1, orderBy = VetCaseOrderTypeEnum.LAST_MESSAGE): Promise<void> {
-
         try {
             makeRefreshVetCaseList(true)
 
@@ -21,7 +20,6 @@ export function useVetCaseList() {
         }
 
         catch (error) {
-            console.error("[vet cases] error finding vet cases", error)
             vetCasesViewModel.setVetCases([])
         }
 

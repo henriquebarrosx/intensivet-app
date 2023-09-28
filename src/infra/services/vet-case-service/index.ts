@@ -11,13 +11,13 @@ export class VetCaseService {
         const endpoint = `/api/v2/vet_cases?page=${page}&with_status=in_progress&with_order=${orderBy}`
 
         try {
-            console.log("[VET CASES] get Requested", { endpoint })
+            console.log("[VET CASES] Get requested", { endpoint })
             const response = await this.httpClient.get<FindAllVetCasesResponse>(endpoint)
             return [response.vet_cases, response.pagination]
         }
 
         catch (error) {
-            console.error("[VET CASES] get Requested", { endpoint }, { error })
+            console.error("[VET CASES] Get requested", { endpoint }, { error })
             throw error
         }
     }
@@ -26,13 +26,13 @@ export class VetCaseService {
         const endpoint = `/api/v2/vet_cases/${id}`
 
         try {
-            console.log("[VET CASE] get Requested", { endpoint })
+            console.log("[VET CASE] Get requested", { endpoint })
             const response = await this.httpClient.get<VetCaseDetails>(endpoint)
             return response
         }
 
         catch (error) {
-            console.error("[VET CASE] get Requested", { endpoint }, { error })
+            console.error("[VET CASE] Get requested", { endpoint }, { error })
             throw error
         }
     }
@@ -41,13 +41,13 @@ export class VetCaseService {
         const endpoint = `/vet_cases/${id}/unread_messages`
 
         try {
-            console.log("[VET CASE MESSAGES] Mark as read", { endpoint })
+            console.log("[VET CASE MESSAGES] Mark as read requested", { endpoint })
             const response = await this.httpClient.get<void>(endpoint)
             return
         }
 
         catch (error) {
-            console.error("[VET CASE MESSAGES] Mark as read", { endpoint }, { error })
+            console.error("[VET CASE MESSAGES] Mark as read requested", { endpoint }, { error })
             throw error
         }
     }

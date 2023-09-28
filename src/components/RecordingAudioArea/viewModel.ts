@@ -42,11 +42,6 @@ export const useViewModel = () => {
             chatViewModel.scrollToBottom()
         }
 
-        catch (error) {
-            console.error(error)
-            console.error('There was an error after tries to upload a recorded audio')
-        }
-
         finally {
             chatViewModel.displaySendFeedback(false)
         }

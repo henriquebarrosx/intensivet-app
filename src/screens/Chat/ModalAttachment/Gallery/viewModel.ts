@@ -38,10 +38,6 @@ export const useViewModel = () => {
             }
         }
 
-        catch (error) {
-            console.error("Upload media from gallery fails", error)
-        }
-
         finally {
             chatViewModel.scrollToBottom()
             chatViewModel.displaySendFeedback(false)

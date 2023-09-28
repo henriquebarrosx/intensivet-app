@@ -41,11 +41,6 @@ export const useViewModel = () => {
             }
         }
 
-        catch (error) {
-            console.error("Houve um problema ao enviar mensagem de texto")
-            console.error(error)
-        }
-
         finally {
             makeSendButtonEnabled(true)
             chatViewModel.displaySendFeedback(false)

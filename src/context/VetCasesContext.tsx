@@ -50,10 +50,7 @@ export function VetCasesProvider({ children }: WithChildren) {
 
         function appendOtherMessages(data: VetCaseModel[]) {
             data.forEach((vetCase) => {
-                if (items.has(vetCase.id)) {
-                    console.log({ vetCase })
-                    return
-                }
+                if (items.has(vetCase.id)) return
                 items.set(vetCase.id, vetCase)
             })
         }

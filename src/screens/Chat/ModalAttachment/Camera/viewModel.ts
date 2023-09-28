@@ -36,10 +36,6 @@ export const useViewModel = () => {
             vetCasesViewModel.updateLastMessage(response, true)
         }
 
-        catch (error) {
-            console.error("[vet case messages] upload fails", error)
-        }
-
         finally {
             chatViewModel.scrollToBottom()
             chatViewModel.displaySendFeedback(false)

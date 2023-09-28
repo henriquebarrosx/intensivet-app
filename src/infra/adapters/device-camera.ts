@@ -6,12 +6,12 @@ import { DeviceFile } from "../../domain/entities/device-file"
 
 export class DeviceCameraAdapter {
     async requestAsyncPermission(): Promise<boolean> {
-        console.log("[Camera] Retrieving permission...")
+        console.log("[CAMERA] Permission requested")
         const currentPermission = await ExpoCamera.getCameraPermissionsAsync()
 
         if (currentPermission.granted) return true
 
-        console.log("[Camera] Requesting permission...")
+        console.log("[CAMERA] Permission requested")
         const permissionResult = await ExpoCamera.requestCameraPermissionsAsync()
         return permissionResult.granted;
     }
@@ -21,7 +21,7 @@ export class DeviceCameraAdapter {
 
         if (!hasCameraPermission) {
             Alert.alert("Permissão necessária", "Para realizar a captura e envio de fotos, é necessário acesso ao câmera do dispositivo")
-            console.log("Camera permission denied.")
+            console.error("[CAMERA] Permission denied.")
             return
         }
 

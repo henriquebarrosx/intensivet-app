@@ -6,12 +6,12 @@ import { DeviceFile } from "../../domain/entities/device-file"
 
 export class DeviceGalleryAdapter {
     async requestAsyncPermission(): Promise<boolean> {
-        console.log("[Gallery] Retrieving permission...")
+        console.log("[GALLERY] Permission requested")
         const currentPermission = await MediaLibrary.getPermissionsAsync()
 
         if (currentPermission.granted) return true
 
-        console.log("[Gallery] Requesting permission...")
+        console.log("[GALLERY] Permission requested")
         const permissionResult = await MediaLibrary.requestPermissionsAsync()
         return permissionResult.granted;
     }
@@ -21,6 +21,7 @@ export class DeviceGalleryAdapter {
 
         if (!hasGalleryAccessPermission) {
             Alert.alert("Permissão necessária", "Para realizar o envio de fotos e/ou vídeos, é necessário acesso ao galeria do dispositivo")
+            console.error("[GALLERY] Permission denied.")
             return
         }
 

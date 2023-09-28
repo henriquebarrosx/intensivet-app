@@ -63,11 +63,6 @@ export const useViewModel = () => {
             chatContext.scrollToBottom()
         }
 
-        catch (error) {
-            console.error(error)
-            console.error('There was an error after tries to upload a image from gallery')
-        }
-
         finally {
             chatContext.displaySendFeedback(false)
         }

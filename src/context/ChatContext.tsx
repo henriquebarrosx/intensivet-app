@@ -42,7 +42,7 @@ export function ChatProvider({ children }: WithChildren) {
     const virtualizedListRef = useRef<VirtualizedList<Message>>(null)
 
     function receiveNewMessage(message: MessageModel): void {
-        console.log("New message received: ", message)
+        console.log("[VET CASE MESSAGE] New message received")
         const items = removeDuplicatedKeysFromMessage([...messages, MessageMapper.apply(message)])
         updateMessageList(items)
     }
@@ -51,17 +51,11 @@ export function ChatProvider({ children }: WithChildren) {
         try {
             displayFetchLoader(true)
 
-            console.log("[messages] fetching messages...")
             const [items, pagination] = await messagesService.findAllByVetCase(vetCase.id, fromPage)
             const nonDuplicatedMessages = removeDuplicatedKeysFromMessage([...messages, ...items])
-            console.log(`[messages] found ${nonDuplicatedMessages.length} messages of ${pagination?.total_count}`)
 
             updatePagination(pagination)
             updateMessageList(nonDuplicatedMessages)
-        }
-
-        catch (error) {
-            console.error("[vet case messages] messages retrieval fails", error)
         }
 
         finally {
@@ -80,10 +74,6 @@ export function ChatProvider({ children }: WithChildren) {
             updateMessageList(nonDuplicatedMessages)
         }
 
-        catch (error) {
-            console.error("[vet case message] message retrieval fails", error)
-        }
-
         finally {
             displayFetchLoader(false)
         }
@@ -98,7 +88,6 @@ export function ChatProvider({ children }: WithChildren) {
         if (pagination?.next) {
             const currentPage = pagination?.current ?? INITIAL_PAGE
             const totalPage = pagination?.total_pages ?? INITIAL_PAGE
-            console.log(`[messages] paginating ${currentPage} of ${totalPage}...`)
             await fetchMessages(pagination.next)
         }
     }

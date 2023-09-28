@@ -26,7 +26,7 @@ export default function RenderAudio({ message }: Props) {
 
     async function handleAudioReprodution(): Promise<void> {
         try {
-            console.log("reproduzindo mensagem de áudio...")
+            console.log("[VET CASE MESSAGE] Play audio requested")
             displayLoaderFeedback(true)
 
             if (audioBuffer) {
@@ -49,14 +49,14 @@ export default function RenderAudio({ message }: Props) {
                     return
                 }
 
-                console.log("pausando mensagem de áudio...")
+                console.log("[VET CASE MESSAGE] stop audio requested")
                 updateAudioBufferState(AudioState.PAUSED)
                 updateAudioBuffer(undefined)
             })
         }
 
         catch (error) {
-            console.error(`houve um problema ao reproduzir o áudio ${error}`)
+            console.error("[VET CASE MESSAGE] stop audio requested", { error })
             updateAudioBufferState(AudioState.PAUSED)
             updateAudioBuffer(undefined)
         }

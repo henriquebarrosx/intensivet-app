@@ -5,16 +5,42 @@ export class NotificationService {
     constructor(private readonly httpClient: IHttpClient) { }
 
     async enable(pushNotificationToken: string): Promise<void> {
-        await this.httpClient.put<EnableOrDisableNotificationsRequest, void>(
-            "/api/v2/expo_token",
-            { expo_push_token: pushNotificationToken }
-        )
+        const endpoint = "/api/v2/expo_token"
+
+        try {
+            console.log("[NOTIFICATION] Enable requested", { endpoint })
+
+            await this.httpClient.put<EnableOrDisableNotificationsRequest, void>(
+                endpoint,
+                { expo_push_token: pushNotificationToken }
+            )
+
+            return
+        }
+
+        catch (error) {
+            console.log("[NOTIFICATION] Enable requested", { endpoint }, { error })
+            throw error
+        }
     }
 
     async disable(): Promise<void> {
-        await this.httpClient.put<EnableOrDisableNotificationsRequest, void>(
-            "/api/v2/expo_token",
-            { expo_push_token: "" }
-        )
+        const endpoint = "/api/v2/expo_token"
+
+        try {
+            console.log("[NOTIFICATION] Disable requested", { endpoint })
+
+            await this.httpClient.put<EnableOrDisableNotificationsRequest, void>(
+                endpoint,
+                { expo_push_token: "" }
+            )
+
+            return
+        }
+
+        catch (error) {
+            console.log("[NOTIFICATION] Disable requested", { endpoint }, { error })
+            throw error
+        }
     }
 }

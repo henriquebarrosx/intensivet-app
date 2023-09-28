@@ -6,12 +6,12 @@ export class AudioRecordAdapter {
     data: Audio.Recording
 
     async requestAsyncPermission(): Promise<boolean> {
-        console.log("[Microphone] Retrieving permission...")
+        console.log("[MICROPHONE] Permission requested")
         const currentPermission = await Audio.getPermissionsAsync()
 
         if (currentPermission.granted) return true
 
-        console.log("[Microphone] Requesting permission...")
+        console.log("[MICROPHONE] Permission requested")
         const permissionResult = await Audio.requestPermissionsAsync()
         return permissionResult.granted;
     }
