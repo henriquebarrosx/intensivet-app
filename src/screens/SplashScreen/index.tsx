@@ -4,10 +4,10 @@ import { useSession } from "../../context/UserContext"
 
 export default function SplashScreen() {
     const isFocused = useIsFocused()
-    const { retrieve } = useSession()
+    const sessionViewModel = useSession()
 
     useEffect(() => {
-        if (isFocused) retrieve()
+        if (isFocused) sessionViewModel.retrieve()
     }, [isFocused])
 
     return null

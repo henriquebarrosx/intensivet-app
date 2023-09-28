@@ -9,6 +9,7 @@ import VetCases from "../screens/VetCases";
 import { AboutVet } from "../screens/AboutVet";
 import VideoCamera from "../screens/VideoCamera";
 import { Evidences } from "../screens/Evidences";
+import SplashScreen from "../screens/SplashScreen";
 import { AboutClinic } from "../screens/AboutClinic";
 import { AboutAnimal } from "../screens/AboutAnimal";
 import { AboutCategory } from "../screens/AboutCategory";
@@ -20,92 +21,94 @@ import { VetCaseHeaderRightSide } from "../components/VetCaseScreenHeader/RightS
 const Stack = createNativeStackNavigator<Routes>();
 
 export const PrivateRoutes = () => (
-  <Stack.Navigator initialRouteName="VetCases">
-    <Stack.Group screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#FFF' } }}>
-      <Stack.Screen name={"VetCases"} component={VetCases} />
-      <Stack.Screen name={"VideoCamera"} component={VideoCamera} />
-    </Stack.Group>
+    <Stack.Navigator initialRouteName="SplashScreen">
+        <Stack.Screen name={"SplashScreen"} component={SplashScreen} />
 
-    <Stack.Group>
-      <Stack.Screen
-        name={"Chat"}
-        component={Chat}
-        options={({ route }) => ({
-          headerBackTitle: 'Voltar',
-          headerRight: () => <VetCaseHeaderRightSide />,
-          headerTitle: () => <VetCaseScreenHeader {...route.params} />,
-        })}
-      />
+        <Stack.Group screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#FFF' } }}>
+            <Stack.Screen name={"VetCases"} component={VetCases} />
+            <Stack.Screen name={"VideoCamera"} component={VideoCamera} />
+        </Stack.Group>
 
-      <Stack.Screen
-        name={"Profile"}
-        component={Profile}
-        options={{
-          title: 'Configurações',
-          headerBackTitle: 'Conversas',
-          headerStyle: { backgroundColor: 'rgb(238, 237, 243)' },
-          contentStyle: { backgroundColor: 'rgb(238, 237, 243)' },
-        }}
-      />
+        <Stack.Group>
+            <Stack.Screen
+                name={"Chat"}
+                component={Chat}
+                options={({ route }) => ({
+                    headerBackTitle: 'Voltar',
+                    headerRight: () => <VetCaseHeaderRightSide />,
+                    headerTitle: () => <VetCaseScreenHeader {...route.params} />,
+                })}
+            />
 
-      <Stack.Screen
-        name={"WebPage"}
-        component={WebPage}
-        options={({ route }) => ({
-          headerBackTitle: 'Voltar',
-          title: route.params.screenTitle,
-          headerStyle: { backgroundColor: 'rgb(238, 237, 243)' },
-        })}
-      />
-    </Stack.Group>
+            <Stack.Screen
+                name={"Profile"}
+                component={Profile}
+                options={{
+                    title: 'Configurações',
+                    headerBackTitle: 'Conversas',
+                    headerStyle: { backgroundColor: 'rgb(238, 237, 243)' },
+                    contentStyle: { backgroundColor: 'rgb(238, 237, 243)' },
+                }}
+            />
 
-    <Stack.Group
-      screenOptions={{
-        headerBackTitle: 'Detalhes',
-        contentStyle: { backgroundColor: 'rgb(238, 237, 243)' }
-      }}
-    >
-      <Stack.Screen
-        name={"VetCaseDetails"}
-        component={VetCaseDetails}
-        options={{ title: 'Detalhes', headerBackTitle: 'Conversa' }}
-      />
+            <Stack.Screen
+                name={"WebPage"}
+                component={WebPage}
+                options={({ route }) => ({
+                    headerBackTitle: 'Voltar',
+                    title: route.params.screenTitle,
+                    headerStyle: { backgroundColor: 'rgb(238, 237, 243)' },
+                })}
+            />
+        </Stack.Group>
 
-      <Stack.Screen
-        name={"VetCaseAnimal"}
-        component={AboutAnimal}
-        options={{ title: 'Animal' }}
-      />
+        <Stack.Group
+            screenOptions={{
+                headerBackTitle: 'Detalhes',
+                contentStyle: { backgroundColor: 'rgb(238, 237, 243)' }
+            }}
+        >
+            <Stack.Screen
+                name={"VetCaseDetails"}
+                component={VetCaseDetails}
+                options={{ title: 'Detalhes', headerBackTitle: 'Conversa' }}
+            />
 
-      <Stack.Screen
-        name={"VetCaseClinic"}
-        component={AboutClinic}
-        options={{ title: 'Clínica' }}
-      />
+            <Stack.Screen
+                name={"VetCaseAnimal"}
+                component={AboutAnimal}
+                options={{ title: 'Animal' }}
+            />
 
-      <Stack.Screen
-        name={"VetCaseVeterinarian"}
-        component={AboutVet}
-        options={{ title: 'Veterinário' }}
-      />
+            <Stack.Screen
+                name={"VetCaseClinic"}
+                component={AboutClinic}
+                options={{ title: 'Clínica' }}
+            />
 
-      <Stack.Screen
-        component={AboutCategory}
-        name={"VetCaseCategory"}
-        options={{ title: 'Categoria do Caso' }}
-      />
+            <Stack.Screen
+                name={"VetCaseVeterinarian"}
+                component={AboutVet}
+                options={{ title: 'Veterinário' }}
+            />
 
-      <Stack.Screen
-        component={Evidences}
-        name={"VetCaseEvidences"}
-        options={{ title: 'Evidências' }}
-      />
+            <Stack.Screen
+                component={AboutCategory}
+                name={"VetCaseCategory"}
+                options={{ title: 'Categoria do Caso' }}
+            />
 
-      <Stack.Screen
-        component={VeterinarianRecords}
-        name={"VetCaseVeterinarianRecords"}
-        options={{ title: 'Ficha Veterinária' }}
-      />
-    </Stack.Group>
-  </Stack.Navigator>
+            <Stack.Screen
+                component={Evidences}
+                name={"VetCaseEvidences"}
+                options={{ title: 'Evidências' }}
+            />
+
+            <Stack.Screen
+                component={VeterinarianRecords}
+                name={"VetCaseVeterinarianRecords"}
+                options={{ title: 'Ficha Veterinária' }}
+            />
+        </Stack.Group>
+    </Stack.Navigator>
 );
