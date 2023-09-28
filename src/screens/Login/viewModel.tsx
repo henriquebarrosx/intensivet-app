@@ -1,92 +1,97 @@
-import * as yup from 'yup';
-import { Platform } from 'react-native';
-import { useState, useContext } from 'react';
+import * as yup from "yup"
+import { Platform } from "react-native"
+import { useState, useContext } from "react"
 
-import { signIn } from '../../services/network/auth';
-import { KeyboardBehavior } from '../../@types/common';
-import { UserContext } from '../../context/UserContext';
-import { getExpoPushNoficiationToken } from '../../utils/notification';
-import { useVetCaseIndicators } from '../../context/VetCaseIndicators';
+import { KeyboardBehavior } from "../../@types/common"
+import { UserContext } from "../../context/UserContext"
+import { httpClient } from "../../infra/adapters/http-client-adapter"
+import { AccountService } from "../../infra/services/account-service"
+import { getExpoPushNoficiationToken } from "../../utils/notification"
+import { useVetCaseIndicators } from "../../context/VetCaseIndicators"
 
-export interface Form { email: string; password: string; }
-const defaultFormSchema: Form = { email: '', password: '' };
+export interface Form { email: string, password: string }
+const defaultFormSchema: Form = { email: "", password: "" }
 
 export function useSignIn() {
-  const { save: setUserSession } = useContext(UserContext);
-  const { makeRefreshVetCaseList } = useVetCaseIndicators();
+    const { save: setUserSession } = useContext(UserContext)
+    const { makeRefreshVetCaseList } = useVetCaseIndicators()
 
-  const [formData, onFormChange] = useState(defaultFormSchema);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [validations, setValidations] = useState<Partial<Form>>(defaultFormSchema);
+    const [formData, onFormChange] = useState(defaultFormSchema)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [validations, setValidations] = useState<Partial<Form>>(defaultFormSchema)
 
-  const keyboardBehavior = Platform.OS === 'ios' ? 'padding' : undefined as KeyboardBehavior;
+    const keyboardBehavior = Platform.OS === "ios" ? "padding" : undefined as KeyboardBehavior
 
-  async function onLoginPress(): Promise<void> {
-    setIsSubmitting(true);
+    async function onLoginPress(): Promise<void> {
+        setIsSubmitting(true)
 
-    if (await isValidForm(formData, setValidations)) {
-      const expoPushNotificationToken = await getExpoPushNoficiationToken();
-      const requestBody = mountFormData(formData, expoPushNotificationToken);
+        if (await isValidForm(formData, setValidations)) {
+            const expoPushNotificationToken = await getExpoPushNoficiationToken()
+            const requestBody = mountFormData(formData, expoPushNotificationToken)
 
-      try {
-        makeRefreshVetCaseList(true);
-        const { data } = await signIn(requestBody);
+            try {
+                makeRefreshVetCaseList(true)
 
-        const params = { ...data, expoToken: expoPushNotificationToken };
-        setUserSession(params, expoPushNotificationToken!);
-      }
+                const { email, password } = requestBody
 
-      catch (error: any) {
-        setIsSubmitting(false);
-        const badCredentials = error?.response?.data?.error;
+                const accountService = new AccountService(httpClient)
+                const response = await accountService.signIn(email, password, expoPushNotificationToken)
 
-        if (badCredentials) {
-          setValidations({ email: badCredentials, password: '' });
+                const params = { ...response, expoToken: expoPushNotificationToken }
+                setUserSession(params, expoPushNotificationToken!)
+            }
+
+            catch (error: any) {
+                setIsSubmitting(false)
+                const badCredentials = error?.response?.data?.error
+
+                if (badCredentials) {
+                    setValidations({ email: badCredentials, password: "" })
+                }
+            }
+
+            return
         }
-      }
 
-      return;
+        return setIsSubmitting(false)
     }
 
-    return setIsSubmitting(false);
-  }
-
-  return {
-    formData,
-    validations,
-    isSubmitting,
-    onFormChange,
-    onLoginPress,
-    setValidations,
-    keyboardBehavior,
-  };
+    return {
+        formData,
+        validations,
+        isSubmitting,
+        onFormChange,
+        onLoginPress,
+        setValidations,
+        keyboardBehavior,
+    }
 }
 
 async function isValidForm(formData: Form, setValidation: (validation: Partial<Form>) => void): Promise<boolean | undefined> {
-  try {
-    const schema = yup.object().shape({
-      password: yup.string().required('Campo obrigatório'),
-      email: yup.string().required('Campo obrigatório').email('Email possui formato inválido'),
-    });
+    try {
+        const schema = yup.object().shape({
+            password: yup.string().required("Campo obrigatório"),
+            email: yup.string().required("Campo obrigatório").email("Email possui formato inválido"),
+        })
 
-    await schema.validate(formData);
-    setValidation({ email: '', password: '' });
+        await schema.validate(formData)
+        setValidation({ email: "", password: "" })
 
-    return schema.isValid(formData);
-  }
+        return schema.isValid(formData)
+    }
 
-  catch (error: any) {
-    setValidation({ [error.path]: error.message });
-  }
+    catch (error: any) {
+        setValidation({ [error.path]: error.message })
+    }
 }
 
 interface SignIn {
-  email: string;
-  password: string;
-  expo_push_token?: string;
+    email: string
+    password: string
+    expo_push_token?: string
 }
 
 /* Prevents that undefined token be stored into API from a simulator */
-function mountFormData(formData: Pick<SignIn, 'email' | 'password'>, expo_push_token: string | undefined): SignIn | Pick<SignIn, 'email' | 'password'> {
-  return expo_push_token ? { ...formData, expo_push_token } : formData;
+function mountFormData(formData: Pick<SignIn, "email" | "password">, expo_push_token: string | undefined): SignIn | Pick<SignIn, "email" | "password"> {
+    return expo_push_token ? { ...formData, expo_push_token } : formData
 }
