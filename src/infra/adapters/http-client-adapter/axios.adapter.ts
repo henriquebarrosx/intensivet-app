@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { IHttpClient } from "./index.gateway"
+import { Config, IHttpClient } from "./index.gateway"
 
 export class AxiosAdapter implements IHttpClient {
     client: AxiosInstance
@@ -16,23 +16,51 @@ export class AxiosAdapter implements IHttpClient {
         })
     }
 
-    async get<Res>(url: string): Promise<Res> {
-        const { data } = await this.client.get<Res>(url)
+    async get<Res>(url: string, config?: Config): Promise<Res> {
+        const { data } = await this.client.get<Res>(
+            url,
+            {
+                onDownloadProgress: () => { config?.onDownloadProgress() },
+                headers: config?.headers ? { "Content-Type": config.headers["Content-Type"] } : undefined
+            }
+        )
+
         return data
     }
 
-    async post<Req, Res>(body: Req, url: string): Promise<Res> {
-        const { data } = await this.client.post<Res>(url, body)
+    async post<Req, Res>(url: string, body: Req, config?: Config): Promise<Res> {
+        const { data } = await this.client.post<Res>(
+            url,
+            body,
+            {
+                onDownloadProgress: () => { config?.onDownloadProgress() },
+                headers: config?.headers ? { "Content-Type": config.headers["Content-Type"] } : undefined
+            })
+
         return data
     }
 
-    async put<Req, Res>(body: Req, url: string): Promise<Res> {
-        const { data } = await this.client.put<Res>(url, body)
+    async put<Req, Res>(url: string, body: Req, config?: Config): Promise<Res> {
+        const { data } = await this.client.put<Res>(
+            url,
+            body,
+            {
+                onDownloadProgress: () => { config?.onDownloadProgress() },
+                headers: config?.headers ? { "Content-Type": config.headers["Content-Type"] } : undefined
+            })
+
         return data
     }
 
-    async delete<Res>(url: string): Promise<Res> {
-        const { data } = await this.client.delete<Res>(url)
+    async delete<Res>(url: string, config?: Config): Promise<Res> {
+        const { data } = await this.client.delete<Res>(
+            url,
+            {
+                onDownloadProgress: () => { config?.onDownloadProgress() },
+                headers: config?.headers ? { "Content-Type": config.headers["Content-Type"] } : undefined
+            }
+        )
+
         return data
     }
 
