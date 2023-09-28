@@ -1,17 +1,16 @@
 import { AxiosError } from "axios"
 import NetInfo from "@react-native-community/netinfo"
-
-import { navigationRef } from "../../../utils/navigation"
-import { useSession } from "../../../context/UserContext"
-import { useErrorsFeedback } from "../../../context/ErrorsFeedbackContext"
-import { useVetCaseIndicators } from "../../../context/VetCaseIndicators"
+import { useSession } from "../../../../context/UserContext"
+import { navigationRef } from "../../../../utils/navigation"
+import { useVetCaseIndicators } from "../../../../context/VetCaseIndicators"
+import { useErrorsFeedback } from "../../../../context/ErrorsFeedbackContext"
 
 export function useRejectedResponseInterceptor() {
     const deviceSession = useSession()
     const { makeRefreshVetCaseList, makeTryAgainButtonVisible } = useVetCaseIndicators()
     const { makeError500Visible, makeErrorModalVisible, makeNoConnectionVisible } = useErrorsFeedback()
 
-    async function onErrorResponse(error: AxiosError): Promise<never> {
+    async function onFailure(error: AxiosError): Promise<never> {
         addMissingInternetConnectionHandler(error)
         addInternalServerErrorHandler(error)
         await addNotAuthorizedHandler(error)
@@ -53,6 +52,6 @@ export function useRejectedResponseInterceptor() {
         }
     }
 
-    return { onErrorResponse }
+    return { onFailure }
 }
 

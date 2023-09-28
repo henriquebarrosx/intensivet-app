@@ -1,6 +1,6 @@
-import { SessionRepository } from "../../../infra/repositories/session"
+import { SessionRepository } from "../../../repositories/session"
 
-export const requestInterceptor = () => {
+export function requestInterceptor() {
     async function onSuccess(request: any) {
         const accessToken = await getAccessToken()
 

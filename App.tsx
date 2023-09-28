@@ -5,17 +5,16 @@ import { ThemeProvider } from "styled-components/native"
 import { useFonts, Inter_700Bold, Inter_500Medium, Inter_400Regular } from "@expo-google-fonts/inter"
 
 import THEME from "./src/theme"
-import { API } from "./src/services/axios"
 import Route from "./src/routes/index.routes"
 import { ChatProvider } from "./src/context/ChatContext"
 import { VetCaseProvider } from "./src/context/VetCaseContext"
 import { VetCasesProvider } from "./src/context/VetCasesContext"
-import { useNetworkInterceptor } from "./src/services/interceptors"
 import { httpClient } from "./src/infra/adapters/http-client-adapter"
 import { SessionProvider, useSession } from "./src/context/UserContext"
 import { NotificationProvider } from "./src/context/NotificationContext"
 import { VetCaseIndicatorsProvider } from "./src/context/VetCaseIndicators"
 import { ErrorsFeedbackProvider } from "./src/context/ErrorsFeedbackContext"
+import { useNetworkInterceptor } from "./src/infra/adapters/http-client-adapter/interceptor"
 
 SplashScreen.preventAutoHideAsync()
 
@@ -26,16 +25,7 @@ function App() {
 
     useEffect(() => {
         httpClient.configRequestIntercept(onRequest.onSuccess)
-        httpClient.configResponseIntercept(onResponse.onSuccessResponse, onResponse.onErrorResponse)
-
-        /*
-            DEPRECATED
-
-            A configuração abaixo deve ser removida quando todas as chamadas http
-            forem realizadas pelo módulo httpClient acima.
-        */
-        API.interceptors.request.use(onRequest.onSuccess)
-        API.interceptors.response.use(onResponse.onSuccessResponse, onResponse.onErrorResponse)
+        httpClient.configResponseIntercept(onResponse.onSuccess, onResponse.onFailure)
     }, [])
 
     return isFontsLoaded ? (
