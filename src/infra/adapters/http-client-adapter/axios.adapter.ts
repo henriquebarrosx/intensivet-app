@@ -1,19 +1,17 @@
 import axios, { AxiosInstance } from "axios";
 import { Config, IHttpClient } from "./index.gateway"
 
+enum ENVIROMENT {
+    STAGING = 'https://staging.intensivet.com.br',
+    PRODUCTION = 'https://app.intensivet.com.br',
+}
+
 export class AxiosAdapter implements IHttpClient {
     client: AxiosInstance
+    baseURL: string = ENVIROMENT.STAGING
 
     constructor() {
-        enum ENVIROMENT {
-            STAGING = 'https://staging.intensivet.com.br',
-            PRODUCTION = 'https://app.intensivet.com.br',
-        }
-
-
-        this.client = axios.create({
-            baseURL: ENVIROMENT.STAGING
-        })
+        this.client = axios.create({ baseURL: this.baseURL })
     }
 
     async get<Res>(url: string, config?: Config): Promise<Res> {
