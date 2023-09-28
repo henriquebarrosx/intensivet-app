@@ -41,8 +41,6 @@ export default function ImageView({ uri, resizeMode }: Props) {
                 onLoadEnd={closeProgress}
                 defaultSource={DefaultImage}
                 progressiveRenderingEnabled
-                loadingIndicatorSource={thumbnail}
-
             />
         </View>
     );
