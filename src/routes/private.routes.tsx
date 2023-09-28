@@ -21,9 +21,7 @@ import { VetCaseHeaderRightSide } from "../components/VetCaseScreenHeader/RightS
 const Stack = createNativeStackNavigator<Routes>();
 
 export const PrivateRoutes = () => (
-    <Stack.Navigator initialRouteName="SplashScreen">
-        <Stack.Screen name={"SplashScreen"} component={SplashScreen} />
-
+    <Stack.Navigator initialRouteName="VetCases">
         <Stack.Group screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#FFF' } }}>
             <Stack.Screen name={"VetCases"} component={VetCases} />
             <Stack.Screen name={"VideoCamera"} component={VideoCamera} />
