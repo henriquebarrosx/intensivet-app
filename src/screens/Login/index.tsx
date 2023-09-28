@@ -14,46 +14,46 @@ import { Notification } from "../../models/Notification"
 
 
 export const Login = () => {
-  const isCurrentScreenFocused = useIsFocused()
+    const isCurrentScreenFocused = useIsFocused()
 
-  const {
-    formData,
-    validations,
-    isSubmitting,
-    onFormChange,
-    onLoginPress,
-    setValidations,
-    keyboardBehavior,
-  } = useSignIn()
+    const {
+        formData,
+        validations,
+        isSubmitting,
+        onFormChange,
+        onLoginPress,
+        setValidations,
+        keyboardBehavior,
+    } = useSignIn()
 
-  useEffect(() => {
-    if (isCurrentScreenFocused) {
-      const notification = new Notification()
-      Notifications.setNotificationHandler({ handleNotification: notification.getMuteNotificationConfig() })
-    }
-  }, [isCurrentScreenFocused])
+    useEffect(() => {
+        if (isCurrentScreenFocused) {
+            const notification = new Notification()
+            Notifications.setNotificationHandler({ handleNotification: notification.getMuteNotificationConfig() })
+        }
+    }, [isCurrentScreenFocused])
 
-  return (
-    <ScreenView>
-      <StatusBar style={"dark"} />
+    return (
+        <ScreenView>
+            <StatusBar style={"dark"} />
 
-      <KeyboardAvoidingView style={styles.background} behavior={keyboardBehavior}>
-        <LogoImage />
+            <KeyboardAvoidingView style={styles.background} behavior={keyboardBehavior}>
+                <LogoImage />
 
-        <View style={[styles.container]}>
-          <FormView
-            formData={formData}
-            validations={validations}
-            onFormChange={onFormChange}
-            onValidationChange={setValidations}
-          />
+                <View style={[styles.container]}>
+                    <FormView
+                        formData={formData}
+                        validations={validations}
+                        onFormChange={onFormChange}
+                        onValidationChange={setValidations}
+                    />
 
-          <SubmitButton
-            onPress={onLoginPress}
-            isLoadingEffectVisible={isSubmitting}
-          />
-        </View>
-      </KeyboardAvoidingView>
-    </ScreenView>
-  )
+                    <SubmitButton
+                        onPress={onLoginPress}
+                        isLoadingEffectVisible={isSubmitting}
+                    />
+                </View>
+            </KeyboardAvoidingView>
+        </ScreenView>
+    )
 }

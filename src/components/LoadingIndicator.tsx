@@ -13,7 +13,7 @@ export function LoadingIndicator(props: Props) {
         <Fragment>
             {isLoading && (
                 <View style={styles.container}>
-                    <ActivityIndicator size={6} color={color} />
+                    <ActivityIndicator size={28} color={color} />
                 </View>
             )}
         </Fragment>
@@ -23,5 +23,8 @@ export function LoadingIndicator(props: Props) {
 const styles = StyleSheet.create({
     container: {
         height: 30,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
     }
 })
