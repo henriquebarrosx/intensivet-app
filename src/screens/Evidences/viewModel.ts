@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import { API } from "../../services/axios";
 import { useVetCase } from "../../context/VetCaseContext";
 import { EvidencesType } from "../../schemas/VetCaseDetails";
 import { httpClient } from "../../infra/adapters/http-client-adapter"
@@ -43,7 +42,10 @@ export const useViewModel = () => {
     }
 
     function openEvidenceFile(source: string): void {
-        navigation.navigate('WebPage', { screenTitle: 'Evidências', source: source });
+        navigation.navigate('WebPage', {
+            screenTitle: 'Evidências',
+            source: source,
+        });
     }
 
     function isEvidencesNotFoundTextVisible(): boolean {

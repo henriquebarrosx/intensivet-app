@@ -127,7 +127,7 @@ export interface VetCaseDetails {
 	updated_at: Date;
 }
 
-export interface EvidencesType {
-	type: string;
-	service_url: string;
+export type EvidencesType = {
+	type: string
+	service_url: string
 }

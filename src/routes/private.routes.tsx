@@ -8,7 +8,7 @@ import WebPage from "../screens/WebPage";
 import VetCases from "../screens/VetCases";
 import { AboutVet } from "../screens/AboutVet";
 import VideoCamera from "../screens/VideoCamera";
-import { Evidences } from "../screens/Evidences";
+import { EvidencesScreen } from "../screens/Evidences";
 import SplashScreen from "../screens/SplashScreen";
 import { AboutClinic } from "../screens/AboutClinic";
 import { AboutAnimal } from "../screens/AboutAnimal";
@@ -97,7 +97,7 @@ export const PrivateRoutes = () => (
             />
 
             <Stack.Screen
-                component={Evidences}
+                component={EvidencesScreen}
                 name={"VetCaseEvidences"}
                 options={{ title: 'Evidências' }}
             />
