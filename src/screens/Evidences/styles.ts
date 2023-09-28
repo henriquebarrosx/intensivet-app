@@ -8,7 +8,7 @@ export const Content = styled.View`
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-evenly;
-  max-width: ${widthPercentageToDP('100%')};
+  max-width: ${widthPercentageToDP('100%')}px;
 `;
 
 export const AbsoluteArea = styled.View`
