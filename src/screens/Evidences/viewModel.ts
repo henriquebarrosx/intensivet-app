@@ -15,25 +15,12 @@ export const useViewModel = () => {
 
     async function fetchVetCaseDetails(): Promise<void> {
         try {
-            console.log(
-                "[VET CASE] GET Requested",
-                { endpoint: `/api/v2/vet_cases/${vetCase.id}` }
-            )
-
             displayFetchFeedback(true)
 
             const vetCaseService = new VetCaseService(httpClient)
             const response = await vetCaseService.findOne(vetCase.id)
 
             setEvidences([...response?.chat_evidences, ...response?.evidences])
-        }
-
-        catch (error) {
-            console.error(
-                "[VET CASE] GET Requested",
-                { endpoint: `/api/v2/vet_cases/${vetCase.id}` },
-                { error }
-            )
         }
 
         finally {

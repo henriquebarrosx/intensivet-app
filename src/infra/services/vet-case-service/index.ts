@@ -8,24 +8,47 @@ export class VetCaseService {
     constructor(private readonly httpClient: IHttpClient) { }
 
     async findAll(page: number = 1, orderBy: VetCaseOrderTypeEnum): Promise<[VetCaseModel[], Pagination]> {
-        const response = await this.httpClient.get<FindAllVetCasesResponse>(
-            `/api/v2/vet_cases?page=${page}&with_status=in_progress&with_order=${orderBy}`
-        )
+        const endpoint = `/api/v2/vet_cases?page=${page}&with_status=in_progress&with_order=${orderBy}`
 
-        return [response.vet_cases, response.pagination]
+        try {
+            console.log("[VET CASES] get Requested", { endpoint })
+            const response = await this.httpClient.get<FindAllVetCasesResponse>(endpoint)
+            return [response.vet_cases, response.pagination]
+        }
+
+        catch (error) {
+            console.error("[VET CASES] get Requested", { endpoint }, { error })
+            throw error
+        }
     }
 
     async findOne(id: number): Promise<VetCaseDetails | undefined> {
-        const response = await this.httpClient.get<VetCaseDetails>(
-            `/api/v2/vet_cases/${id}`
-        )
+        const endpoint = `/api/v2/vet_cases/${id}`
 
-        return response
+        try {
+            console.log("[VET CASE] get Requested", { endpoint })
+            const response = await this.httpClient.get<VetCaseDetails>(endpoint)
+            return response
+        }
+
+        catch (error) {
+            console.error("[VET CASE] get Requested", { endpoint }, { error })
+            throw error
+        }
     }
 
-    async readMessages(vetCaseId: number): Promise<void> {
-        await this.httpClient.get<FindAllVetCasesResponse>(
-            `/vet_cases/${vetCaseId}/unread_messages`
-        )
+    async readMessages(id: number): Promise<void> {
+        const endpoint = `/vet_cases/${id}/unread_messages`
+
+        try {
+            console.log("[VET CASE MESSAGES] Mark as read", { endpoint })
+            const response = await this.httpClient.get<void>(endpoint)
+            return
+        }
+
+        catch (error) {
+            console.error("[VET CASE MESSAGES] Mark as read", { endpoint }, { error })
+            throw error
+        }
     }
 }

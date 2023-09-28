@@ -12,12 +12,9 @@ export const useViewModel = () => {
     const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>()
     const [isLoadingIndicatorDisplayed, shouldDisplayLoadingIndicator] = useState(true)
 
-    async function fetchVetCaseDetails(): Promise<void> {
+    async function handleFetchVetCaseData(): Promise<void> {
         try {
-            console.log(
-                "[VET CASE] GET Requested",
-                { endpoint: `/api/v2/vet_cases/${vetCase.id}` }
-            )
+            shouldDisplayLoadingIndicator(true)
 
             const vetCaseService = new VetCaseService(httpClient)
             const response = await vetCaseService.findOne(vetCase.id)
@@ -25,27 +22,9 @@ export const useViewModel = () => {
             setVetCaseDetails(response)
         }
 
-        catch (error) {
-            console.error(
-                "[VET CASE] GET Requested",
-                { endpoint: `/api/v2/vet_cases/${vetCase.id}` },
-                { error }
-            )
+        finally {
+            shouldDisplayLoadingIndicator(false)
         }
-    }
-
-    async function handleFetchVetCaseData(): Promise<void> {
-        startLoadingEffect()
-        await fetchVetCaseDetails()
-        stopLoadingEffect()
-    }
-
-    function startLoadingEffect(): void {
-        shouldDisplayLoadingIndicator(true)
-    }
-
-    function stopLoadingEffect(): void {
-        shouldDisplayLoadingIndicator(false)
     }
 
     function getBirthDate(): string {
