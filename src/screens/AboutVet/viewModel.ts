@@ -1,8 +1,9 @@
 import { useState } from "react"
-import { API } from "../../services/axios"
 import { useVetCase } from "../../context/VetCaseContext"
 import { VetCaseDetails } from "../../schemas/VetCaseDetails"
 import { localDate } from "../../infra/adapters/local-date-adapter"
+import { httpClient } from "../../infra/adapters/http-client-adapter"
+import { VetCaseService } from "../../infra/services/vet-case-service"
 import { LocalDateFormatEnum } from "../../infra/adapters/local-date-adapter/index.gateway"
 
 export const useViewModel = () => {
@@ -12,8 +13,25 @@ export const useViewModel = () => {
     const [isLoadingIndicatorDisplayed, shouldDisplayLoadingIndicator] = useState(true)
 
     async function fetchVetCaseDetails(): Promise<void> {
-        const { data } = await API.get(`/api/v2/vet_cases/${vetCase.id}`)
-        setVetCaseDetails(data)
+        try {
+            console.log(
+                "[VET CASE] GET Requested",
+                { endpoint: `/api/v2/vet_cases/${vetCase.id}` }
+            )
+
+            const vetCaseService = new VetCaseService(httpClient)
+            const response = await vetCaseService.findOne(vetCase.id)
+
+            setVetCaseDetails(response)
+        }
+
+        catch (error) {
+            console.error(
+                "[VET CASE] GET Requested",
+                { endpoint: `/api/v2/vet_cases/${vetCase.id}` },
+                { error }
+            )
+        }
     }
 
     async function handleFetchVetCaseData(): Promise<void> {

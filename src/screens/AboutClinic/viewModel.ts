@@ -1,52 +1,72 @@
-import { useState } from "react";
+import { useState } from "react"
 
-import { API } from "../../services/axios";
-import { useVetCase } from "../../context/VetCaseContext";
-import { VetCaseDetails } from "../../schemas/VetCaseDetails";
+import { useVetCase } from "../../context/VetCaseContext"
+import { VetCaseDetails } from "../../schemas/VetCaseDetails"
+import { httpClient } from "../../infra/adapters/http-client-adapter"
+import { VetCaseService } from "../../infra/services/vet-case-service"
 
 export const useViewModel = () => {
-  const { vetCase } = useVetCase();
+    const { vetCase } = useVetCase()
 
-  const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>();
-  const [isLoadingIndicatorDisplayed, shouldDisplayLoadingFeedback] = useState(true);
+    const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>()
+    const [isLoadingIndicatorDisplayed, shouldDisplayLoadingFeedback] = useState(true)
 
-  async function fetchVetCaseDetails(): Promise<void> {
-    shouldDisplayLoadingFeedback(true);
+    async function fetchVetCaseDetails(): Promise<void> {
+        try {
+            console.log(
+                "[VET CASE] GET Requested",
+                { endpoint: `/api/v2/vet_cases/${vetCase.id}` }
+            )
 
-    const { data } = await API.get(`/api/v2/vet_cases/${vetCase.id}`);
-    setVetCaseDetails(data);
+            shouldDisplayLoadingFeedback(true)
 
-    shouldDisplayLoadingFeedback(false);
-  }
+            const vetCaseService = new VetCaseService(httpClient)
+            const response = await vetCaseService.findOne(vetCase.id)
 
-  async function handleFetchVetCaseData(): Promise<void> {
-    await fetchVetCaseDetails();
-  }
+            setVetCaseDetails(response)
+        }
 
-  function getAvatarUri(): string {
-    if (isLoadingIndicatorDisplayed) {
-      return '';
+        catch (error) {
+            console.error(
+                "[VET CASE] GET Requested",
+                { endpoint: `/api/v2/vet_cases/${vetCase.id}` },
+                { error }
+            )
+        }
+
+        finally {
+            shouldDisplayLoadingFeedback(false)
+        }
     }
 
-    return vetCase.clinic?.thumbnail?.service_url || "https://i.imgur.com/limEHBp.png";
-  }
+    async function handleFetchVetCaseData(): Promise<void> {
+        await fetchVetCaseDetails()
+    }
 
-  function getLocation(): string {
-    const state = vetCaseDetails?.clinic?.address?.state;
-    const city = vetCaseDetails?.clinic?.address?.city;
-    return state && city ? `${state}/${city}` : '';
-  }
+    function getAvatarUri(): string {
+        if (isLoadingIndicatorDisplayed) {
+            return ""
+        }
 
-  return {
-    handleFetchVetCaseData,
-    avatarUri: getAvatarUri(),
-    isLoadingIndicatorDisplayed,
-    clinicLocation: getLocation(),
-    clinicCnpj: vetCaseDetails?.clinic?.cnpj,
-    clinicCep: vetCaseDetails?.clinic?.address?.cep,
-    clinicPhoneNumber: vetCaseDetails?.clinic?.phone,
-    clinicEmail: vetCaseDetails?.clinic.email || '---',
-    clinicName: vetCaseDetails?.clinic.fantasy_name || '---',
-    clinicAddress: vetCaseDetails?.clinic?.address?.address_street,
-  }
+        return vetCase.clinic?.thumbnail?.service_url || "https://i.imgur.com/limEHBp.png"
+    }
+
+    function getLocation(): string {
+        const state = vetCaseDetails?.clinic?.address?.state
+        const city = vetCaseDetails?.clinic?.address?.city
+        return state && city ? `${state}/${city}` : ""
+    }
+
+    return {
+        handleFetchVetCaseData,
+        avatarUri: getAvatarUri(),
+        isLoadingIndicatorDisplayed,
+        clinicLocation: getLocation(),
+        clinicCnpj: vetCaseDetails?.clinic?.cnpj,
+        clinicCep: vetCaseDetails?.clinic?.address?.cep,
+        clinicPhoneNumber: vetCaseDetails?.clinic?.phone,
+        clinicEmail: vetCaseDetails?.clinic.email || "---",
+        clinicName: vetCaseDetails?.clinic.fantasy_name || "---",
+        clinicAddress: vetCaseDetails?.clinic?.address?.address_street,
+    }
 }

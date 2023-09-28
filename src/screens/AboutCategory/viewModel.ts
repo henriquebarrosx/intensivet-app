@@ -1,45 +1,65 @@
 import { useState } from "react";
-import { API } from "../../services/axios";
 import { useVetCase } from "../../context/VetCaseContext";
 import { VetCaseDetails } from "../../schemas/VetCaseDetails";
+import { httpClient } from "../../infra/adapters/http-client-adapter"
+import { VetCaseService } from "../../infra/services/vet-case-service"
 
 export const useViewModel = () => {
-  const { vetCase } = useVetCase();
+    const { vetCase } = useVetCase();
 
-  const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>();
-  const [isLoadingIndicatorDisplayed, shouldDisplayLoadingFeedback] = useState(true);
+    const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>();
+    const [isLoadingIndicatorDisplayed, shouldDisplayLoadingFeedback] = useState(true);
 
-  async function fetchVetCaseDetails(): Promise<void> {
-    shouldDisplayLoadingFeedback(true);
+    async function fetchVetCaseDetails(): Promise<void> {
+        try {
+            console.log(
+                "[VET CASE] GET Requested",
+                { endpoint: `/api/v2/vet_cases/${vetCase.id}` }
+            )
 
-    const { data } = await API.get(`/api/v2/vet_cases/${vetCase.id}`);
-    setVetCaseDetails(data);
+            shouldDisplayLoadingFeedback(true)
 
-    shouldDisplayLoadingFeedback(false);
-  }
+            const vetCaseService = new VetCaseService(httpClient)
+            const response = await vetCaseService.findOne(vetCase.id)
 
-  function getVetCaseCategory(): string {
-    return vetCaseDetails?.category.name || '---';
-  }
+            setVetCaseDetails(response)
+        }
 
-  function getVetCaseCategoryDescription(): string {
-    return vetCaseDetails?.category.description || '---';
-  }
+        catch (error) {
+            console.error(
+                "[VET CASE] GET Requested",
+                { endpoint: `/api/v2/vet_cases/${vetCase.id}` },
+                { error }
+            )
+        }
 
-  function getVetCasePriority(): string {
-    if (vetCaseDetails?.priority?.value) {
-      return `Classe ${vetCaseDetails?.priority?.value} \n\n ${vetCaseDetails?.priority?.description}`;
+        finally {
+            shouldDisplayLoadingFeedback(false)
+        }
     }
 
-    return '---';
-  }
+    function getVetCaseCategory(): string {
+        return vetCaseDetails?.category.name || "---";
+    }
 
-  return {
-    vetCaseDetails,
-    fetchVetCaseDetails,
-    isLoadingIndicatorDisplayed,
-    vetCasePriority: getVetCasePriority(),
-    vetCaseCategory: getVetCaseCategory(),
-    vetCaseCategoryDescription: getVetCaseCategoryDescription(),
-  }
+    function getVetCaseCategoryDescription(): string {
+        return vetCaseDetails?.category.description || "---";
+    }
+
+    function getVetCasePriority(): string {
+        if (vetCaseDetails?.priority?.value) {
+            return `Classe ${vetCaseDetails?.priority?.value} \n\n ${vetCaseDetails?.priority?.description}`;
+        }
+
+        return "---";
+    }
+
+    return {
+        vetCaseDetails,
+        fetchVetCaseDetails,
+        isLoadingIndicatorDisplayed,
+        vetCasePriority: getVetCasePriority(),
+        vetCaseCategory: getVetCaseCategory(),
+        vetCaseCategoryDescription: getVetCaseCategoryDescription(),
+    }
 }

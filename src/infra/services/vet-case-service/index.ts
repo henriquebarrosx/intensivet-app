@@ -1,5 +1,6 @@
 import { Pagination } from "../../../@types/common"
 import { FindAllVetCasesResponse } from "./index.models"
+import { VetCaseDetails } from "../../../schemas/VetCaseDetails"
 import { VetCaseModel, VetCaseOrderTypeEnum } from "../../../schemas/VetCase"
 import { IHttpClient } from "../../adapters/http-client-adapter/index.gateway"
 
@@ -12,6 +13,14 @@ export class VetCaseService {
         )
 
         return [response.vet_cases, response.pagination]
+    }
+
+    async findOne(id: number): Promise<VetCaseDetails | undefined> {
+        const response = await this.httpClient.get<VetCaseDetails>(
+            `/api/v2/vet_cases/${id}`
+        )
+
+        return response
     }
 
     async readMessages(vetCaseId: number): Promise<void> {
