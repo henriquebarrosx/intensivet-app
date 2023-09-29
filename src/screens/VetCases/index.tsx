@@ -7,15 +7,15 @@ import Header from "./Header"
 import ListView from "./ListView"
 import { useVetCaseList } from "./script"
 import TryAgainButton from "./TryAgainButton"
-import { getChannelName } from "../../utils/pusher"
 import RefreshIndicator from "./RefreshIndicator"
+import { getChannelName } from "../../utils/pusher"
 import ScrollToTopButton from "./ScrollToTopButton"
 import ScreenView from "../../components/ScreenView"
 import { VetCaseModel } from "../../schemas/VetCase"
 import { MessageModel } from "../../schemas/Message"
 import { CHANNELS_EVENTS } from "../../schemas/Pusher"
 import { UserContext } from "../../context/UserContext"
-import { Notification } from '../../models/Notification'
+import { pushNotification } from "../../infra/adapters"
 import { useVetCases } from "../../context/VetCasesContext"
 import { NotificationContext } from "../../context/NotificationContext"
 import { OrderVetCaseContext, OrderVetCaseProvider } from "../../context/OrderVetCases"
@@ -39,11 +39,7 @@ function VetCases() {
 
     useEffect(() => {
         if (isFocused) {
-            const notification = new Notification()
-
-            Notifications.setNotificationHandler({
-                handleNotification: notification.getUnmuteNotificationConfig()
-            })
+            pushNotification.enableNotificationsLocally()
         }
     }, [isFocused])
 

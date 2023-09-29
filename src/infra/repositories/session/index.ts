@@ -13,6 +13,11 @@ export class SessionRepository {
         await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify(params))
     }
 
+    async update(params: Partial<User>): Promise<void> {
+        const existentsField = await this.get()
+        await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify({ ...existentsField, params }))
+    }
+
     async clear(): Promise<void> {
         await AsyncStorage.clear()
     }

@@ -4,9 +4,9 @@ import { useState, useContext } from "react"
 
 import { KeyboardBehavior } from "../../@types/common"
 import { UserContext } from "../../context/UserContext"
+import { pushNotification } from "../../infra/adapters"
 import { httpClient } from "../../infra/adapters/http-client-adapter"
 import { AccountService } from "../../infra/services/account-service"
-import { getExpoPushNoficiationToken } from "../../utils/notification"
 import { useVetCaseIndicators } from "../../context/VetCaseIndicators"
 
 export interface Form { email: string, password: string }
@@ -26,8 +26,8 @@ export function useSignIn() {
         setIsSubmitting(true)
 
         if (await isValidForm(formData, setValidations)) {
-            const expoPushNotificationToken = await getExpoPushNoficiationToken()
-            const requestBody = mountFormData(formData, expoPushNotificationToken)
+            const pushNotificationToken = await pushNotification.generatePushToken()
+            const requestBody = mountFormData(formData, pushNotificationToken)
 
             try {
                 makeRefreshVetCaseList(true)
@@ -35,10 +35,10 @@ export function useSignIn() {
                 const { email, password } = requestBody
 
                 const accountService = new AccountService(httpClient)
-                const response = await accountService.signIn(email, password, expoPushNotificationToken)
+                const response = await accountService.signIn(email, password, pushNotificationToken)
 
-                const params = { ...response, expoToken: expoPushNotificationToken }
-                setUserSession(params, expoPushNotificationToken!)
+                const params = { ...response, expoToken: pushNotificationToken }
+                setUserSession(params, pushNotificationToken!)
             }
 
             catch (error: any) {

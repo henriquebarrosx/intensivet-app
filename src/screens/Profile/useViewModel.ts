@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Alert } from "react-native"
 import { useSession } from "../../context/UserContext"
-import { disablePushNotification, enablePushNotification } from "../../utils/notification"
+import { notificationService } from "../../infra/services"
 
 export const useViewModel = () => {
     const deviceSession = useSession()
@@ -15,8 +15,11 @@ export const useViewModel = () => {
 
     async function handlePushNotification(isEnabled: boolean): Promise<void> {
         try {
-            const expoToken = await (isEnabled ? enablePushNotification() : disablePushNotification())
-            deviceSession.update({ expoToken: expoToken || "" })
+            const pushNotificationToken = isEnabled
+                ? await notificationService.enable()
+                : await notificationService.disable()
+
+            deviceSession.update({ expoToken: pushNotificationToken })
         }
 
         catch {

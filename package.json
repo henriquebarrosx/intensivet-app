@@ -23,6 +23,7 @@
         "expo-asset": "~8.10.1",
         "expo-av": "~13.4.1",
         "expo-camera": "~13.4.2",
+        "expo-device": "^5.6.0",
         "expo-document-picker": "~11.5.4",
         "expo-file-system": "~15.4.4",
         "expo-google-fonts": "^0.0.0",

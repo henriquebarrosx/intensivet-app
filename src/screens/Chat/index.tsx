@@ -1,7 +1,6 @@
 import * as Notifications from "expo-notifications"
 import { useIsFocused } from "@react-navigation/native"
 import React, { Fragment, useContext, useEffect } from "react"
-import { Notification as NotificationEvent } from "expo-notifications"
 
 import Messages from "./Messages"
 import { ContentArea } from "./styles"
@@ -13,10 +12,11 @@ import ScreenView from "../../components/ScreenView"
 import { CHANNELS_EVENTS } from "../../schemas/Pusher"
 import ModalToVideoPreview from "./ModalToPreview/Video"
 import ModalToImagePreview from "./ModalToPreview/Image"
-import { Notification } from "../../models/Notification"
 import { useVetCase } from "../../context/VetCaseContext"
+import { notificationService } from "../../infra/services"
 import { useVetCases } from "../../context/VetCasesContext"
 import { MessageProvider } from "../../context/MessageContext"
+import { Notification } from "../../domain/entities/notification"
 import { NotificationContext } from "../../context/NotificationContext"
 import { FileAttachmentModalProvider } from "../../context/AttachModal"
 
@@ -29,7 +29,7 @@ function Chat(props: Props) {
     const videoUri = props?.route?.params?.videoUri
 
     const chatViewModel = useChat()
-    const vetCaseViewModel = useVetCase()
+    const vetCaseContext = useVetCase()
     const vetCasesViewModel = useVetCases()
     const { pusherService, notificationListener, responseNotificationListener } = useContext(NotificationContext)
 
@@ -46,7 +46,7 @@ function Chat(props: Props) {
                 only be marked as read when component be unmounted!
             */
             chatViewModel.cleanChat()
-            vetCaseViewModel.markVetCaseMessageAsRead()
+            vetCaseContext.markVetCaseMessageAsRead()
         }
     }, [])
 
@@ -58,11 +58,15 @@ function Chat(props: Props) {
             })
 
             notificationListener.current = Notifications
-                .addNotificationReceivedListener((event: NotificationEvent) => {
-                    const notification = new Notification(event, vetCaseViewModel.vetCase.id)
-                    Notifications.setNotificationHandler({
-                        handleNotification: notification.getNoficiationHandler()
-                    })
+                .addNotificationReceivedListener((event) => {
+                    const notification = new Notification(event)
+
+                    const isNotificationEnabled = notification
+                        .canDisplayNotification(vetCaseContext.vetCase.id)
+
+                    isNotificationEnabled
+                        ? notificationService.enable()
+                        : notificationService.disable()
                 })
 
             responseNotificationListener.current = Notifications

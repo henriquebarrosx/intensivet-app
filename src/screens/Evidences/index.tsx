@@ -6,7 +6,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
-import { Notification } from "../../models/Notification"
+import { pushNotification } from "../../infra/adapters"
 import { NotificationContext } from "../../context/NotificationContext"
 import { Container, Evidence, EvidencesNotFound, AbsoluteArea, Description } from "./styles"
 
@@ -25,9 +25,7 @@ export function EvidencesScreen() {
 
     useEffect(() => {
         if (isCurrentScreenFocused) {
-            const notification = new Notification()
-            Notifications.setNotificationHandler({ handleNotification: notification.getUnmuteNotificationConfig() })
-
+            pushNotification.enableNotificationsLocally()
             fetchVetCaseDetails()
         }
     }, [isCurrentScreenFocused])
