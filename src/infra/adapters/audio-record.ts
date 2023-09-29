@@ -1,17 +1,18 @@
 import { Audio } from "expo-av"
 import { Alert } from "react-native"
 import { DeviceFile } from "../../domain/entities/device-file"
+import { logger } from "."
 
 export class AudioRecordAdapter {
     data: Audio.Recording
 
     async requestAsyncPermission(): Promise<boolean> {
-        console.log("[MICROPHONE] Permission requested")
+        logger.info("MICROPHONE", "Get permission")
         const currentPermission = await Audio.getPermissionsAsync()
 
         if (currentPermission.granted) return true
 
-        console.log("[MICROPHONE] Permission requested")
+        logger.info("MICROPHONE", "Request permission")
         const permissionResult = await Audio.requestPermissionsAsync()
         return permissionResult.granted;
     }

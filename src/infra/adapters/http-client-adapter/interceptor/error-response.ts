@@ -1,5 +1,7 @@
 import { AxiosError } from "axios"
 import NetInfo from "@react-native-community/netinfo"
+
+import { logger } from "../.."
 import { useSession } from "../../../../context/UserContext"
 import { navigationRef } from "../../../../utils/navigation"
 import { useVetCaseIndicators } from "../../../../context/VetCaseIndicators"
@@ -24,7 +26,7 @@ export function useRejectedResponseInterceptor() {
         const belongsToPublicScreen = ["Login"].includes(currentScreenName)
 
         if (notAuthorized && !belongsToPublicScreen) {
-            console.error("[AUTHORIZATION] invalid access token")
+            logger.error("AUTHORIZATION", "invalid access token")
             await deviceSession.clear()
             return Promise.reject(error)
         }

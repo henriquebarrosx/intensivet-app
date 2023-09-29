@@ -19,7 +19,7 @@ export function useVetCaseList() {
             vetCasesViewModel.setPagination(pagination)
         }
 
-        catch (error) {
+        catch {
             vetCasesViewModel.setVetCases([])
         }
 

@@ -1,8 +1,8 @@
 import { Audio } from "expo-av"
-import { Text } from "react-native"
 import React, { useEffect, useState } from "react"
 
 import theme from "../../../../theme"
+import { logger } from "../../../../infra/adapters"
 import { Message } from "../../../../domain/entities/message"
 import { SoundStateIcon, TapArea, Container, LoadingFeedback, Dashes } from "./styles"
 
@@ -26,7 +26,7 @@ export default function RenderAudio({ message }: Props) {
 
     async function handleAudioReprodution(): Promise<void> {
         try {
-            console.log("[VET CASE MESSAGE] Play audio requested")
+            logger.info("VET CASE MESSAGE", "Play audio requested")
             displayLoaderFeedback(true)
 
             if (audioBuffer) {
@@ -49,14 +49,14 @@ export default function RenderAudio({ message }: Props) {
                     return
                 }
 
-                console.log("[VET CASE MESSAGE] stop audio requested")
+                logger.info("VET CASE MESSAGE", "stop audio requested")
                 updateAudioBufferState(AudioState.PAUSED)
                 updateAudioBuffer(undefined)
             })
         }
 
         catch (error) {
-            console.error("[VET CASE MESSAGE] stop audio requested", { error })
+            logger.error("VET CASE MESSAGE", "stop audio requested", { cause: error })
             updateAudioBufferState(AudioState.PAUSED)
             updateAudioBuffer(undefined)
         }

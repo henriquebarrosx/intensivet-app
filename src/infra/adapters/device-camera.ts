@@ -3,15 +3,16 @@ import * as ImagePicker from "expo-image-picker"
 import { Camera as ExpoCamera } from "expo-camera"
 
 import { DeviceFile } from "../../domain/entities/device-file"
+import { logger } from "."
 
 export class DeviceCameraAdapter {
     async requestAsyncPermission(): Promise<boolean> {
-        console.log("[CAMERA] Get permission")
+        logger.info("CAMERA", "Get permission")
         const currentPermission = await ExpoCamera.getCameraPermissionsAsync()
 
         if (currentPermission.granted) return true
 
-        console.log("[CAMERA] Permission requested")
+        logger.info("CAMERA", "Request permission")
         const permissionResult = await ExpoCamera.requestCameraPermissionsAsync()
         return permissionResult.granted;
     }
@@ -21,7 +22,6 @@ export class DeviceCameraAdapter {
 
         if (!hasCameraPermission) {
             Alert.alert("Permissão necessária", "Para realizar a captura e envio de fotos, é necessário acesso ao câmera do dispositivo")
-            console.error("[CAMERA] Permission denied.")
             return
         }
 

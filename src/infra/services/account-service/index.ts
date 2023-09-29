@@ -1,5 +1,6 @@
-import { IHttpClient } from "../../adapters/http-client-adapter/index.gateway"
+import { logger } from "../../adapters"
 import { SignInRequest, SignInResponse } from "./index.models"
+import { IHttpClient } from "../../adapters/http-client-adapter/index.gateway"
 
 export class AccountService {
     constructor(private readonly httpClient: IHttpClient) { }
@@ -8,7 +9,7 @@ export class AccountService {
         const endpoint = "/api/v2/login"
 
         try {
-            console.log("[SIGN IN] Authentication user requested", { endpoint })
+            logger.info("SIGN IN", "Request authentication", { endpoint })
 
             const response = await this.httpClient.post<SignInRequest, SignInResponse>(
                 endpoint,
@@ -19,7 +20,7 @@ export class AccountService {
         }
 
         catch (error) {
-            console.error("[SIGN IN] Authentication user requested", { endpoint }, { error })
+            logger.error("SIGN IN", "Request authentication", { endpoint, cause: error })
             throw error
         }
     }

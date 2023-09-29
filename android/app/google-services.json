@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "726552159165",
+    "project_id": "intensivet-81de6",
+    "storage_bucket": "intensivet-81de6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726552159165:android:09dc7a14319e99bb3968d4",
+        "android_client_info": {
+          "package_name": "com.intensivetapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDgUafkhq9N_g6jMI5XRFN4abi188gbW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

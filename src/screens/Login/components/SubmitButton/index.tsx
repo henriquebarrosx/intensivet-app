@@ -11,7 +11,7 @@ type Props = {
 
 export function SubmitButton({ onPress, isLoadingEffectVisible }: Props) {
     return (
-        <TouchableOpacity onPress={onPress} style={styles.buttonArea}>
+        <TouchableOpacity onPress={onPress} disabled={isLoadingEffectVisible} style={styles.buttonArea}>
             <LoadingIndicator isLoading={isLoadingEffectVisible} />
             {!isLoadingEffectVisible && <Text style={styles.buttonText}>Acessar</Text>}
         </TouchableOpacity>

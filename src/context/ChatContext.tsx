@@ -42,7 +42,6 @@ export function ChatProvider({ children }: WithChildren) {
     const virtualizedListRef = useRef<VirtualizedList<Message>>(null)
 
     function receiveNewMessage(message: MessageModel): void {
-        console.log("[VET CASE MESSAGE] New message received")
         const items = removeDuplicatedKeysFromMessage([...messages, MessageMapper.apply(message)])
         updateMessageList(items)
     }

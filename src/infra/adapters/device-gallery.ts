@@ -3,15 +3,16 @@ import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from "expo-media-library"
 
 import { DeviceFile } from "../../domain/entities/device-file"
+import { logger } from "."
 
 export class DeviceGalleryAdapter {
     async requestAsyncPermission(): Promise<boolean> {
-        console.log("[GALLERY] Permission requested")
+        logger.info("GALLERY", "Get permission")
         const currentPermission = await MediaLibrary.getPermissionsAsync()
 
         if (currentPermission.granted) return true
 
-        console.log("[GALLERY] Permission requested")
+        logger.info("GALLERY", "Request permission")
         const permissionResult = await MediaLibrary.requestPermissionsAsync()
         return permissionResult.granted;
     }
@@ -21,7 +22,6 @@ export class DeviceGalleryAdapter {
 
         if (!hasGalleryAccessPermission) {
             Alert.alert("Permissão necessária", "Para realizar o envio de fotos e/ou vídeos, é necessário acesso ao galeria do dispositivo")
-            console.error("[GALLERY] Permission denied.")
             return
         }
 

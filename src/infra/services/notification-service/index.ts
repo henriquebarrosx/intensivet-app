@@ -1,3 +1,4 @@
+import { logger } from "../../adapters"
 import { SessionRepository } from "../../repositories/session"
 import { EnableOrDisableNotificationsRequest } from "./index.models"
 import { PushNotificationAdapter } from "../../adapters/push-notification"
@@ -14,7 +15,7 @@ export class NotificationService {
         const endpoint = "/api/v2/expo_token"
 
         try {
-            console.log("[NOTIFICATION] Enable requested", { endpoint })
+            logger.info("NOTIFICATION", "Request to enable", { endpoint })
             const expoToken = await this.pushNotification.generatePushToken()
             this.pushNotification.enableNotificationsLocally()
 
@@ -28,7 +29,7 @@ export class NotificationService {
         }
 
         catch (error) {
-            console.log("[NOTIFICATION] Enable requested", { endpoint }, { error })
+            logger.error("NOTIFICATION", "Request to enable", { endpoint, cause: error })
             throw error
         }
     }
@@ -37,7 +38,7 @@ export class NotificationService {
         const endpoint = "/api/v2/expo_token"
 
         try {
-            console.log("[NOTIFICATION] Disable requested", { endpoint })
+            logger.info("NOTIFICATION", "Request to disable", { endpoint })
             this.pushNotification.disableNotificationsLocally()
 
             await this.httpClient.put<EnableOrDisableNotificationsRequest, void>(
@@ -50,7 +51,7 @@ export class NotificationService {
         }
 
         catch (error) {
-            console.log("[NOTIFICATION] Disable requested", { endpoint }, { error })
+            logger.error("NOTIFICATION", "Request to disable", { endpoint, cause: error })
             throw error
         }
     }

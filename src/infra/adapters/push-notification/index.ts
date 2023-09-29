@@ -1,38 +1,48 @@
 import * as Device from "expo-device"
 import * as Notifications from "expo-notifications"
+import { logger } from ".."
 
 export class PushNotificationAdapter {
     async requestAsyncPermission(): Promise<boolean> {
         if (Device.isDevice) {
-            console.log("[NOTIFICATION] Get permission")
+            logger.info("NOTIFICATION", "Get permission")
             const currentPermission = await Notifications.getPermissionsAsync()
 
             if (currentPermission.granted) return true
 
-            console.log("[NOTIFICATION] Permission requested")
+            logger.info("NOTIFICATION", "Request permission")
             const permission = await Notifications.requestPermissionsAsync()
             return permission.granted
         }
 
-        console.error(
-            "[NOTIFICATION] Permission requested",
-            { error: "Must use physical device for Push Notifications" }
+        logger.error(
+            "NOTIFICATION",
+            "Permission requested",
+            { cause: "Must use physical device for Push Notifications" }
         )
 
         return false
     }
 
     async generatePushToken(): Promise<string> {
-        const hasNotificationPermission = await this.requestAsyncPermission()
-        if (!hasNotificationPermission) return ""
+        try {
+            const hasNotificationPermission = await this.requestAsyncPermission()
+            if (!hasNotificationPermission) return ""
 
-        await this.setupAndroidNotifications()
+            await this.setupAndroidNotifications()
 
-        const { data } = await Notifications.getExpoPushTokenAsync({
-            projectId: "369e150f-abfc-4e24-9ee5-88a2db8bd8a3",
-        })
+            logger.info("NOTIFICATION", "Get expo push token")
+            const { data } = await Notifications.getExpoPushTokenAsync({
+                projectId: "369e150f-abfc-4e24-9ee5-88a2db8bd8a3",
+            })
 
-        return data
+            return data
+        }
+
+        catch (error) {
+            logger.error("NOTIFICATION", "Get expo push token", { cause: error })
+            throw error
+        }
     }
 
     async setupAndroidNotifications(): Promise<void> {

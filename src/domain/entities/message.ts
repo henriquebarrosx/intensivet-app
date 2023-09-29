@@ -59,6 +59,6 @@ export class Message {
             return this
         }
 
-        console.error("Invalid date format")
+        console.error("MESSAGE", "Invalid date format")
     }
 }

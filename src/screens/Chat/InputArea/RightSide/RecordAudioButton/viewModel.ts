@@ -1,8 +1,9 @@
-import { useAudioRecord } from '../../../../../context/RecordAudio';
-import { AudioRecordAdapter } from '../../../../../infra/adapters/audio-record';
+import { logger } from "../../../../../infra/adapters"
+import { useAudioRecord } from "../../../../../context/RecordAudio"
+import { AudioRecordAdapter } from "../../../../../infra/adapters/audio-record"
 
 export const useViewModel = () => {
-    const { displayAudioRecordFeedback, setAudioRecord } = useAudioRecord();
+    const { displayAudioRecordFeedback, setAudioRecord } = useAudioRecord()
 
     async function onRecord() {
         try {
@@ -13,7 +14,7 @@ export const useViewModel = () => {
         }
 
         catch (error) {
-            console.error(error);
+            logger.error("AUDIO RECORD", "Something wrong when recording audio voice", { cause: error })
         }
     }
 

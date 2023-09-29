@@ -1,3 +1,4 @@
+import { logger } from "../../adapters"
 import { Pagination } from "../../../@types/common"
 import { FindAllVetCasesResponse } from "./index.models"
 import { VetCaseDetails } from "../../../schemas/VetCaseDetails"
@@ -11,13 +12,13 @@ export class VetCaseService {
         const endpoint = `/api/v2/vet_cases?page=${page}&with_status=in_progress&with_order=${orderBy}`
 
         try {
-            console.log("[VET CASES] Get requested", { endpoint })
+            logger.info("VET CASES", "Find All", { endpoint })
             const response = await this.httpClient.get<FindAllVetCasesResponse>(endpoint)
             return [response.vet_cases, response.pagination]
         }
 
         catch (error) {
-            console.error("[VET CASES] Get requested", { endpoint }, { error })
+            logger.error("VET CASES", "Find All", { endpoint, cause: error })
             throw error
         }
     }
@@ -26,13 +27,13 @@ export class VetCaseService {
         const endpoint = `/api/v2/vet_cases/${id}`
 
         try {
-            console.log("[VET CASE] Get requested", { endpoint })
+            logger.info("VET CASE", "Find by id", { endpoint })
             const response = await this.httpClient.get<VetCaseDetails>(endpoint)
             return response
         }
 
         catch (error) {
-            console.error("[VET CASE] Get requested", { endpoint }, { error })
+            logger.error("VET CASE", "Find by id", { endpoint, cause: error })
             throw error
         }
     }
@@ -41,13 +42,13 @@ export class VetCaseService {
         const endpoint = `/vet_cases/${id}/unread_messages`
 
         try {
-            console.log("[VET CASE MESSAGES] Mark as read requested", { endpoint })
-            const response = await this.httpClient.get<void>(endpoint)
+            logger.info("VET CASE MESSAGES", "Mark as read", { endpoint })
+            await this.httpClient.get<void>(endpoint)
             return
         }
 
         catch (error) {
-            console.error("[VET CASE MESSAGES] Mark as read requested", { endpoint }, { error })
+            logger.error("VET CASE MESSAGES", "Mark as read", { endpoint, cause: error })
             throw error
         }
     }
