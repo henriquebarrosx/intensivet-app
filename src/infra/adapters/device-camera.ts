@@ -6,7 +6,7 @@ import { DeviceFile } from "../../domain/entities/device-file"
 
 export class DeviceCameraAdapter {
     async requestAsyncPermission(): Promise<boolean> {
-        console.log("[CAMERA] Permission requested")
+        console.log("[CAMERA] Get permission")
         const currentPermission = await ExpoCamera.getCameraPermissionsAsync()
 
         if (currentPermission.granted) return true
