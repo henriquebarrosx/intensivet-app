@@ -15,7 +15,7 @@ export class NotificationService {
         const endpoint = "/api/v2/expo_token"
 
         try {
-            logger.info("NOTIFICATION", "Request to enable", { endpoint })
+            await logger.info("NOTIFICATION", "Request to enable", { endpoint })
             const expoToken = await this.pushNotification.generatePushToken()
             this.pushNotification.enableNotificationsLocally()
 
@@ -29,7 +29,7 @@ export class NotificationService {
         }
 
         catch (error) {
-            logger.error("NOTIFICATION", "Request to enable", { endpoint, cause: error })
+            await logger.error("NOTIFICATION", "Request to enable", { endpoint, cause: error?.message })
             throw error
         }
     }
@@ -38,7 +38,7 @@ export class NotificationService {
         const endpoint = "/api/v2/expo_token"
 
         try {
-            logger.info("NOTIFICATION", "Request to disable", { endpoint })
+            await logger.info("NOTIFICATION", "Request to disable", { endpoint })
             this.pushNotification.disableNotificationsLocally()
 
             await this.httpClient.put<EnableOrDisableNotificationsRequest, void>(
@@ -51,7 +51,7 @@ export class NotificationService {
         }
 
         catch (error) {
-            logger.error("NOTIFICATION", "Request to disable", { endpoint, cause: error })
+            await logger.error("NOTIFICATION", "Request to disable", { endpoint, cause: error?.message })
             throw error
         }
     }

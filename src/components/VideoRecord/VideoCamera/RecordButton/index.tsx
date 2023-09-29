@@ -30,7 +30,7 @@ export const RecordButton = ({ onVideoComplete, recordVideoCamera }: Props) => {
             }
 
             catch (error) {
-                logger.error("VIDEO RECORD", "Something wrong when recording video", { cause: error })
+                await logger.error("VIDEO RECORD", "Something wrong when recording video", { cause: error?.message })
                 recordVideoCamera(false)
             }
         }

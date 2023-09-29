@@ -7,12 +7,12 @@ import { logger } from "."
 
 export class DeviceGalleryAdapter {
     async requestAsyncPermission(): Promise<boolean> {
-        logger.info("GALLERY", "Get permission")
+        await logger.info("GALLERY", "Get permission")
         const currentPermission = await MediaLibrary.getPermissionsAsync()
 
         if (currentPermission.granted) return true
 
-        logger.info("GALLERY", "Request permission")
+        await logger.info("GALLERY", "Request permission")
         const permissionResult = await MediaLibrary.requestPermissionsAsync()
         return permissionResult.granted;
     }

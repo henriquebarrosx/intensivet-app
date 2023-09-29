@@ -14,7 +14,7 @@ export const useViewModel = () => {
         }
 
         catch (error) {
-            logger.error("AUDIO RECORD", "Something wrong when recording audio voice", { cause: error })
+            await logger.error("AUDIO RECORD", "Something wrong when recording audio voice", { cause: error?.message })
         }
     }
 

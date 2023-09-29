@@ -26,7 +26,7 @@ export function useRejectedResponseInterceptor() {
         const belongsToPublicScreen = ["Login"].includes(currentScreenName)
 
         if (notAuthorized && !belongsToPublicScreen) {
-            logger.error("AUTHORIZATION", "invalid access token")
+            await logger.error("AUTHORIZATION", "invalid access token")
             await deviceSession.clear()
             return Promise.reject(error)
         }
