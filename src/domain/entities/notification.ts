@@ -1,14 +1,14 @@
 import { Notification as NotificationEvent } from "expo-notifications"
+import { logger } from "../../infra/adapters"
 
 export class Notification {
     constructor(private readonly event?: NotificationEvent) { }
 
     getTitle() {
         if (!this.event) {
-            throw new Error(
-                "notification param not found",
-                { cause: "event not found" }
-            )
+            const errorMessage = "notification event not found"
+            logger.error("NOTIFICATION", errorMessage)
+            throw new Error(errorMessage)
         }
 
         return this.event?.request.content.title || ""
@@ -23,7 +23,6 @@ export class Notification {
     }
 
     canDisplayNotification(vetCaseId: number) {
-        if (!vetCaseId) throw new Error("vetCaseId param not found")
-        return this.getVetCaseId() !== vetCaseId
+        return this.getVetCaseId() !== (vetCaseId || 0)
     }
 }

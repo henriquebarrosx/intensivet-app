@@ -1,6 +1,7 @@
 import { VirtualizedList } from "react-native"
 import React, { useRef, useState, useContext, createContext, RefObject } from "react"
 
+import { logger } from "../infra/adapters"
 import { useVetCase } from "./VetCaseContext"
 import { WithChildren } from "../@types/common"
 import { MessageModel } from "../schemas/Message"
@@ -125,6 +126,12 @@ export function ChatProvider({ children }: WithChildren) {
 
 export function useChat() {
     const context = useContext(ChatContext)
-    if (!context) throw new Error("useChat should be nested in ChatProvider")
+
+    if (!context) {
+        const errorMessage = "useChat should be nested in ChatProvider"
+        logger.error("REACT CONTEXT PROVIDER", errorMessage)
+        throw new Error(errorMessage)
+    }
+
     return context
 }

@@ -1,6 +1,7 @@
 import * as SplashScreen from "expo-splash-screen"
 import React, { useState, createContext, useContext } from "react"
 
+import { logger } from "../infra/adapters"
 import { User } from "../schemas/Account"
 import { WithChildren } from "../@types/common"
 import { navigationRef } from "../utils/navigation"
@@ -77,5 +78,8 @@ export function SessionProvider({ children }: WithChildren) {
 export function useSession() {
     const context = useContext(UserContext)
     if (context) return context
-    throw new Error("useSession should be nested in SessionProvider")
+
+    const errorMessage = "useSession should be nested in SessionProvider"
+    logger.error("REACT CONTEXT PROVIDER", errorMessage)
+    throw new Error(errorMessage)
 }

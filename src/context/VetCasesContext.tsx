@@ -1,6 +1,7 @@
 import { VirtualizedList } from "react-native"
 import React, { useRef, Dispatch, useState, RefObject, useContext, createContext, SetStateAction } from "react"
 
+import { logger } from "../infra/adapters"
 import { WithChildren } from "../@types/common"
 import { MessageModel } from "../schemas/Message"
 import { Pagination } from "../schemas/Pagination"
@@ -107,7 +108,9 @@ export function useVetCases() {
     const context = useContext(VetCasesContext)
 
     if (!context) {
-        throw new Error("O contexto VetCasesContext precisa está contido na hierarquia de componentes!")
+        const errorMessage = "useVetCases should be nested in VetCasesProvider"
+        logger.error("REACT CONTEXT PROVIDER", errorMessage)
+        throw new Error(errorMessage)
     }
 
     return context

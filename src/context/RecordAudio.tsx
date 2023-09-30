@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
 
+import { logger } from "../infra/adapters"
 import { WithChildren } from "../@types/common"
 import { AudioRecordAdapter } from "../infra/adapters/audio-record"
 
@@ -40,5 +41,7 @@ export const useAudioRecord = (): ContextSchema => {
         return context
     }
 
-    throw new Error("O uso do hook useAudioRecord só é válido quando abraçado pelo AudioRecordProvider")
+    const errorMessage = "useAudioRecord should be nested in AudioRecordProvider"
+    logger.error("REACT CONTEXT PROVIDER", errorMessage)
+    throw new Error(errorMessage)
 }

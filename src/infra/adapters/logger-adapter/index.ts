@@ -1,3 +1,4 @@
+// Docs: https://docs.sentry.io/platforms/react-native
 import * as Sentry from "@sentry/react-native"
 import { localDate } from "../local-date-adapter"
 import { LocalDateFormatEnum } from "../local-date-adapter/index.gateway"

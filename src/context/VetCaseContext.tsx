@@ -1,5 +1,6 @@
 import React, { Dispatch, useState, useContext, createContext } from "react"
 
+import { logger } from "../infra/adapters"
 import { WithChildren } from "../@types/common"
 import { VetCaseModel as VetCaseModel } from "../schemas/VetCase"
 import { httpClient } from "../infra/adapters/http-client-adapter"
@@ -40,5 +41,7 @@ export const useVetCase = () => {
         return context
     }
 
-    throw new Error("O contexto VetCaseContext precisa está contido na hierarquia de componentes!")
+    const errorMessage = "useVetCase should be nested in VetCaseProvider"
+    logger.error("REACT CONTEXT PROVIDER", errorMessage)
+    throw new Error(errorMessage)
 }
