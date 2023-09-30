@@ -7,21 +7,15 @@ import { logger } from ".."
 export class PushNotificationAdapter {
     async requestAsyncPermission(): Promise<boolean> {
         if (Device.isDevice) {
-            await logger.info("NOTIFICATION", "Get permission")
+            logger.info("NOTIFICATION", "Get permission")
             const currentPermission = await Notifications.getPermissionsAsync()
 
             if (currentPermission.granted) return true
 
-            await logger.info("NOTIFICATION", "Request permission")
+            logger.info("NOTIFICATION", "Request permission")
             const permission = await Notifications.requestPermissionsAsync()
             return permission.granted
         }
-
-        await logger.error(
-            "NOTIFICATION",
-            "Permission requested",
-            { cause: "Must use physical device for Push Notifications" }
-        )
 
         return false
     }
@@ -33,7 +27,8 @@ export class PushNotificationAdapter {
 
             await this.setupAndroidNotifications()
 
-            await logger.info("NOTIFICATION", "Get expo push token")
+            logger.info("NOTIFICATION", "Get expo push token")
+
             const { data } = await Notifications.getExpoPushTokenAsync({
                 projectId: "369e150f-abfc-4e24-9ee5-88a2db8bd8a3",
             })
@@ -42,7 +37,7 @@ export class PushNotificationAdapter {
         }
 
         catch (error) {
-            await logger.error("NOTIFICATION", "Get expo push token", { cause: error?.message })
+            logger.error("NOTIFICATION", "Get expo push token", { cause: error?.message })
             throw error
         }
     }

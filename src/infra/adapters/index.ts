@@ -1,4 +1,4 @@
-import { Logger as LoggerAdapter } from "./logger-adapter"
+import { LoggerAdapter } from "./logger-adapter"
 import { PushNotificationAdapter } from "./push-notification"
 
 export const logger = new LoggerAdapter()

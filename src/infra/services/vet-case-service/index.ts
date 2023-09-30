@@ -12,28 +12,28 @@ export class VetCaseService {
         const endpoint = `/api/v2/vet_cases?page=${page}&with_status=in_progress&with_order=${orderBy}`
 
         try {
-            await logger.info("VET CASES", "Find All", { endpoint })
+            logger.info("VET CASES", "Find All", { endpoint })
             const response = await this.httpClient.get<FindAllVetCasesResponse>(endpoint)
             return [response.vet_cases, response.pagination]
         }
 
         catch (error) {
-            await logger.error("VET CASES", "Find All", { endpoint, cause: error?.message })
+            logger.error("VET CASES", "Find All", { endpoint, cause: error?.message })
             throw error
         }
     }
 
     async findOne(id: number): Promise<VetCaseDetails | undefined> {
-        const endpoint = `/api/v2/vet_cases/${id}`
+        const endpoint = `/api/v2/vet_cases/${id}/error`
 
         try {
-            await logger.info("VET CASE", "Find by id", { endpoint })
+            logger.info("VET CASE", "Find by id", { endpoint })
             const response = await this.httpClient.get<VetCaseDetails>(endpoint)
             return response
         }
 
         catch (error) {
-            await logger.error("VET CASE", "Find by id", { endpoint, cause: error?.message })
+            logger.error("VET CASE", "Find by id", { endpoint, cause: error?.message })
             throw error
         }
     }
@@ -42,13 +42,13 @@ export class VetCaseService {
         const endpoint = `/vet_cases/${id}/unread_messages`
 
         try {
-            await logger.info("VET CASE MESSAGES", "Mark as read", { endpoint })
+            logger.info("VET CASE MESSAGES", "Mark as read", { endpoint })
             await this.httpClient.get<void>(endpoint)
             return
         }
 
         catch (error) {
-            await logger.error("VET CASE MESSAGES", "Mark as read", { endpoint, cause: error?.message })
+            logger.error("VET CASE MESSAGES", "Mark as read", { endpoint, cause: error?.message })
             throw error
         }
     }

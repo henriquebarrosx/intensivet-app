@@ -1,5 +1,6 @@
 import { Account } from "./account"
 import { DeviceFile } from "./device-file"
+import { logger } from "../../infra/adapters"
 
 export class Message {
     id: number
@@ -59,6 +60,6 @@ export class Message {
             return this
         }
 
-        console.error("MESSAGE", "Invalid date format")
+        logger.error("MESSAGE ENTITY", "Invalid date format")
     }
 }

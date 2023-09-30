@@ -14,20 +14,11 @@ export const useViewModel = () => {
     }
 
     async function handlePushNotification(isEnabled: boolean): Promise<void> {
-        try {
-            const pushNotificationToken = isEnabled
-                ? await notificationService.enable()
-                : await notificationService.disable()
+        const pushNotificationToken = isEnabled
+            ? await notificationService.enable()
+            : await notificationService.disable()
 
-            deviceSession.update({ expoToken: pushNotificationToken })
-        }
-
-        catch {
-            Alert.alert(
-                'Sentimos muito',
-                'Houve um problema ao configurar as notificações'
-            )
-        }
+        deviceSession.update({ expoToken: pushNotificationToken })
     }
 
     return {

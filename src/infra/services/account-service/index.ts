@@ -9,7 +9,7 @@ export class AccountService {
         const endpoint = "/api/v2/login"
 
         try {
-            await logger.info("SIGN IN", "Request authentication", { endpoint })
+            logger.info("SIGN IN", "Request authentication", { endpoint })
 
             const response = await this.httpClient.post<SignInRequest, SignInResponse>(
                 endpoint,
@@ -20,7 +20,7 @@ export class AccountService {
         }
 
         catch (error) {
-            await logger.error("SIGN IN", "Request authentication", { endpoint, cause: error?.message })
+            logger.error("SIGN IN", "Request authentication", { endpoint, cause: error?.message })
             throw error
         }
     }

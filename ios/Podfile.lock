@@ -1,5 +1,6 @@
 PODS:
   - boost (1.76.0)
+  - BugfenderSDK (1.13.1)
   - DoubleConversion (1.1.6)
   - EXApplication (5.3.0):
     - ExpoModulesCore
@@ -24,6 +25,8 @@ PODS:
   - EXNotifications (0.20.1):
     - ExpoModulesCore
   - Expo (49.0.8):
+    - ExpoModulesCore
+  - ExpoDevice (5.6.0):
     - ExpoModulesCore
   - ExpoDocumentPicker (11.5.4):
     - ExpoModulesCore
@@ -483,6 +486,9 @@ PODS:
     - React-jsi (= 0.72.4)
     - React-logger (= 0.72.4)
     - React-perflogger (= 0.72.4)
+  - RnBugfender (2.2.1):
+    - BugfenderSDK (~> 1.10)
+    - React-Core
   - RNCAsyncStorage (1.19.3):
     - React-Core
   - RNGestureHandler (2.12.1):
@@ -490,8 +496,14 @@ PODS:
   - RNScreens (3.22.1):
     - React-Core
     - React-RCTImage
+  - RNSentry (5.10.0):
+    - React-Core
+    - Sentry/HybridSDK (= 8.11.0)
   - RNVectorIcons (10.0.0):
     - React-Core
+  - Sentry/HybridSDK (8.11.0):
+    - SentryPrivate (= 8.11.0)
+  - SentryPrivate (8.11.0)
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
 
@@ -508,6 +520,7 @@ DEPENDENCIES:
   - EXMediaLibrary (from `../node_modules/expo-media-library/ios`)
   - EXNotifications (from `../node_modules/expo-notifications/ios`)
   - Expo (from `../node_modules/expo`)
+  - ExpoDevice (from `../node_modules/expo-device/ios`)
   - ExpoDocumentPicker (from `../node_modules/expo-document-picker/ios`)
   - ExpoImagePicker (from `../node_modules/expo-image-picker/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
@@ -557,17 +570,22 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RnBugfender (from `../node_modules/@bugfender/rn-bugfender`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
+    - BugfenderSDK
     - fmt
     - libevent
     - lottie-ios
+    - Sentry
+    - SentryPrivate
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -595,6 +613,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-notifications/ios"
   Expo:
     :path: "../node_modules/expo"
+  ExpoDevice:
+    :path: "../node_modules/expo-device/ios"
   ExpoDocumentPicker:
     :path: "../node_modules/expo-document-picker/ios"
   ExpoImagePicker:
@@ -690,12 +710,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RnBugfender:
+    :path: "../node_modules/@bugfender/rn-bugfender"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -703,6 +727,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
+  BugfenderSDK: 21c9e2e8f413b752e80a5d3086f8815f9e51fb73
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXApplication: 02655a251434d564bb0e73291f5a490c74b5b76f
   EXAV: f393dfc0b28214d62855a31e06eb21d426d6e2da
@@ -714,6 +739,7 @@ SPEC CHECKSUMS:
   EXMediaLibrary: 8ac14ce76f266026b10cac2ab049debe032d7ae7
   EXNotifications: 09394cbd7165f9a4a00a53328aa09bf874bae717
   Expo: 900dc423a0e2c7e822b2c683a89426e82695fb27
+  ExpoDevice: 4b9825263a3f996fd5a89ec26426e22e6cbc32d6
   ExpoDocumentPicker: 5cb7389ff935b4addefdd466a606de51a512e922
   ExpoImagePicker: c58fdf28be551681a8edc550bcec76c397a8dfcd
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
@@ -764,10 +790,14 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 4941cc1b3cf08b792fbf666342c9fc95f1969035
   React-utils: b79f2411931f9d3ea5781404dcbb2fa8a837e13a
   ReactCommon: 4b2bdcb50a3543e1c2b2849ad44533686610826d
+  RnBugfender: 14291bb209de4025e16e6cd0c153ebe163cd07d7
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNScreens: 50ffe2fa2342eabb2d0afbe19f7c1af286bc7fb3
+  RNSentry: 11917f7bf3e28806aca4c2791c6ba7522d8f09fe
   RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
+  Sentry: 39d57e691e311bdb73bc1ab5bbebbd6bc890050d
+  SentryPrivate: 48712023cdfd523735c2edb6b06bedf26c4730a3
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
 

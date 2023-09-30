@@ -13,14 +13,14 @@ export class MessageService {
         const endpoint = `/api/v2/vet_cases/${vetCaseId}/vet_case_messages?page=${page}`
 
         try {
-            await logger.info("VET CASE MESSAGES", "Find All by case id", { endpoint })
+            logger.info("VET CASE MESSAGES", "Find All by case id", { endpoint })
             const response = await this.httpClient.get<FindAllMessagesResponse>(endpoint)
             const messages = response.vet_case_messages.map(MessageMapper.apply)
             return [messages, response.pagination]
         }
 
         catch (error) {
-            await logger.error("VET CASE MESSAGE", "Find All by case id", { endpoint, cause: error?.message })
+            logger.error("VET CASE MESSAGE", "Find All by case id", { endpoint, cause: error?.message })
             throw error
         }
     }
@@ -29,13 +29,13 @@ export class MessageService {
         const endpoint = `/api/v2/vet_cases/${vetCaseId}/vet_case_messages/${messageId}`
 
         try {
-            await logger.info("VET CASE MESSAGE", "Find by id", { endpoint })
+            logger.info("VET CASE MESSAGE", "Find by id", { endpoint })
             const messageData = await this.httpClient.get<MessageModel>(endpoint)
             return MessageMapper.apply(messageData)
         }
 
         catch (error) {
-            await logger.error("VET CASE MESSAGE", "Find by id", { endpoint, cause: error?.message })
+            logger.error("VET CASE MESSAGE", "Find by id", { endpoint, cause: error?.message })
             throw error
         }
     }
@@ -44,7 +44,7 @@ export class MessageService {
         const endpoint = `/api/v2/vet_cases/${vetCaseId}/vet_case_messages`
 
         try {
-            await logger.info("VET CASE MESSAGE", "Create new message", { endpoint })
+            logger.info("VET CASE MESSAGE", "Create new message", { endpoint })
             const formData = new FormData()
 
             !!content.message
@@ -71,7 +71,7 @@ export class MessageService {
         }
 
         catch (error) {
-            await logger.error("VET CASE MESSAGE", "Create new message", { endpoint, cause: error?.message })
+            logger.error("VET CASE MESSAGE", "Create new message", { endpoint, cause: error?.message })
             throw error
         }
     }

@@ -7,12 +7,12 @@ import { logger } from "."
 
 export class DeviceCameraAdapter {
     async requestAsyncPermission(): Promise<boolean> {
-        await logger.info("CAMERA", "Get permission")
+        logger.info("CAMERA", "Get permission")
         const currentPermission = await ExpoCamera.getCameraPermissionsAsync()
 
         if (currentPermission.granted) return true
 
-        await logger.info("CAMERA", "Request permission")
+        logger.info("CAMERA", "Request permission")
         const permissionResult = await ExpoCamera.requestCameraPermissionsAsync()
         return permissionResult.granted;
     }

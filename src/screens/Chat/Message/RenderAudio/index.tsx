@@ -26,7 +26,7 @@ export default function RenderAudio({ message }: Props) {
 
     async function handleAudioReprodution(): Promise<void> {
         try {
-            await logger.info("VET CASE MESSAGE", "Play audio requested")
+            logger.info("VET CASE MESSAGE", "Play audio requested")
             displayLoaderFeedback(true)
 
             if (audioBuffer) {
@@ -49,14 +49,14 @@ export default function RenderAudio({ message }: Props) {
                     return
                 }
 
-                await logger.info("VET CASE MESSAGE", "stop audio requested")
+                logger.info("VET CASE MESSAGE", "stop audio requested")
                 updateAudioBufferState(AudioState.PAUSED)
                 updateAudioBuffer(undefined)
             })
         }
 
         catch (error) {
-            await logger.error("VET CASE MESSAGE", "stop audio requested", { cause: error?.message })
+            logger.error("VET CASE MESSAGE", "stop audio requested", { cause: error?.message })
             updateAudioBufferState(AudioState.PAUSED)
             updateAudioBuffer(undefined)
         }
