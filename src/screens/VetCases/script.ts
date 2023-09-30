@@ -2,6 +2,7 @@ import { useVetCases } from "../../context/VetCasesContext"
 import { VetCaseOrderTypeEnum } from '../../schemas/VetCase'
 import { useServices } from "../../context/ServicesContext"
 import { useVetCaseIndicators } from "../../context/VetCaseIndicators"
+import { removeDuplicatedKeysFromCases } from "../../utils/message"
 
 export function useVetCaseList() {
     const vetCasesViewModel = useVetCases()
@@ -12,7 +13,8 @@ export function useVetCaseList() {
         try {
             makeRefreshVetCaseList(true)
             const [items, pagination] = await vetCaseService.findAll(page, orderBy)
-            vetCasesViewModel.setVetCases(items)
+            const nonDuplicatedItems = removeDuplicatedKeysFromCases([...vetCasesViewModel.vetCases, ...items])
+            vetCasesViewModel.setVetCases(nonDuplicatedItems)
             vetCasesViewModel.setPagination(pagination)
         }
 
