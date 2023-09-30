@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { Alert } from "react-native"
 import { useSession } from "../../context/UserContext"
 import { notificationService } from "../../infra/services"
 
