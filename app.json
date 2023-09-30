@@ -69,12 +69,11 @@
                 "foregroundImage": "./assets/images/logo-icon.png",
                 "backgroundColor": "#FFFFFF"
             },
-            "versionCode": 1,
-            "googleServicesFile": "./google-services.json"
+            "versionCode": 1
         },
         "ios": {
             "jsEngine": "hermes",
-            "buildNumber": "3.0.8",
+            "buildNumber": "3.0.9",
             "supportsTablet": true,
             "usesIcloudStorage": true,
             "entitlements": {
