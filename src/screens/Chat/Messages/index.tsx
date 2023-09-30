@@ -28,7 +28,7 @@ export default function Messages() {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingBottom: 90 }}>
             <ImageBackground source={ChatWallpaper} style={styles.root}>
                 <FetchingLoadingFeedback isVisible={chatViewModel.isFetching} />
 
