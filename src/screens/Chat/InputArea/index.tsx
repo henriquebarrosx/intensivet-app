@@ -5,10 +5,10 @@ import { Animated, KeyboardAvoidingView, Platform } from "react-native"
 import RightSide from "./RightSide"
 import { useViewModel } from "./viewModel"
 import { LeftSide, TextInputView, styles } from "./styles"
+import { useAudioRecord } from "../../../context/RecordAudio"
 import { RecordAudioAreaView } from "../../../components/RecordingAudioArea"
-import { AudioRecordProvider, useAudioRecord } from "../../../context/RecordAudio"
 
-const InputAreaComponent = () => {
+export const InputArea = () => {
     const { isRecordingAudio } = useAudioRecord()
     const insets = useSafeAreaInsets()
 
@@ -49,9 +49,3 @@ const InputAreaComponent = () => {
         </KeyboardAvoidingView>
     )
 }
-
-export const InputArea = () => (
-    <AudioRecordProvider>
-        <InputAreaComponent />
-    </AudioRecordProvider>
-)

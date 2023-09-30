@@ -10,6 +10,7 @@ import { SendingLoadingFeedback } from "../SendingFeedback"
 import { FetchingLoadingFeedback } from "../FetchingFeedback"
 import ChatWallpaper from "../../../../assets/images/chat-wallpaper4.jpg"
 import { Message as MessageEntity } from "../../../domain/entities/message"
+import { useAudioRecord } from "../../../context/RecordAudio"
 
 interface ListInterface {
     index: number
@@ -18,9 +19,11 @@ interface ListInterface {
 
 export default function Messages() {
     const chatViewModel = useChat()
+    const { isRecordingAudio } = useAudioRecord()
     const [isDisplayingButton, displayButton] = useState(false)
 
     const isInvertedList = chatViewModel.messages.length > 0
+    const internalBottomSpace = isRecordingAudio ? 0 : 90
 
     const onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
         const isCloseToBottom = nativeEvent.contentOffset.y >= 100
@@ -28,7 +31,7 @@ export default function Messages() {
     }
 
     return (
-        <View style={{ flex: 1, paddingBottom: 90 }}>
+        <View style={{ flex: 1, paddingBottom: internalBottomSpace }}>
             <ImageBackground source={ChatWallpaper} style={styles.root}>
                 <FetchingLoadingFeedback isVisible={chatViewModel.isFetching} />
 

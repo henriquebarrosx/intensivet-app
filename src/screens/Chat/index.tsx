@@ -13,12 +13,12 @@ import ModalToVideoPreview from "./ModalToPreview/Video"
 import ModalToImagePreview from "./ModalToPreview/Image"
 import { useVetCase } from "../../context/VetCaseContext"
 import { useVetCases } from "../../context/VetCasesContext"
+import { useServices } from "../../context/ServicesContext"
 import { MessageProvider } from "../../context/MessageContext"
+import { AudioRecordProvider } from "../../context/RecordAudio"
 import { Notification } from "../../domain/entities/notification"
 import { NotificationContext } from "../../context/NotificationContext"
 import { FileAttachmentModalProvider } from "../../context/AttachModal"
-import { useServices } from "../../context/ServicesContext"
-import { ContentArea } from "./styles"
 
 interface Props {
     route: { params: { videoUri: string } }
@@ -99,7 +99,9 @@ function Chat(props: Props) {
 export default (props: Props) => (
     <MessageProvider>
         <FileAttachmentModalProvider>
-            <Chat {...props} />
+            <AudioRecordProvider>
+                <Chat {...props} />
+            </AudioRecordProvider>
         </FileAttachmentModalProvider>
     </MessageProvider>
 )

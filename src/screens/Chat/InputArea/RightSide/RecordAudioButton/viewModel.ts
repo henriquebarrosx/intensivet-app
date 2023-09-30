@@ -8,9 +8,13 @@ export const useViewModel = () => {
     async function onRecord() {
         try {
             const audioRecord = new AudioRecordAdapter()
-            await audioRecord.start()
-            displayAudioRecordFeedback(true)
-            setAudioRecord(audioRecord)
+            const record = await audioRecord.start()
+
+            if (record) {
+                displayAudioRecordFeedback(true)
+                setAudioRecord(audioRecord)
+                return
+            }
         }
 
         catch (error) {

@@ -17,7 +17,7 @@ export class AudioRecordAdapter {
         return permissionResult.granted;
     }
 
-    async start(): Promise<AudioRecordAdapter> {
+    async start(): Promise<Audio.Recording> {
         const hasGalleryAccessPermission = await this.requestAsyncPermission()
 
         if (!hasGalleryAccessPermission) {
@@ -28,7 +28,7 @@ export class AudioRecordAdapter {
         await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true })
         const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
         this.data = recording
-        return this
+        return recording
     }
 
     async stop(): Promise<DeviceFile> {
