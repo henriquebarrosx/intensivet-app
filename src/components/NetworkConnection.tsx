@@ -1,75 +1,67 @@
-import React, { memo } from "react"
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
+import React, { useEffect, useRef, useState } from "react"
+import { Text, StyleSheet, Animated } from "react-native"
+import { useNetwork } from "../context/NetworkContext"
 
-import colors from "../utils/colors"
-import FALLBACK_IMAGE from "../../assets/images/network.png"
-import { useErrorsFeedback } from "../context/ErrorsFeedbackContext"
+export default function NetworkConnection() {
+    const { isConnected } = useNetwork()
 
-const NetworkConnection = () => {
-    const { closeUnexpectedErrorModal } = useErrorsFeedback()
+    const heightAnimation = useRef(new Animated.Value(0)).current
+    const message = isConnected ? "Conectado" : "Sem conexão"
+    const [isVisible, shouldDisplay] = useState(false)
 
-    const onTryAgainTap = () => {
-        closeUnexpectedErrorModal({ toRefresh: false })
-    }
+    const bgColor = heightAnimation.interpolate({
+        inputRange: [0, 72],
+        outputRange: ["#424242", isConnected ? "#aed581" : "#424242"]
+    })
 
-    return (
-        <View style={styles.root}>
-            <Image style={styles.fallbackPicture} source={FALLBACK_IMAGE} />
+    useEffect(() => {
+        if (isConnected) {
+            Animated.timing(heightAnimation, {
+                duration: 200,
+                delay: 2500,
+                useNativeDriver: false,
+                toValue: 0,
+            }).start()
+        }
 
-            <Text allowFontScaling={false} style={styles.title}>
-                Sem conexão!
-            </Text>
+        else {
+            Animated.timing(heightAnimation, {
+                duration: 200,
+                useNativeDriver: false,
+                toValue: 54
+            }).start()
+        }
+    }, [isConnected])
 
-            <Text allowFontScaling={false} style={styles.errorMessage}>
-                {`Por favor, cheque sua conexão com a internet \n e tente novamente`}
-            </Text>
+    useEffect(() => {
+        heightAnimation.addListener((state) => {
+            shouldDisplay(state.value !== 0)
+        })
+    }, [])
 
-            <TouchableOpacity onPress={onTryAgainTap} style={styles.tryAgainBtn}>
-                <Text allowFontScaling={false} style={styles.tryAgainText}>
-                    Fechar
-                </Text>
-            </TouchableOpacity>
-        </View>
-    )
+    return isVisible ? (
+        <Animated.View
+            style={[
+                styles.container,
+                {
+                    height: heightAnimation,
+                    backgroundColor: bgColor,
+                }
+            ]}>
+            <Text style={styles.message}>{message}</Text>
+        </Animated.View>
+    ) : null
 }
 
 const styles = StyleSheet.create({
-    root: {
-        alignItems: "center",
+    container: {
+        width: "100%",
+        paddingTop: 16,
+        justifyContent: "flex-start",
     },
-    fallbackPicture: {
-        width: 300,
-        height: 260,
-        marginTop: 24,
-        marginBottom: 12,
-    },
-    title: {
-        fontSize: 32,
-        lineHeight: 48,
-        fontWeight: "600",
+    message: {
+        color: "#FFF",
+        fontWeight: "700",
         textAlign: "center",
-    },
-    errorMessage: {
-        fontSize: 16,
-        lineHeight: 24,
-        color: colors.gray,
-        textAlign: "center",
-    },
-    tryAgainBtn: {
-        height: 58,
-        borderRadius: 7,
-        fontWeight: "600",
-        marginVertical: 50,
-        alignItems: "center",
-        marginHorizontal: 24,
-        alignSelf: "stretch",
-        justifyContent: "center",
-        backgroundColor: colors.primary,
-    },
-    tryAgainText: {
-        fontSize: 18,
-        color: colors.white,
-    },
+    }
 })
-
-export default memo(NetworkConnection)

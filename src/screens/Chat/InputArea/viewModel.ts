@@ -20,7 +20,6 @@ export const useViewModel = () => {
     const [isSendButtonEnabled, makeSendButtonEnabled] = useState(true)
 
     const isEmptyMessage = !inputText.length
-    const [keyboardVerticalOffset, setKeyboardVerticalOffset] = useState(getBottomSpace())
 
     const onSend = async () => {
         try {
@@ -46,24 +45,13 @@ export const useViewModel = () => {
         }
     }
 
-    function increaseIn(): void {
-        setKeyboardVerticalOffset(INPUT_AREA_HEIGHT)
-        setInputFocus(false)
-    }
-
-    function increaseOut(): void {
-        setKeyboardVerticalOffset(getBottomSpace())
-        setInputFocus(true)
-    }
-
     return {
         onSend,
         isFocused,
         inputText,
-        increaseIn,
-        increaseOut,
         setInputText,
         isEmptyMessage,
-        keyboardVerticalOffset,
+        onFocus: () => setInputFocus(true),
+        onBlur: () => setInputFocus(false),
     }
 }

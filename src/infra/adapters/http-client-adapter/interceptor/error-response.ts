@@ -1,5 +1,4 @@
 import { AxiosError } from "axios"
-import NetInfo from "@react-native-community/netinfo"
 
 import { logger } from "../../logger-adapter"
 import { useSession } from "../../../../context/UserContext"
@@ -9,11 +8,10 @@ import { useErrorsFeedback } from "../../../../context/ErrorsFeedbackContext"
 
 export function useRejectedResponseInterceptor() {
     const deviceSession = useSession()
+    const { makeError500Visible, makeErrorModalVisible } = useErrorsFeedback()
     const { makeRefreshVetCaseList, makeTryAgainButtonVisible } = useVetCaseIndicators()
-    const { makeError500Visible, makeErrorModalVisible, makeNoConnectionVisible } = useErrorsFeedback()
 
     async function onFailure(error: AxiosError): Promise<never> {
-        addMissingInternetConnectionHandler(error)
         addInternalServerErrorHandler(error)
         await addNotAuthorizedHandler(error)
         return Promise.reject(error)
@@ -30,18 +28,6 @@ export function useRejectedResponseInterceptor() {
             await deviceSession.clear()
             return Promise.reject(error)
         }
-    }
-
-    function addMissingInternetConnectionHandler(error: any): void {
-        NetInfo.addEventListener(networkState => {
-            if (networkState.isConnected) return
-
-            makeErrorModalVisible(true)
-            makeNoConnectionVisible(true)
-            makeRefreshVetCaseList(false)
-            makeTryAgainButtonVisible(true)
-            return Promise.reject(error)
-        })
     }
 
     function addInternalServerErrorHandler(error: any): Promise<void> {

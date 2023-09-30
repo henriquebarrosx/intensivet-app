@@ -1,4 +1,3 @@
-import { Platform } from "react-native"
 import styled from "styled-components/native"
 import { getBottomSpace } from "react-native-iphone-x-helper"
 
@@ -11,10 +10,7 @@ export const Root = styled.View`
     flex-direction: row;
     justify-content: space-between;
     background-color: ${colors.snow};
-    margin-bottom: ${({ isToggled }) => {
-        const toggledSpace = Platform.OS === "ios" ? 56 : 10
-        return isToggled ? `${toggledSpace}px` : `${getBottomSpace()}px`
-    }};   
+    margin-bottom: ${getBottomSpace()}px
 `
 
 export const LeftSide = styled.View`

@@ -15,7 +15,6 @@ const ScreenView = ({ children }: WithChildren) => {
     const {
         isErro500Visible,
         isErrorModalVisible,
-        isNoConnectionVisible,
         closeUnexpectedErrorModal,
     } = useErrorsFeedback();
 
@@ -24,7 +23,7 @@ const ScreenView = ({ children }: WithChildren) => {
     const closeUnexpectedErrorModalWithNoRefresh = () => {
         setVetCases([]);
         closeUnexpectedErrorModal({ toRefresh: false });
-    };
+    }
 
     return (
         <Fragment>
@@ -55,10 +54,11 @@ const ScreenView = ({ children }: WithChildren) => {
                         </TouchableOpacity>
 
                         {isErro500Visible && <SomethingWentWrong />}
-                        {isNoConnectionVisible && <NetworkConnection />}
                     </View>
                 </Modal>
             </View>
+
+            <NetworkConnection />
         </Fragment>
     );
 };
