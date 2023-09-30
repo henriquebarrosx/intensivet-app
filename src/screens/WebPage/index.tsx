@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { WebView } from "react-native-webview"
 import { useIsFocused } from "@react-navigation/native"
-import { pushNotification } from "../../infra/adapters"
+import { pushNotification } from "../../infra/adapters/push-notification"
 
 interface Props {
     route: { params: { source: string } }

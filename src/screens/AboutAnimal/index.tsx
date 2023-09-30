@@ -7,13 +7,12 @@ import { Ionicons, MaterialCommunityIcons, AntDesign, FontAwesome5 } from "@expo
 import { ScrollView } from "react-native"
 import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
-import { pushNotification } from "../../infra/adapters"
 import { Visibility } from "../../components/Visibility"
 import { InformationBox } from "../../components/InformationBox"
 import { SectionInfoTitle } from "../../components/SectionInfoTitle"
 import { BoxPetIconArea, Subtitle, Title, HeaderArea } from "./styles"
 import { NotificationContext } from "../../context/NotificationContext"
-
+import { pushNotification } from "../../infra/adapters/push-notification"
 
 export function AboutAnimal() {
     const isCurrentScreenFocused = useIsFocused()

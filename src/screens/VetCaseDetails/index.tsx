@@ -6,9 +6,9 @@ import React, { useCallback, useContext, useEffect, useLayoutEffect } from "reac
 import { Avatar } from "./Avatar"
 import { useViewModel } from "./useViewModel"
 import ScreenView from "../../components/ScreenView"
-import { pushNotification } from "../../infra/adapters"
 import { SectionInfoTitle } from "../../components/SectionInfoTitle"
 import { NotificationContext } from "../../context/NotificationContext"
+import { pushNotification } from "../../infra/adapters/push-notification"
 import { InformationActionBox } from "../../components/InformationActionBox"
 import { DoctorEmail, DoctorName, HeaderArea, Note, SpaceArea } from "./styles"
 

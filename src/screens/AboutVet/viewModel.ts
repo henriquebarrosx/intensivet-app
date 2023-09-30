@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { useVetCase } from "../../context/VetCaseContext"
+import { useServices } from "../../context/ServicesContext"
 import { VetCaseDetails } from "../../schemas/VetCaseDetails"
 import { localDate } from "../../infra/adapters/local-date-adapter"
-import { httpClient } from "../../infra/adapters/http-client-adapter"
-import { VetCaseService } from "../../infra/services/vet-case-service"
 import { LocalDateFormatEnum } from "../../infra/adapters/local-date-adapter/index.gateway"
 
 export const useViewModel = () => {
     const { vetCase } = useVetCase()
+    const { vetCaseService } = useServices()
 
     const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>()
     const [isLoadingIndicatorDisplayed, shouldDisplayLoadingIndicator] = useState(true)
@@ -15,10 +15,7 @@ export const useViewModel = () => {
     async function handleFetchVetCaseData(): Promise<void> {
         try {
             shouldDisplayLoadingIndicator(true)
-
-            const vetCaseService = new VetCaseService(httpClient)
             const response = await vetCaseService.findOne(vetCase.id)
-
             setVetCaseDetails(response)
         }
 

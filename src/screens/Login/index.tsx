@@ -8,8 +8,8 @@ import { useSignIn } from "./viewModel"
 import { FormView } from "./components/FormView"
 import { LogoImage } from "./components/LogoImage"
 import ScreenView from "../../components/ScreenView"
-import { pushNotification } from "../../infra/adapters"
 import { SubmitButton } from "./components/SubmitButton"
+import { pushNotification } from "../../infra/adapters/push-notification"
 
 export const Login = () => {
     const isCurrentScreenFocused = useIsFocused()

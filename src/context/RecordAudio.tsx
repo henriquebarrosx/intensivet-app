@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
 
-import { logger } from "../infra/adapters"
 import { WithChildren } from "../@types/common"
+import { logger } from "../infra/adapters/logger-adapter"
 import { AudioRecordAdapter } from "../infra/adapters/audio-record"
+
 
 interface ContextSchema {
     isRecordingAudio: boolean

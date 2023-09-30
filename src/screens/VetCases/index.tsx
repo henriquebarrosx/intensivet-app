@@ -15,9 +15,9 @@ import { VetCaseModel } from "../../schemas/VetCase"
 import { MessageModel } from "../../schemas/Message"
 import { CHANNELS_EVENTS } from "../../schemas/Pusher"
 import { UserContext } from "../../context/UserContext"
-import { pushNotification } from "../../infra/adapters"
 import { useVetCases } from "../../context/VetCasesContext"
 import { NotificationContext } from "../../context/NotificationContext"
+import { pushNotification } from "../../infra/adapters/push-notification"
 import { OrderVetCaseContext, OrderVetCaseProvider } from "../../context/OrderVetCases"
 
 function VetCases() {

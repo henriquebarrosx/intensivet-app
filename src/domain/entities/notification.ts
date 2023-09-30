@@ -1,5 +1,5 @@
 import { Notification as NotificationEvent } from "expo-notifications"
-import { logger } from "../../infra/adapters"
+import { logger } from "../../infra/adapters/logger-adapter"
 
 export class Notification {
     constructor(private readonly event?: NotificationEvent) { }

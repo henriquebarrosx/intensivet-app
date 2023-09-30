@@ -1,6 +1,6 @@
 import { Account } from "./account"
 import { DeviceFile } from "./device-file"
-import { logger } from "../../infra/adapters"
+import { logger } from "../../infra/adapters/logger-adapter"
 
 export class Message {
     id: number

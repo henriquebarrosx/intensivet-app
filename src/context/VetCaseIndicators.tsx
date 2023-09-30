@@ -1,6 +1,6 @@
 import React, { createContext, Dispatch, SetStateAction, useContext, useState } from "react"
+import { logger } from "../infra/adapters/logger-adapter"
 import { WithChildren } from "../@types/common"
-import { logger } from "../infra/adapters"
 
 interface ContextSchema {
     /** STATES */

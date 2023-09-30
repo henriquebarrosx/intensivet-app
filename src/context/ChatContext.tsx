@@ -1,16 +1,15 @@
 import { VirtualizedList } from "react-native"
 import React, { useRef, useState, useContext, createContext, RefObject } from "react"
 
-import { logger } from "../infra/adapters"
 import { useVetCase } from "./VetCaseContext"
 import { WithChildren } from "../@types/common"
+import { useServices } from "./ServicesContext"
 import { MessageModel } from "../schemas/Message"
 import { Pagination } from "../schemas/Pagination"
 import { Message } from "../domain/entities/message"
+import { logger } from "../infra/adapters/logger-adapter"
 import { MessageMapper } from "../infra/mappers/message-mapper"
 import { removeDuplicatedKeysFromMessage } from "../utils/message"
-import { MessageService } from "../infra/services/message-service"
-import { httpClient } from "../infra/adapters/http-client-adapter"
 
 type ChatContextGateway = {
     isSending: boolean
@@ -28,13 +27,11 @@ type ChatContextGateway = {
     fetchMessages(fromPage?: number, stopLoadingWhenFinish?: boolean): Promise<void>
 }
 
-const INITIAL_PAGE = 1
 export const ChatContext = createContext<ChatContextGateway>(null)
 
 export function ChatProvider({ children }: WithChildren) {
     const { vetCase } = useVetCase()
-
-    const messagesService = new MessageService(httpClient)
+    const { messageService } = useServices()
 
     const [isSending, displaySendFeedback] = useState(false)
     const [isFetching, displayFetchLoader] = useState(false)
@@ -51,7 +48,7 @@ export function ChatProvider({ children }: WithChildren) {
         try {
             displayFetchLoader(true)
 
-            const [items, pagination] = await messagesService.findAllByVetCase(vetCase.id, fromPage)
+            const [items, pagination] = await messageService.findAllByVetCase(vetCase.id, fromPage)
             const nonDuplicatedMessages = removeDuplicatedKeysFromMessage([...messages, ...items])
 
             updatePagination(pagination)
@@ -67,7 +64,7 @@ export function ChatProvider({ children }: WithChildren) {
         try {
             displayFetchLoader(true)
 
-            const message = await messagesService.findOneByVetCase(vetCase.id, messageId)
+            const message = await messageService.findOneByVetCase(vetCase.id, messageId)
             const nonDuplicatedMessages = removeDuplicatedKeysFromMessage([message, ...messages])
 
             updatePagination(pagination)
@@ -86,8 +83,6 @@ export function ChatProvider({ children }: WithChildren) {
 
     async function handlePagination(): Promise<void> {
         if (pagination?.next) {
-            const currentPage = pagination?.current ?? INITIAL_PAGE
-            const totalPage = pagination?.total_pages ?? INITIAL_PAGE
             await fetchMessages(pagination.next)
         }
     }
@@ -128,7 +123,7 @@ export function useChat() {
     const context = useContext(ChatContext)
 
     if (!context) {
-        const errorMessage = "useChat should be nested in ChatProvider"
+        const errorMessage = "useChat must to be nested in ChatProvider"
         logger.error("REACT CONTEXT PROVIDER", errorMessage)
         throw new Error(errorMessage)
     }

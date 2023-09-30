@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState } from "react"
+import { logger } from "../infra/adapters/logger-adapter"
 import { WithChildren } from "../@types/common"
-import { logger } from "../infra/adapters"
 
 interface FileAttachmentModalType {
     isDisplayingModal: boolean
     displayModal: (isOpen: boolean) => void
 }
 
-export const FileAttachmentModalContext = createContext({} as FileAttachmentModalType)
+export const FileAttachmentModalContext = createContext<FileAttachmentModalType>(null)
 
 export const FileAttachmentModalProvider = ({ children }: WithChildren) => {
     const [isDisplayingModal, displayModal] = useState<boolean>(false)
@@ -21,9 +21,8 @@ export const FileAttachmentModalProvider = ({ children }: WithChildren) => {
 
 export function useFileAttachmentModal() {
     const context = useContext(FileAttachmentModalContext)
-    const isContextNotFound: boolean = Object.keys(context).length === 0
 
-    if (isContextNotFound) {
+    if (!context) {
         const errorMessage = "useFileAttachmentModal should be encapsulated by FileAttachmentModalProvider"
         logger.error("REACT CONTEXT PROVIDER", errorMessage)
         throw new Error(errorMessage)

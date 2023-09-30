@@ -1,5 +1,5 @@
-import { logger } from "../../adapters"
 import { Pagination } from "../../../@types/common"
+import { logger } from "../../adapters/logger-adapter"
 import { FindAllVetCasesResponse } from "./index.models"
 import { VetCaseDetails } from "../../../schemas/VetCaseDetails"
 import { VetCaseModel, VetCaseOrderTypeEnum } from "../../../schemas/VetCase"

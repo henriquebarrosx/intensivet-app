@@ -2,8 +2,8 @@ import { Audio } from "expo-av"
 import React, { useEffect, useState } from "react"
 
 import theme from "../../../../theme"
-import { logger } from "../../../../infra/adapters"
 import { Message } from "../../../../domain/entities/message"
+import { logger } from "../../../../infra/adapters/logger-adapter"
 import { SoundStateIcon, TapArea, Container, LoadingFeedback, Dashes } from "./styles"
 
 enum AudioState {

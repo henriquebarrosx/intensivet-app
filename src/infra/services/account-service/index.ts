@@ -1,4 +1,4 @@
-import { logger } from "../../adapters"
+import { logger } from "../../adapters/logger-adapter"
 import { SignInRequest, SignInResponse } from "./index.models"
 import { IHttpClient } from "../../adapters/http-client-adapter/index.gateway"
 

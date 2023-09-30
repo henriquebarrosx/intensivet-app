@@ -1,4 +1,4 @@
-import { logger } from "../../infra/adapters"
+import { logger } from "../../infra/adapters/logger-adapter"
 
 export class DeviceFile {
     private constructor(

@@ -1,9 +1,9 @@
 import { CameraType } from "expo-camera"
 import React, { createContext, Dispatch, SetStateAction, useContext, useRef, useState } from "react"
 
-import { logger } from "../infra/adapters"
 import { WithChildren } from "../@types/common"
 import * as MediaLibrary from "expo-media-library"
+import { logger } from "../infra/adapters/logger-adapter"
 
 interface ContextSchema {
     isCameraReady: boolean

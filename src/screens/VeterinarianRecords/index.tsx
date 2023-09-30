@@ -8,11 +8,11 @@ import { SpaceArea } from "./styles"
 import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
 import { AbsoluteArea } from "../AboutClinic/styles"
-import { pushNotification } from "../../infra/adapters"
 import { Visibility } from "../../components/Visibility"
 import { InformationBox } from "../../components/InformationBox"
 import { SectionInfoTitle } from "../../components/SectionInfoTitle"
 import { NotificationContext } from "../../context/NotificationContext"
+import { pushNotification } from "../../infra/adapters/push-notification"
 import { DetailedInformationBox } from "../../components/DetailedInformationBox"
 
 export function VeterinarianRecords() {

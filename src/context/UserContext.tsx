@@ -1,10 +1,10 @@
 import * as SplashScreen from "expo-splash-screen"
 import React, { useState, createContext, useContext } from "react"
 
-import { logger } from "../infra/adapters"
 import { User } from "../schemas/Account"
 import { WithChildren } from "../@types/common"
 import { navigationRef } from "../utils/navigation"
+import { logger } from "../infra/adapters/logger-adapter"
 import { SessionRepository } from "../infra/repositories/session"
 
 interface UserContextType {
@@ -22,9 +22,9 @@ export const UserContext = createContext<UserContextType>(null)
 
 export function SessionProvider({ children }: WithChildren) {
     const [sessionData, updateSessionState] = useState<User | null>(null)
+    const sessionRepository = new SessionRepository()
 
     async function retrieve(): Promise<void> {
-        const sessionRepository = new SessionRepository()
         const session: User | null = await sessionRepository.get()
 
         if (session) {
@@ -38,13 +38,11 @@ export function SessionProvider({ children }: WithChildren) {
     }
 
     async function save(userSession: User, expoToken: string) {
-        const sessionRepository = new SessionRepository()
         await sessionRepository.save({ ...userSession, expoToken })
         updateSessionState(userSession)
     }
 
     async function clear(): Promise<void> {
-        const sessionRepository = new SessionRepository()
         await sessionRepository.clear()
         updateSessionState(null)
     }

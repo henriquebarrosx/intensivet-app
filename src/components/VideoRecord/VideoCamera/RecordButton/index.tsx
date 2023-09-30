@@ -3,8 +3,8 @@ import { Camera } from "expo-camera"
 import { View, TouchableOpacity } from "react-native"
 
 import { styles } from "./styles"
-import { logger } from "../../../../infra/adapters"
 import { useVideoCamera } from "../../../../context/RecordVideo"
+import { logger } from "../../../../infra/adapters/logger-adapter"
 
 interface Props {
     recordVideoCamera: (isRecording: boolean) => void

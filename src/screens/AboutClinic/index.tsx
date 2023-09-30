@@ -7,12 +7,12 @@ import React, { useCallback, useContext, useEffect, useLayoutEffect } from "reac
 import { Avatar } from "./Avatar"
 import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
-import { pushNotification } from "../../infra/adapters"
 import { Visibility } from "../../components/Visibility"
 import { InformationBox } from "../../components/InformationBox"
 import { SectionInfoTitle } from "../../components/SectionInfoTitle"
 import { Subtitle, Title, HeaderArea, AbsoluteArea } from "./styles"
 import { NotificationContext } from "../../context/NotificationContext"
+import { pushNotification } from "../../infra/adapters/push-notification"
 
 export function AboutClinic() {
     const isCurrentScreenFocused = useIsFocused()

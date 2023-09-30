@@ -1,5 +1,5 @@
-import { logger } from "../../../../../infra/adapters"
 import { useAudioRecord } from "../../../../../context/RecordAudio"
+import { logger } from "../../../../../infra/adapters/logger-adapter"
 import { AudioRecordAdapter } from "../../../../../infra/adapters/audio-record"
 
 export const useViewModel = () => {

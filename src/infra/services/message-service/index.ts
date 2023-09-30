@@ -1,4 +1,4 @@
-import { logger } from "../../adapters"
+import { logger } from "../../adapters/logger-adapter"
 import { MessageModel } from "../../../schemas/Message"
 import { Pagination } from "../../../schemas/Pagination"
 import { Message } from "../../../domain/entities/message"

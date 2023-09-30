@@ -1,22 +1,19 @@
-import { useState } from "react";
-import { useVetCase } from "../../context/VetCaseContext";
-import { VetCaseDetails } from "../../schemas/VetCaseDetails";
-import { httpClient } from "../../infra/adapters/http-client-adapter"
-import { VetCaseService } from "../../infra/services/vet-case-service"
+import { useState } from "react"
+import { useVetCase } from "../../context/VetCaseContext"
+import { useServices } from "../../context/ServicesContext"
+import { VetCaseDetails } from "../../schemas/VetCaseDetails"
 
 export const useViewModel = () => {
-    const { vetCase } = useVetCase();
+    const { vetCase } = useVetCase()
+    const { vetCaseService } = useServices()
 
-    const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>();
-    const [isLoadingIndicatorDisplayed, shouldDisplayLoadingFeedback] = useState(true);
+    const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>()
+    const [isLoadingIndicatorDisplayed, shouldDisplayLoadingFeedback] = useState(true)
 
     async function fetchVetCaseDetails(): Promise<void> {
         try {
             shouldDisplayLoadingFeedback(true)
-
-            const vetCaseService = new VetCaseService(httpClient)
             const response = await vetCaseService.findOne(vetCase.id)
-
             setVetCaseDetails(response)
         }
 
@@ -26,19 +23,19 @@ export const useViewModel = () => {
     }
 
     function getVetCaseCategory(): string {
-        return vetCaseDetails?.category.name || "---";
+        return vetCaseDetails?.category.name || "---"
     }
 
     function getVetCaseCategoryDescription(): string {
-        return vetCaseDetails?.category.description || "---";
+        return vetCaseDetails?.category.description || "---"
     }
 
     function getVetCasePriority(): string {
         if (vetCaseDetails?.priority?.value) {
-            return `Classe ${vetCaseDetails?.priority?.value} \n\n ${vetCaseDetails?.priority?.description}`;
+            return `Classe ${vetCaseDetails?.priority?.value} \n\n ${vetCaseDetails?.priority?.description}`
         }
 
-        return "---";
+        return "---"
     }
 
     return {

@@ -1,25 +1,22 @@
-import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useState } from "react"
+import { useNavigation } from "@react-navigation/native"
 
-import { useVetCase } from "../../context/VetCaseContext";
-import { EvidencesType } from "../../schemas/VetCaseDetails";
-import { httpClient } from "../../infra/adapters/http-client-adapter"
-import { VetCaseService } from "../../infra/services/vet-case-service"
+import { useVetCase } from "../../context/VetCaseContext"
+import { useServices } from "../../context/ServicesContext"
+import { EvidencesType } from "../../schemas/VetCaseDetails"
 
 export const useViewModel = () => {
-    const { vetCase } = useVetCase();
-    const navigation = useNavigation();
+    const { vetCase } = useVetCase()
+    const navigation = useNavigation()
+    const { vetCaseService } = useServices()
 
-    const [evidences, setEvidences] = useState<EvidencesType[]>([]);
-    const [isFetchingEvidences, displayFetchFeedback] = useState<boolean>(true);
+    const [evidences, setEvidences] = useState<EvidencesType[]>([])
+    const [isFetchingEvidences, displayFetchFeedback] = useState<boolean>(true)
 
     async function fetchVetCaseDetails(): Promise<void> {
         try {
             displayFetchFeedback(true)
-
-            const vetCaseService = new VetCaseService(httpClient)
             const response = await vetCaseService.findOne(vetCase.id)
-
             setEvidences([...response?.chat_evidences, ...response?.evidences])
         }
 
@@ -32,24 +29,24 @@ export const useViewModel = () => {
         navigation.navigate('WebPage', {
             screenTitle: 'Evidências',
             source: source,
-        });
+        })
     }
 
     function isEvidencesNotFoundTextVisible(): boolean {
-        return evidences.length === 0 && !isFetchingEvidences;
+        return evidences.length === 0 && !isFetchingEvidences
     }
 
     function getEvidenceIcon({ type }: { type: string }): string {
         if (type.endsWith('pdf')) {
-            return 'file-pdf-box';
+            return 'file-pdf-box'
         }
 
         if (type.endsWith('csv') || type.endsWith('xlsx')) {
-            return 'file-excel';
+            return 'file-excel'
         }
 
         if (type.endsWith('docx')) {
-            return 'word';
+            return 'word'
         }
 
         if (type.endsWith('mp3')) {

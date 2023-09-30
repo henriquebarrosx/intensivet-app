@@ -13,18 +13,19 @@ import { CHANNELS_EVENTS } from "../../schemas/Pusher"
 import ModalToVideoPreview from "./ModalToPreview/Video"
 import ModalToImagePreview from "./ModalToPreview/Image"
 import { useVetCase } from "../../context/VetCaseContext"
-import { notificationService } from "../../infra/services"
 import { useVetCases } from "../../context/VetCasesContext"
 import { MessageProvider } from "../../context/MessageContext"
 import { Notification } from "../../domain/entities/notification"
 import { NotificationContext } from "../../context/NotificationContext"
 import { FileAttachmentModalProvider } from "../../context/AttachModal"
+import { useServices } from "../../context/ServicesContext"
 
 interface Props {
     route: { params: { videoUri: string } }
 }
 
 function Chat(props: Props) {
+    const { notificationService } = useServices()
     const isCurrentScreenFocused = useIsFocused()
     const videoUri = props?.route?.params?.videoUri
 

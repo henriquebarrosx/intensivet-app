@@ -7,8 +7,8 @@ import { useViewModel } from "./useViewModel"
 import { Switch } from "../../components/Switch"
 import ScreenView from "../../components/ScreenView"
 import { UserContext } from "../../context/UserContext"
-import { pushNotification } from "../../infra/adapters"
 import { NotificationContext } from "../../context/NotificationContext"
+import { pushNotification } from "../../infra/adapters/push-notification"
 import { ActionsArea, ActionText, ButtonArea, Divider, DoctorEmail, DoctorName, HeaderArea } from "./styles"
 
 export default function Profile() {

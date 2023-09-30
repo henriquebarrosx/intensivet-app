@@ -1,16 +1,16 @@
 import { useChat } from "../../../../context/ChatContext"
 import { useVetCase } from "../../../../context/VetCaseContext"
 import { useVetCases } from "../../../../context/VetCasesContext"
+import { useServices } from "../../../../context/ServicesContext"
 import { useFileAttachmentModal } from "../../../../context/AttachModal"
 import { MessageMapper } from "../../../../infra/mappers/message-mapper"
-import { MessageService } from "../../../../infra/services/message-service"
-import { httpClient } from "../../../../infra/adapters/http-client-adapter"
 import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera"
 
 export const useViewModel = () => {
     const chatViewModel = useChat()
     const vetCaseContext = useVetCase()
     const vetCasesViewModel = useVetCases()
+    const { messageService } = useServices()
     const fileAttachmentModalContext = useFileAttachmentModal()
 
     async function uploadAssetFromCamera() {
@@ -23,8 +23,6 @@ export const useViewModel = () => {
 
         try {
             chatViewModel.displaySendFeedback(true)
-
-            const messageService = new MessageService(httpClient)
 
             const response = await messageService.create(
                 vetCaseContext.vetCase.id,

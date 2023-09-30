@@ -1,10 +1,10 @@
 import { VirtualizedList } from "react-native"
 import React, { useRef, Dispatch, useState, RefObject, useContext, createContext, SetStateAction } from "react"
 
-import { logger } from "../infra/adapters"
 import { WithChildren } from "../@types/common"
 import { MessageModel } from "../schemas/Message"
 import { Pagination } from "../schemas/Pagination"
+import { logger } from "../infra/adapters/logger-adapter"
 import { VetCaseModel as VetCaseModel } from "../schemas/VetCase"
 
 interface VetCaseContextType {

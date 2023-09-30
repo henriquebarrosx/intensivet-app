@@ -3,7 +3,7 @@ import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from "expo-media-library"
 
 import { DeviceFile } from "../../domain/entities/device-file"
-import { logger } from "."
+import { logger } from "./logger-adapter"
 
 export class DeviceGalleryAdapter {
     async requestAsyncPermission(): Promise<boolean> {

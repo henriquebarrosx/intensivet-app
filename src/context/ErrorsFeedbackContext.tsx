@@ -8,9 +8,9 @@ import React, {
     SetStateAction,
 } from "react"
 
-import { logger } from "../infra/adapters"
-import { WithChildren } from "../@types/common"
 import { useVetCaseIndicators } from "./VetCaseIndicators"
+import { logger } from "../infra/adapters/logger-adapter"
+import { WithChildren } from "../@types/common"
 
 interface ErrorsFeedbackContextType {
     /** STATES */

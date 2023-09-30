@@ -1,7 +1,7 @@
 import { AxiosError } from "axios"
 import NetInfo from "@react-native-community/netinfo"
 
-import { logger } from "../.."
+import { logger } from "../../logger-adapter"
 import { useSession } from "../../../../context/UserContext"
 import { navigationRef } from "../../../../utils/navigation"
 import { useVetCaseIndicators } from "../../../../context/VetCaseIndicators"

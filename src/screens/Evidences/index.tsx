@@ -6,8 +6,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
-import { pushNotification } from "../../infra/adapters"
 import { NotificationContext } from "../../context/NotificationContext"
+import { pushNotification } from "../../infra/adapters/push-notification"
 import { Container, Evidence, EvidencesNotFound, AbsoluteArea, Description } from "./styles"
 
 export function EvidencesScreen() {

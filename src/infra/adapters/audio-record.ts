@@ -1,7 +1,7 @@
 import { Audio } from "expo-av"
 import { Alert } from "react-native"
 import { DeviceFile } from "../../domain/entities/device-file"
-import { logger } from "."
+import { logger } from "./logger-adapter"
 
 export class AudioRecordAdapter {
     data: Audio.Recording

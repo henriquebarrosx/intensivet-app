@@ -4,13 +4,13 @@ import { getBottomSpace } from "react-native-iphone-x-helper"
 import { useChat } from "../../../context/ChatContext"
 import { useVetCase } from "../../../context/VetCaseContext"
 import { useVetCases } from "../../../context/VetCasesContext"
+import { useServices } from "../../../context/ServicesContext"
 import { MessageMapper } from "../../../infra/mappers/message-mapper"
-import { MessageService } from "../../../infra/services/message-service"
-import { httpClient } from "../../../infra/adapters/http-client-adapter"
 
 export const INPUT_AREA_HEIGHT = 58
 
 export const useViewModel = () => {
+    const { messageService } = useServices()
     const chatViewModel = useChat()
     const vetCasesViewModel = useVetCases()
     const { id: vetCaseId } = useVetCase().vetCase
@@ -27,8 +27,6 @@ export const useViewModel = () => {
             if (inputText && isSendButtonEnabled) {
                 chatViewModel.displaySendFeedback(true)
                 makeSendButtonEnabled(false)
-
-                const messageService = new MessageService(httpClient)
 
                 const response = await messageService.create(
                     vetCaseId,

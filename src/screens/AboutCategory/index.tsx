@@ -7,8 +7,8 @@ import React, { useCallback, useContext, useEffect, useLayoutEffect } from "reac
 import { AbsoluteArea } from "./styles"
 import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
-import { pushNotification } from "../../infra/adapters"
 import { Visibility } from "../../components/Visibility"
+import { pushNotification } from "../../infra/adapters/push-notification"
 import { NotificationContext } from "../../context/NotificationContext"
 import { DetailedInformationBox } from "../../components/DetailedInformationBox"
 

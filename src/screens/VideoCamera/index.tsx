@@ -1,10 +1,10 @@
 import React, { useEffect } from "react"
 import { useIsFocused, useNavigation } from "@react-navigation/native"
 
-import { pushNotification } from "../../infra/adapters"
 import { useVetCase } from "../../context/VetCaseContext"
 import VideoCameraComponent from "../../components/VideoRecord"
 import { RecordVideoProvider } from "../../context/RecordVideo"
+import { pushNotification } from "../../infra/adapters/push-notification"
 
 const VideoCamera = () => {
     const { vetCase } = useVetCase()

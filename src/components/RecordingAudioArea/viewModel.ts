@@ -2,12 +2,12 @@ import { useState } from "react"
 import { useChat } from "../../context/ChatContext"
 import { useVetCase } from "../../context/VetCaseContext"
 import { useAudioRecord } from "../../context/RecordAudio"
+import { useServices } from "../../context/ServicesContext"
 import { MessageMapper } from "../../infra/mappers/message-mapper"
-import { MessageService } from "../../infra/services/message-service"
-import { httpClient } from "../../infra/adapters/http-client-adapter"
 
 export const useViewModel = () => {
     const chatViewModel = useChat()
+    const { messageService } = useServices()
     const { id: vetCaseId } = useVetCase().vetCase
     const { audioRecord, displayAudioRecordFeedback, setAudioRecord } = useAudioRecord()
 
@@ -29,8 +29,6 @@ export const useViewModel = () => {
             chatViewModel.displaySendFeedback(true)
             displayAudioRecordFeedback(false)
             setAudioRecord()
-
-            const messageService = new MessageService(httpClient)
 
             const response = await messageService.create(
                 vetCaseId,

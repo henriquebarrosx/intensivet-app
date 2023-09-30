@@ -3,15 +3,15 @@ import { useContext } from "react"
 import { useChat } from "../../../../context/ChatContext"
 import { useVetCase } from "../../../../context/VetCaseContext"
 import { useVetCases } from "../../../../context/VetCasesContext"
+import { useServices } from "../../../../context/ServicesContext"
 import { MessageMapper } from "../../../../infra/mappers/message-mapper"
-import { MessageService } from "../../../../infra/services/message-service"
-import { httpClient } from "../../../../infra/adapters/http-client-adapter"
 import { FileAttachmentModalContext } from "../../../../context/AttachModal"
 import { DeviceGalleryAdapter } from "../../../../infra/adapters/device-gallery"
 
 export const useViewModel = () => {
     const chatViewModel = useChat()
     const vetCasesViewModel = useVetCases()
+    const { messageService } = useServices()
     const { id: vetCaseId } = useVetCase().vetCase
     const { displayModal } = useContext(FileAttachmentModalContext)
 
@@ -24,8 +24,6 @@ export const useViewModel = () => {
         try {
             if (assetFile) {
                 chatViewModel.displaySendFeedback(true)
-
-                const messageService = new MessageService(httpClient)
 
                 const response = await messageService.create(
                     vetCaseId,

@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { useSession } from "../../context/UserContext"
-import { notificationService } from "../../infra/services"
+import { useServices } from "../../context/ServicesContext"
 
 export const useViewModel = () => {
     const deviceSession = useSession()
+    const { notificationService } = useServices()
     const [isNotificationsEnabled, setNotificationState] = useState(!!deviceSession.sessionData?.expoToken)
 
     const userThumbnail = deviceSession.sessionData?.current_account?.thumbnail

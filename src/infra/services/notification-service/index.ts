@@ -1,8 +1,8 @@
-import { logger } from "../../adapters"
+import { logger } from "../../adapters/logger-adapter"
 import { SessionRepository } from "../../repositories/session"
 import { EnableOrDisableNotificationsRequest } from "./index.models"
-import { PushNotificationAdapter } from "../../adapters/push-notification"
 import { IHttpClient } from "../../adapters/http-client-adapter/index.gateway"
+import { PushNotificationAdapter } from "../../adapters/push-notification/index.adapter"
 
 export class NotificationService {
     constructor(

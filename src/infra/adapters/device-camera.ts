@@ -3,7 +3,7 @@ import * as ImagePicker from "expo-image-picker"
 import { Camera as ExpoCamera } from "expo-camera"
 
 import { DeviceFile } from "../../domain/entities/device-file"
-import { logger } from "."
+import { logger } from "./logger-adapter"
 
 export class DeviceCameraAdapter {
     async requestAsyncPermission(): Promise<boolean> {

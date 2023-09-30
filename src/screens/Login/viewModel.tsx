@@ -4,15 +4,15 @@ import { useState, useContext } from "react"
 
 import { KeyboardBehavior } from "../../@types/common"
 import { UserContext } from "../../context/UserContext"
-import { pushNotification } from "../../infra/adapters"
-import { httpClient } from "../../infra/adapters/http-client-adapter"
-import { AccountService } from "../../infra/services/account-service"
+import { useServices } from "../../context/ServicesContext"
 import { useVetCaseIndicators } from "../../context/VetCaseIndicators"
+import { pushNotification } from "../../infra/adapters/push-notification"
 
 export interface Form { email: string, password: string }
 const defaultFormSchema: Form = { email: "", password: "" }
 
 export function useSignIn() {
+    const { accountService } = useServices()
     const { save: setUserSession } = useContext(UserContext)
     const { makeRefreshVetCaseList } = useVetCaseIndicators()
 
@@ -31,12 +31,8 @@ export function useSignIn() {
 
             try {
                 makeRefreshVetCaseList(true)
-
                 const { email, password } = requestBody
-
-                const accountService = new AccountService(httpClient)
                 const response = await accountService.signIn(email, password, pushNotificationToken)
-
                 const params = { ...response, expoToken: pushNotificationToken }
                 setUserSession(params, pushNotificationToken!)
             }

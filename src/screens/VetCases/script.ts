@@ -1,20 +1,17 @@
 import { useVetCases } from "../../context/VetCasesContext"
 import { VetCaseOrderTypeEnum } from '../../schemas/VetCase'
-import { httpClient } from "../../infra/adapters/http-client-adapter"
+import { useServices } from "../../context/ServicesContext"
 import { useVetCaseIndicators } from "../../context/VetCaseIndicators"
-import { VetCaseService } from "../../infra/services/vet-case-service"
 
 export function useVetCaseList() {
     const vetCasesViewModel = useVetCases()
+    const { vetCaseService } = useServices()
     const { makeRefreshVetCaseList } = useVetCaseIndicators()
 
     async function fetchVetCaseList(page = 1, orderBy = VetCaseOrderTypeEnum.LAST_MESSAGE): Promise<void> {
         try {
             makeRefreshVetCaseList(true)
-
-            const vetCaseService = new VetCaseService(httpClient)
             const [items, pagination] = await vetCaseService.findAll(page, orderBy)
-
             vetCasesViewModel.setVetCases(items)
             vetCasesViewModel.setPagination(pagination)
         }
