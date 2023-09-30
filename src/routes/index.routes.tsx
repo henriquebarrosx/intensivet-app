@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { PublicRoutes } from './public.routes';
 import { PrivateRoutes } from './private.routes';
 import { navigationRef } from '../utils/navigation';
+import { SafeAreaView } from 'react-native';
+import colors from '../utils/colors';
 
 declare global {
     namespace ReactNavigation {

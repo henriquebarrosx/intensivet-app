@@ -17,3 +17,8 @@ export const Subtitle = styled.Text`
     font-family: ${({ theme }) => theme.FONTS.REGULAR};
     text-align: ${Platform.OS === 'ios' ? 'center' : 'left'};
 `
+
+export const ActionButton = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+`;

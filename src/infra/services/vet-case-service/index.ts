@@ -24,7 +24,7 @@ export class VetCaseService {
     }
 
     async findOne(id: number): Promise<VetCaseDetails | undefined> {
-        const endpoint = `/api/v2/vet_cases/${id}/error`
+        const endpoint = `/api/v2/vet_cases/${id}`
 
         try {
             logger.info("VET CASE", "Find by id", { endpoint })

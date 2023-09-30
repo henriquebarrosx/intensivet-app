@@ -11,7 +11,11 @@ import RecordAudioAnimation from "../../../assets/animations/recordingAudio.json
 var timeOut: any = null;
 const ONE_MINUTE = 1000;
 
-export const RecordAudioAreaView = () => {
+type Props = {
+  onCancel(): void
+}
+
+export const RecordAudioAreaView = (props: Props) => {
   const {
     onSend,
     onCancel,
@@ -31,7 +35,10 @@ export const RecordAudioAreaView = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <TouchableOpacity onPress={onCancel}>
+        <TouchableOpacity onPress={() => {
+          onCancel()
+          props.onCancel()
+        }}>
           <MaterialIcon size={32} name="delete" color={colors.danger} />
         </TouchableOpacity>
 

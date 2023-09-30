@@ -28,7 +28,7 @@ export default function Messages() {
     }
 
     return (
-        <Fragment>
+        <View style={{ flex: 1 }}>
             <ImageBackground source={ChatWallpaper} style={styles.root}>
                 <FetchingLoadingFeedback isVisible={chatViewModel.isFetching} />
 
@@ -53,6 +53,6 @@ export default function Messages() {
                     <SendingLoadingFeedback isVisible={chatViewModel.isSending} />
                 </View>
             </ImageBackground>
-        </Fragment>
+        </View>
     )
 }

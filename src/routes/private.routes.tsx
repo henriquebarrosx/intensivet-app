@@ -33,7 +33,7 @@ export const PrivateRoutes = () => (
                 component={Chat}
                 options={({ route }) => ({
                     headerBackTitle: 'Voltar',
-                    headerRight: () => <VetCaseHeaderRightSide />,
+                    headerTitleAlign: "left",
                     headerTitle: () => <VetCaseScreenHeader {...route.params} />,
                 })}
             />

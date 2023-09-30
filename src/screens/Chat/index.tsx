@@ -3,7 +3,6 @@ import { useIsFocused } from "@react-navigation/native"
 import React, { Fragment, useContext, useEffect } from "react"
 
 import Messages from "./Messages"
-import { ContentArea } from "./styles"
 import { InputArea } from "./InputArea"
 import ModalAttachment from "./ModalAttachment"
 import { useChat } from "../../context/ChatContext"
@@ -19,6 +18,7 @@ import { Notification } from "../../domain/entities/notification"
 import { NotificationContext } from "../../context/NotificationContext"
 import { FileAttachmentModalProvider } from "../../context/AttachModal"
 import { useServices } from "../../context/ServicesContext"
+import { ContentArea } from "./styles"
 
 interface Props {
     route: { params: { videoUri: string } }
@@ -85,10 +85,8 @@ function Chat(props: Props) {
     return (
         <Fragment>
             <ScreenView>
-                <ContentArea>
-                    <Messages />
-                    <InputArea />
-                </ContentArea>
+                <Messages />
+                <InputArea />
             </ScreenView>
 
             <ModalToImagePreview />
