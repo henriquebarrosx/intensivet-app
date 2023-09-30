@@ -9,7 +9,7 @@ type LoggerParams = {
 }
 
 Sentry.init({
-    dsn: "https://41768051e632d977287cbce95f0a2645@o4505966712979456.ingest.sentry.io/4505966714683392"
+    dsn: "https://d0bb3ec74543499e774342cb20a4d7e0@o4505966712979456.ingest.sentry.io/4505969606721536"
 })
 
 export const logger = {
