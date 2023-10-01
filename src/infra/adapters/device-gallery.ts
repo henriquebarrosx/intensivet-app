@@ -6,6 +6,11 @@ import { DeviceFile } from "../../domain/entities/device-file"
 import { logger } from "./logger-adapter"
 
 export class DeviceGalleryAdapter {
+    /**
+     * Requests asynchronous permission for gallery access.
+     *
+     * @returns {Promise<boolean>} A promise that resolves to `true` if permission is granted, `false` otherwise.
+     */
     async requestAsyncPermission(): Promise<boolean> {
         logger.info("GALLERY", "Get permission")
         const currentPermission = await MediaLibrary.getPermissionsAsync()
@@ -17,6 +22,12 @@ export class DeviceGalleryAdapter {
         return permissionResult.granted;
     }
 
+    /**
+     * Picks an asset (photo or video) from the device's gallery.
+     *
+     * @returns {Promise<DeviceFile | undefined>} A promise that resolves to a DeviceFile containing the picked asset,
+     * or `undefined` if the operation was canceled or permission was denied.
+     */
     async pickAsset(): Promise<DeviceFile | undefined> {
         const hasGalleryAccessPermission = await this.requestAsyncPermission()
 
