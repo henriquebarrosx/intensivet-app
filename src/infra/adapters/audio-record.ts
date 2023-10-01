@@ -6,6 +6,11 @@ import { logger } from "./logger-adapter"
 export class AudioRecordAdapter {
     data: Audio.Recording
 
+    /**
+     * Requests asynchronous permission for microphone access.
+     *
+     * @returns {Promise<boolean>} A promise that resolves to `true` if permission is granted, `false` otherwise.
+     */
     async requestAsyncPermission(): Promise<boolean> {
         logger.info("MICROPHONE", "Get permission")
         const currentPermission = await Audio.getPermissionsAsync()
@@ -17,6 +22,11 @@ export class AudioRecordAdapter {
         return permissionResult.granted;
     }
 
+    /**
+     * Starts recording audio.
+     *
+     * @returns {Promise<Audio.Recording>} A promise that resolves to the started audio recording.
+     */
     async start(): Promise<Audio.Recording> {
         const hasGalleryAccessPermission = await this.requestAsyncPermission()
 
@@ -31,6 +41,11 @@ export class AudioRecordAdapter {
         return recording
     }
 
+    /**
+     * Stops the audio recording.
+     *
+     * @returns {Promise<DeviceFile>} A promise that resolves to a DeviceFile containing the recorded audio.
+     */
     async stop(): Promise<DeviceFile> {
         this.data.stopAndUnloadAsync()
         await Audio.setAudioModeAsync({ allowsRecordingIOS: false })
@@ -39,6 +54,11 @@ export class AudioRecordAdapter {
         return DeviceFile.create({ uri, type: "audio" })
     }
 
+    /**
+     * Cancels the audio recording.
+     *
+     * @returns {Promise<void>} A promise that resolves once the recording is canceled.
+     */
     async cancel(): Promise<void> {
         this.data.stopAndUnloadAsync()
         await Audio.setAudioModeAsync({ allowsRecordingIOS: false })
