@@ -24,8 +24,8 @@ export const logger = {
      * @param {LoggerParams} [params={}] - Additional parameters to include in the log.
      * */
     info(event: string, description: string, params: LoggerParams = {}) {
-        const currentDateTime = localDate.format(new Date(), LocalDateFormatEnum.datetime)
-        const message = `[${currentDateTime}] INFO: (${event.toUpperCase()}): ${description.toLowerCase()}`
+        const zonedTime = localDate.format(localDate.toZone(new Date()), LocalDateFormatEnum.datetime)
+        const message = `[${zonedTime}] INFO: (${event.toUpperCase()}): ${description.toLowerCase()}`
         console.log(message, params)
     },
 
@@ -37,8 +37,8 @@ export const logger = {
      * @param {LoggerParams} [params={}] - Additional parameters to include in the log and error report.
      * */
     error(event: string, description: string, params: LoggerParams = {}) {
-        const currentDateTime = localDate.format(new Date(), LocalDateFormatEnum.datetime)
-        const message = `[${currentDateTime}] INFO: (${event.toUpperCase()}): ${description.toLowerCase()}`
+        const zonedTime = localDate.format(localDate.toZone(new Date()), LocalDateFormatEnum.datetime)
+        const message = `[${zonedTime}] INFO: (${event.toUpperCase()}): ${description.toLowerCase()}`
         Sentry.captureException(new Error(message, { cause: params.cause }))
         console.error(message, params)
     }

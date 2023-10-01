@@ -30,11 +30,11 @@ export default memo(({ item }: Props) => {
     }
 
     function getLastUpdate(): string {
-        const period = item?.last_message?.created_at || item.created_at
+        const period = localDate.toZone(item?.last_message?.created_at || item.created_at)
 
         return localDate.isToday(period)
-            ? localDate.format(new Date(), LocalDateFormatEnum.time)
-            : localDate.format(new Date(), LocalDateFormatEnum.date)
+            ? localDate.format(period, LocalDateFormatEnum.time)
+            : localDate.format(period, LocalDateFormatEnum.date)
     }
 
     const hasUnreadMessages = !!item.unread_messages

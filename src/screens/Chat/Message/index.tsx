@@ -16,9 +16,11 @@ type Props = {
 }
 
 function MessageView({ message }: Props) {
-    const messageTime = localDate.isToday(message.createdAt)
-        ? localDate.format(message.createdAt, LocalDateFormatEnum.time)
-        : localDate.format(message.createdAt, LocalDateFormatEnum.datetime)
+    const createdAt = localDate.toZone(message.createdAt)
+
+    const messageTime = localDate.isToday(createdAt)
+        ? localDate.format(createdAt, LocalDateFormatEnum.time)
+        : localDate.format(createdAt, LocalDateFormatEnum.datetime)
 
     return (
         <View style={styles.messageContainer}>
