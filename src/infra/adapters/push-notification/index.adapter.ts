@@ -4,6 +4,11 @@ import { logger } from "../logger-adapter"
 import * as Notifications from "expo-notifications"
 
 export class PushNotificationAdapter {
+    /**
+     * Requests asynchronous permission for push notifications.
+     *
+     * @returns {Promise<boolean>} A promise that resolves to `true` if permission is granted, `false` otherwise.
+    */
     async requestAsyncPermission(): Promise<boolean> {
         if (Device.isDevice) {
             logger.info("NOTIFICATION", "Get permission")
@@ -19,6 +24,12 @@ export class PushNotificationAdapter {
         return false
     }
 
+    /**
+     * Generates and retrieves the Expo push token for the device.
+     *
+     * @returns {Promise<string>} A promise that resolves to the Expo push token.
+     * @throws {Error} Throws an error if there's a problem generating the token, such as an invalid project ID
+     */
     async generatePushToken(): Promise<string> {
         try {
             const hasNotificationPermission = await this.requestAsyncPermission()
@@ -41,6 +52,11 @@ export class PushNotificationAdapter {
         }
     }
 
+    /**
+     * Sets up Android notifications if the platform is Android.
+     *
+     * @returns {Promise<void>} A promise that resolves once Android notifications are set up.
+     */
     async setupAndroidNotifications(): Promise<void> {
         if (Platform.OS === "android") {
             Notifications.setNotificationChannelAsync("default", {
@@ -71,6 +87,4 @@ export class PushNotificationAdapter {
             })
         })
     }
-
-
 }
