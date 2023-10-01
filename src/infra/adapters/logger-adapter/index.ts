@@ -16,13 +16,27 @@ Sentry.init({
 })
 
 export const logger = {
-    async info(event: string, description: string, params: LoggerParams = {}) {
+    /**
+     * Logs an informational message with event details.
+     * 
+     * @param {string} event - The event name or identifier.
+     * @param {string} description - A description or message associated with the event.
+     * @param {LoggerParams} [params={}] - Additional parameters to include in the log.
+     * */
+    info(event: string, description: string, params: LoggerParams = {}) {
         const currentDateTime = localDate.format(new Date(), LocalDateFormatEnum.datetime)
         const message = `[${currentDateTime}] INFO: (${event.toUpperCase()}): ${description.toLowerCase()}`
         console.log(message, params)
     },
 
-    async error(event: string, description: string, params: LoggerParams = {}) {
+    /**
+     * Logs an error message with event details and sends it to Sentry.
+     * 
+     * @param {string} event - The event name or identifier.
+     * @param {string} description - A description or message associated with the error.
+     * @param {LoggerParams} [params={}] - Additional parameters to include in the log and error report.
+     * */
+    error(event: string, description: string, params: LoggerParams = {}) {
         const currentDateTime = localDate.format(new Date(), LocalDateFormatEnum.datetime)
         const message = `[${currentDateTime}] INFO: (${event.toUpperCase()}): ${description.toLowerCase()}`
         Sentry.captureException(new Error(message, { cause: params.cause }))
