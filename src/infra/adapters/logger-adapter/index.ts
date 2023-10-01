@@ -1,5 +1,6 @@
 // Docs: https://docs.sentry.io/platforms/react-native
 import * as Sentry from "@sentry/react-native"
+import { env } from "../../config/environment"
 import { localDate } from "../local-date-adapter"
 import { LocalDateFormatEnum } from "../local-date-adapter/index.gateway"
 
@@ -9,7 +10,9 @@ type LoggerParams = {
 }
 
 Sentry.init({
-    dsn: "https://d0bb3ec74543499e774342cb20a4d7e0@o4505966712979456.ingest.sentry.io/4505969606721536"
+    enableNative: false,
+    dsn: env.sentry.dsn,
+    environment: env.sentry.env,
 })
 
 export const logger = {

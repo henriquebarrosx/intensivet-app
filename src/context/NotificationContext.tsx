@@ -1,33 +1,29 @@
-import Pusher from "pusher-js/react-native";
-import { WithChildren } from '../@types/common';
-import React, { useRef, createContext, MutableRefObject } from 'react';
+import Pusher from "pusher-js/react-native"
+import React, { useRef, createContext, MutableRefObject } from "react"
+import { WithChildren } from "../@types/common"
+import { env } from "../infra/config/environment"
 
 export type Subscription = {
-    remove: () => void;
-};
+    remove: () => void
+}
 
 interface NotificationContextType {
-    pusherService: MutableRefObject<Pusher>;
-    notificationListener: MutableRefObject<any>;
-    responseNotificationListener: MutableRefObject<any>;
+    pusherService: MutableRefObject<Pusher>
+    notificationListener: MutableRefObject<any>
+    responseNotificationListener: MutableRefObject<any>
 }
 
-export const NotificationContext = createContext({} as NotificationContextType);
-
-enum ENVIROMENT {
-    STAGING = '3e8071ca178d120546a5',
-    PRODUCTION = 'f63932033b491e9d4a9f',
-}
+export const NotificationContext = createContext({} as NotificationContextType)
 
 export function NotificationProvider({ children }: WithChildren) {
-    const notificationListener = useRef<Subscription>();
-    const responseNotificationListener = useRef<Subscription>();
+    const notificationListener = useRef<Subscription>()
+    const responseNotificationListener = useRef<Subscription>()
 
     const pusherService = useRef(
-        new Pusher(ENVIROMENT.STAGING, {
+        new Pusher(env.pusherjsAppKey, {
             cluster: "mt1",
         })
-    );
+    )
 
     return (
         <NotificationContext.Provider

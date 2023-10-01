@@ -1,14 +1,10 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios"
+import { env } from "../../config/environment"
 import { Config, IHttpClient } from "./index.gateway"
-
-enum ENVIROMENT {
-    STAGING = 'https://staging.intensivet.com.br',
-    PRODUCTION = 'https://app.intensivet.com.br',
-}
 
 export class AxiosAdapter implements IHttpClient {
     client: AxiosInstance
-    baseURL: string = ENVIROMENT.STAGING
+    baseURL: string = env.httpClientBaseUrl
 
     constructor() {
         this.client = axios.create({ baseURL: this.baseURL })
