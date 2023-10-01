@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react"
 import { Animated, Keyboard } from "react-native"
+import { useEffect, useRef, useState } from "react"
 
 import { useChat } from "../../../context/ChatContext"
-import { useKeyboard } from "@react-native-community/hooks"
 import { useVetCase } from "../../../context/VetCaseContext"
-import { useVetCases } from "../../../context/VetCasesContext"
+import { useVetCasesContext } from "../../../context/VetCasesContext"
 import { useServices } from "../../../context/ServicesContext"
 import { MessageMapper } from "../../../infra/mappers/message-mapper"
 
@@ -12,8 +11,8 @@ export const INPUT_AREA_HEIGHT = 58
 
 export const useViewModel = () => {
     const chatViewModel = useChat()
-    const vetCasesViewModel = useVetCases()
     const { messageService } = useServices()
+    const vetCasesContext = useVetCasesContext()
     const { id: vetCaseId } = useVetCase().vetCase
 
     const [inputText, setInputText] = useState("")
@@ -22,7 +21,7 @@ export const useViewModel = () => {
 
     const isEmptyMessage = !inputText.length
 
-    const onSend = async () => {
+    async function onSend(): Promise<void> {
         try {
             if (inputText && isSendButtonEnabled) {
                 chatViewModel.displaySendFeedback(true)
@@ -34,7 +33,7 @@ export const useViewModel = () => {
                 )
 
                 await chatViewModel.insertMessage(MessageMapper.apply(response))
-                vetCasesViewModel.updateLastMessage(response)
+                vetCasesContext.receiveMessage(response, true)
                 chatViewModel.scrollToBottom()
             }
         }

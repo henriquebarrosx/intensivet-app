@@ -1,31 +1,25 @@
-import React, { memo } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import React from "react"
+import { StyleSheet, View, ActivityIndicator } from "react-native"
 
-import colors from '../../../utils/colors';
-import { useVetCaseIndicators } from '../../../context/VetCaseIndicators';
-import { heightPercentageToDP, widthPercentageToDP } from '../../../utils/responsivity';
+import colors from "../../../utils/colors"
+import { useVetCasesContext } from "../../../context/VetCasesContext"
+import { heightPercentageToDP, widthPercentageToDP } from "../../../utils/responsivity"
 
-const RefreshIndicator = memo(() => {
-  const { isRefreshingVetCaseList } = useVetCaseIndicators();
+export default function RefreshIndicator() {
+    const vetCasesContext = useVetCasesContext()
 
-  if (isRefreshingVetCaseList) {
-    return (
-      <View style={styles.containter}>
-        <ActivityIndicator color={colors.gray} size={32} />
-      </View>
-    )
-  }
-
-  return null;
-});
+    return vetCasesContext.isLoading ? (
+        <View style={styles.containter}>
+            <ActivityIndicator color={colors.gray} size={32} />
+        </View>
+    ) : null
+}
 
 const styles = StyleSheet.create({
-  containter: {
-    position: 'absolute',
-    top: heightPercentageToDP('30'),
-    left: widthPercentageToDP('50'),
-    right: widthPercentageToDP('50'),
-  },
-});
-
-export default RefreshIndicator;
+    containter: {
+        position: "absolute",
+        top: heightPercentageToDP("30"),
+        left: widthPercentageToDP("50"),
+        right: widthPercentageToDP("50"),
+    },
+})

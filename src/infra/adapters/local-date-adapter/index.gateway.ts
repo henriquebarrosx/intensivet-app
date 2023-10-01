@@ -3,6 +3,7 @@ export interface ILocalDate {
     isSameYear(date: Date | string | number): boolean
     isToday(date: Date | string | number): boolean
     isValid(date: Date | string | number): boolean
+    toISO(date: Date | string | number): Date
 }
 
 export enum LocalDateFormatEnum {

@@ -3,19 +3,16 @@ import { RefreshControl, VirtualizedList, NativeScrollEvent, NativeSyntheticEven
 
 import VetCase from "../VetCase"
 import { styles } from "./styles"
-import { useVetCaseList } from "../script"
 import { EmptyVetCaseList } from "../ListEmpty"
 import { isCloseToTop } from "../../../utils/listView"
-import { useVetCases } from "../../../context/VetCasesContext"
-import { VetCaseModel as VetCaseModel } from "../../../schemas/VetCase"
+import { useVetCasesContext } from "../../../context/VetCasesContext"
 
 type Props = {
     touchTheTop: (touched: boolean) => void
 }
 
 export default memo(({ touchTheTop }: Props) => {
-    const { vetCases, virtualizedListRef } = useVetCases()
-    const { onPaginate, fetchVetCaseList } = useVetCaseList()
+    const vetCasesContext = useVetCasesContext()
 
     const onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
         isCloseToTop(nativeEvent) ? touchTheTop(true) : touchTheTop(false)
@@ -23,19 +20,19 @@ export default memo(({ touchTheTop }: Props) => {
 
     return (
         <VirtualizedList
-            ref={virtualizedListRef}
+            ref={vetCasesContext.listViewRef}
             initialNumToRender={12}
-            data={vetCases}
-            getItemCount={() => vetCases.length}
+            data={vetCasesContext.items}
+            getItemCount={() => vetCasesContext.items.length}
             getItem={(items, index) => items[index]}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => <VetCase item={item} />}
             style={styles.listview}
-            onEndReached={onPaginate}
+            onEndReached={vetCasesContext.paginate}
             onEndReachedThreshold={0.7}
             onScroll={onScroll}
             ListEmptyComponent={EmptyVetCaseList}
-            refreshControl={<RefreshControl refreshing={false} onRefresh={fetchVetCaseList} />}
+            refreshControl={<RefreshControl refreshing={false} onRefresh={vetCasesContext.findAll} />}
         />
     )
 })

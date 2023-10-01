@@ -1,6 +1,6 @@
 import { useChat } from "../../../../context/ChatContext"
 import { useVetCase } from "../../../../context/VetCaseContext"
-import { useVetCases } from "../../../../context/VetCasesContext"
+import { useVetCasesContext } from "../../../../context/VetCasesContext"
 import { useServices } from "../../../../context/ServicesContext"
 import { useFileAttachmentModal } from "../../../../context/AttachModal"
 import { MessageMapper } from "../../../../infra/mappers/message-mapper"
@@ -9,7 +9,7 @@ import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera"
 export const useViewModel = () => {
     const chatViewModel = useChat()
     const vetCaseContext = useVetCase()
-    const vetCasesViewModel = useVetCases()
+    const vetCasesContext = useVetCasesContext()
     const { messageService } = useServices()
     const fileAttachmentModalContext = useFileAttachmentModal()
 
@@ -31,7 +31,7 @@ export const useViewModel = () => {
             )
 
             await chatViewModel.insertMessage(MessageMapper.apply(response))
-            vetCasesViewModel.updateLastMessage(response, true)
+            vetCasesContext.receiveMessage(response, true)
         }
 
         finally {

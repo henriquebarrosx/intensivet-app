@@ -1,16 +1,16 @@
 import { useContext } from "react"
 import { useChat } from "../../../../context/ChatContext"
 import { useVetCase } from "../../../../context/VetCaseContext"
-import { useVetCases } from "../../../../context/VetCasesContext"
 import { useServices } from "../../../../context/ServicesContext"
+import { useVetCasesContext } from "../../../../context/VetCasesContext"
 import { MessageMapper } from "../../../../infra/mappers/message-mapper"
 import { FileAttachmentModalContext } from "../../../../context/AttachModal"
 import { DeviceDocumentPickerAdapter } from "../../../../infra/adapters/device-document-picker"
 
 export const useViewModel = () => {
     const chatViewModel = useChat()
-    const vetCasesViewModel = useVetCases()
     const { messageService } = useServices()
+    const vetCasesContext = useVetCasesContext()
     const { id: vetCaseId } = useVetCase().vetCase
     const { displayModal } = useContext(FileAttachmentModalContext)
 
@@ -31,7 +31,7 @@ export const useViewModel = () => {
                 )
 
                 await chatViewModel.insertMessage(MessageMapper.apply(response))
-                vetCasesViewModel.updateLastMessage(response, true)
+                vetCasesContext.receiveMessage(response, true)
             }
         }
 

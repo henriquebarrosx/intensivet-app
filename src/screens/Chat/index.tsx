@@ -12,7 +12,7 @@ import { CHANNELS_EVENTS } from "../../schemas/Pusher"
 import ModalToVideoPreview from "./ModalToPreview/Video"
 import ModalToImagePreview from "./ModalToPreview/Image"
 import { useVetCase } from "../../context/VetCaseContext"
-import { useVetCases } from "../../context/VetCasesContext"
+import { useVetCasesContext } from "../../context/VetCasesContext"
 import { useServices } from "../../context/ServicesContext"
 import { MessageProvider } from "../../context/MessageContext"
 import { AudioRecordProvider } from "../../context/RecordAudio"
@@ -31,7 +31,7 @@ function Chat(props: Props) {
 
     const chatViewModel = useChat()
     const vetCaseContext = useVetCase()
-    const vetCasesViewModel = useVetCases()
+    const vetCasesContext = useVetCasesContext()
     const { pusherService, notificationListener, responseNotificationListener } = useContext(NotificationContext)
 
     useEffect(() => {
@@ -54,7 +54,7 @@ function Chat(props: Props) {
     useEffect(() => {
         if (isCurrentScreenFocused) {
             pusherService.current.bind(CHANNELS_EVENTS.NEW_MESSAGE, (message: MessageModel) => {
-                vetCasesViewModel.updateLastMessage(message)
+                vetCasesContext.receiveMessage(message)
                 chatViewModel.receiveNewMessage(message)
             })
 

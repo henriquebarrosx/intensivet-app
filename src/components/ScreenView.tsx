@@ -1,33 +1,29 @@
-import Modal from 'react-native-modal';
-import React, { Fragment } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Modal from "react-native-modal"
+import React, { Fragment } from "react"
+import { StatusBar } from "expo-status-bar"
+import { StyleSheet, TouchableOpacity, View } from "react-native"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import colors from '../utils/colors';
-import SomethingWentWrong from './Error500';
-import { WithChildren } from '../@types/common';
-import NetworkConnection from './NetworkConnection';
-import { useVetCases } from '../context/VetCasesContext';
-import { useErrorsFeedback } from '../context/ErrorsFeedbackContext';
+import colors from "../utils/colors"
+import SomethingWentWrong from "./Error500"
+import { WithChildren } from "../@types/common"
+import NetworkConnection from "./NetworkConnection"
+import { useErrorsFeedback } from "../context/ErrorsFeedbackContext"
 
 const ScreenView = ({ children }: WithChildren) => {
     const {
         isErro500Visible,
         isErrorModalVisible,
         closeUnexpectedErrorModal,
-    } = useErrorsFeedback();
-
-    const { setVetCases } = useVetCases();
+    } = useErrorsFeedback()
 
     const closeUnexpectedErrorModalWithNoRefresh = () => {
-        setVetCases([]);
-        closeUnexpectedErrorModal({ toRefresh: false });
+        closeUnexpectedErrorModal({ toRefresh: false })
     }
 
     return (
         <Fragment>
-            <StatusBar style={'dark'} translucent />
+            <StatusBar style={"dark"} translucent />
 
             <View style={styles.root}>
                 {children}
@@ -60,8 +56,8 @@ const ScreenView = ({ children }: WithChildren) => {
 
             <NetworkConnection />
         </Fragment>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     root: {
@@ -70,13 +66,13 @@ const styles = StyleSheet.create({
     modal: {
         margin: 0,
         height: 300,
-        position: 'relative',
-        justifyContent: 'flex-end',
+        position: "relative",
+        justifyContent: "flex-end",
     },
     content: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         backgroundColor: colors.white,
     },
     closeBtn: {
@@ -86,13 +82,13 @@ const styles = StyleSheet.create({
         height: 40,
         zIndex: 10,
         borderRadius: 100,
-        position: 'absolute',
-        justifyContent: 'center',
+        position: "absolute",
+        justifyContent: "center",
         backgroundColor: colors.snowPrimary,
     },
     closeBtnIcon: {
-        alignSelf: 'center',
+        alignSelf: "center",
     },
-});
+})
 
-export default ScreenView;
+export default ScreenView

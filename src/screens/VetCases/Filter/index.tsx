@@ -1,51 +1,42 @@
-import React, { memo, useContext } from "react";
+import React from "react"
 
-import { useVetCaseList } from "../script";
-import { VetCaseOrderTypeEnum } from "../../../schemas/VetCase";
-import { useSession } from "../../../context/UserContext";
-import { OrderVetCaseContext } from "../../../context/OrderVetCases";
-import { useErrorsFeedback } from "../../../context/ErrorsFeedbackContext";
-import { Content, FilterOptionButton, FilterText, HorizontalScrollViewArea } from "./styles";
+import { useSession } from "../../../context/UserContext"
+import { useVetCasesContext } from "../../../context/VetCasesContext"
+import { useErrorsFeedback } from "../../../context/ErrorsFeedbackContext"
+import { Content, FilterOptionButton, FilterText, HorizontalScrollViewArea } from "./styles"
 
-function VetCaseFilter() {
-  const { isAdmin } = useSession();
-  const { fetchVetCaseList } = useVetCaseList();
-  const { closeUnexpectedErrorModal } = useErrorsFeedback();
-  const { selected, changeSelected } = useContext(OrderVetCaseContext);
+export default function VetCaseFilter() {
+    const sessionContext = useSession()
+    const vetCasesContext = useVetCasesContext()
+    const { closeUnexpectedErrorModal } = useErrorsFeedback()
 
-  async function orderByLastMessage(): Promise<void> {
-    changeSelected(VetCaseOrderTypeEnum.LAST_MESSAGE);
-    closeUnexpectedErrorModal({ toRefresh: true });
-    await fetchVetCaseList(1, VetCaseOrderTypeEnum.LAST_MESSAGE);
-  }
+    const slaFilterLabel = sessionContext.isAdmin ? "Tempo da SLA" : "Categoria do caso"
 
-  async function orderBySla(): Promise<void> {
-    changeSelected(VetCaseOrderTypeEnum.SLA);
-    closeUnexpectedErrorModal({ toRefresh: true });
-    await fetchVetCaseList(1, VetCaseOrderTypeEnum.SLA);
-  }
+    async function orderByLastMessage(): Promise<void> {
+        closeUnexpectedErrorModal({ toRefresh: true })
+        await vetCasesContext.orderByLastMessage()
+    }
 
-  function getFilterLabelByAccountRole(): string {
-    return isAdmin ? 'Tempo da SLA' : 'Categoria do caso'
-  }
+    async function orderBySla(): Promise<void> {
+        closeUnexpectedErrorModal({ toRefresh: true })
+        await vetCasesContext.orderBySla()
+    }
 
-  return (
-    <Content>
-      <HorizontalScrollViewArea showsHorizontalScrollIndicator={false}>
-        <FilterOptionButton onPress={orderByLastMessage} isSelected={selected === VetCaseOrderTypeEnum.LAST_MESSAGE}>
-          <FilterText isSelected={selected === VetCaseOrderTypeEnum.LAST_MESSAGE}>
-            Mensagens Recebidas
-          </FilterText>
-        </FilterOptionButton>
+    return (
+        <Content>
+            <HorizontalScrollViewArea showsHorizontalScrollIndicator={false}>
+                <FilterOptionButton onPress={orderByLastMessage} isSelected={vetCasesContext.isOrderedByLastMessage}>
+                    <FilterText isSelected={vetCasesContext.isOrderedByLastMessage}>
+                        Mensagens Recebidas
+                    </FilterText>
+                </FilterOptionButton>
 
-        <FilterOptionButton onPress={orderBySla} isSelected={selected === VetCaseOrderTypeEnum.SLA}>
-          <FilterText isSelected={selected === VetCaseOrderTypeEnum.SLA}>
-            {getFilterLabelByAccountRole()}
-          </FilterText>
-        </FilterOptionButton>
-      </HorizontalScrollViewArea>
-    </Content>
-  );
+                <FilterOptionButton onPress={orderBySla} isSelected={vetCasesContext.isOrderedBySla}>
+                    <FilterText isSelected={vetCasesContext.isOrderedBySla}>
+                        {slaFilterLabel}
+                    </FilterText>
+                </FilterOptionButton>
+            </HorizontalScrollViewArea>
+        </Content>
+    )
 }
-
-export default memo(VetCaseFilter);

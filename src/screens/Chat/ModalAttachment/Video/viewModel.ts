@@ -4,9 +4,9 @@ import { useNavigation } from "@react-navigation/native"
 
 import { useChat } from "../../../../context/ChatContext"
 import { useVetCase } from "../../../../context/VetCaseContext"
-import { useVetCases } from "../../../../context/VetCasesContext"
 import { useServices } from "../../../../context/ServicesContext"
 import { DeviceFile } from "../../../../domain/entities/device-file"
+import { useVetCasesContext } from "../../../../context/VetCasesContext"
 import { MessageMapper } from "../../../../infra/mappers/message-mapper"
 import { FileAttachmentModalContext } from "../../../../context/AttachModal"
 import { AudioRecordAdapter } from "../../../../infra/adapters/audio-record"
@@ -16,8 +16,8 @@ import { DeviceGalleryAdapter } from "../../../../infra/adapters/device-gallery"
 export const useViewModel = () => {
     const chatContext = useChat()
     const navigation = useNavigation()
-    const vetCasesViewModel = useVetCases()
     const { messageService } = useServices()
+    const vetCasesContext = useVetCasesContext()
     const { id: vetCaseId } = useVetCase().vetCase
     const { displayModal } = useContext(FileAttachmentModalContext)
 
@@ -57,7 +57,7 @@ export const useViewModel = () => {
             chatContext.insertMessage(MessageMapper.apply(response))
             /* Remove route params to avoid any unexpected side effect */
             navigation.setParams({ videoUri: '' })
-            vetCasesViewModel.updateLastMessage(response, true)
+            vetCasesContext.receiveMessage(response, true)
             chatContext.scrollToBottom()
         }
 

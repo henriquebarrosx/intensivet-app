@@ -5,7 +5,6 @@ import React, { useContext, useEffect, useState } from "react"
 import Filter from "./Filter"
 import Header from "./Header"
 import ListView from "./ListView"
-import { useVetCaseList } from "./script"
 import TryAgainButton from "./TryAgainButton"
 import RefreshIndicator from "./RefreshIndicator"
 import { getChannelName } from "../../utils/pusher"
@@ -15,16 +14,13 @@ import { VetCaseModel } from "../../schemas/VetCase"
 import { MessageModel } from "../../schemas/Message"
 import { CHANNELS_EVENTS } from "../../schemas/Pusher"
 import { UserContext } from "../../context/UserContext"
-import { useVetCases } from "../../context/VetCasesContext"
+import { useVetCasesContext } from "../../context/VetCasesContext"
 import { NotificationContext } from "../../context/NotificationContext"
 import { pushNotification } from "../../infra/adapters/push-notification"
-import { OrderVetCaseContext, OrderVetCaseProvider } from "../../context/OrderVetCases"
 
-function VetCases() {
+export default function VetCases() {
     const isFocused = useIsFocused()
-    const vetCasesViewModel = useVetCases()
-    const { fetchVetCaseList } = useVetCaseList()
-    const vetCasesFilter = useContext(OrderVetCaseContext)
+    const vetCasesContext = useVetCasesContext()
 
     const { sessionData: userData } = useContext(UserContext)
     const [isDisplayingButton, displayButton] = useState(false)
@@ -33,7 +29,7 @@ function VetCases() {
     useEffect(() => {
         if (isFocused) {
             const DEFAULT_PAGE = 1
-            fetchVetCaseList(DEFAULT_PAGE, vetCasesFilter.selected)
+            vetCasesContext.findAll(DEFAULT_PAGE, vetCasesContext.orderedBy)
         }
     }, [isFocused])
 
@@ -58,11 +54,11 @@ function VetCases() {
 
     useEffect(() => {
         pusherService.current.bind(CHANNELS_EVENTS.NEW_CASE, (vetCase: VetCaseModel) => {
-            vetCasesViewModel.addNewVetCase(vetCase)
+            vetCasesContext.add(vetCase)
         })
 
         pusherService.current.bind(CHANNELS_EVENTS.NEW_MESSAGE, (message: MessageModel) => {
-            vetCasesViewModel.updateLastMessage(message)
+            vetCasesContext.receiveMessage(message)
         })
     }, [])
 
@@ -78,10 +74,3 @@ function VetCases() {
         </ScreenView>
     )
 }
-
-export default () => (
-    <OrderVetCaseProvider>
-        <VetCases />
-    </OrderVetCaseProvider>
-)
-

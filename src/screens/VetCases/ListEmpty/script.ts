@@ -1,17 +1,14 @@
-import { useMemo } from "react"
 import { useNavigation } from "@react-navigation/native"
-import { useVetCases } from "../../../context/VetCasesContext"
+import { useVetCasesContext } from "../../../context/VetCasesContext"
 import { httpClient } from "../../../infra/adapters/http-client-adapter"
 import { useVetCaseIndicators } from "../../../context/VetCaseIndicators"
 
 export function useEmptyVetCaseList() {
-    const { vetCases } = useVetCases()
     const navigation = useNavigation()
+    const vetCasesContext = useVetCasesContext()
     const { isRefreshingVetCaseList } = useVetCaseIndicators()
 
-    const isElementVisible = useMemo(() => {
-        return !vetCases.length && !isRefreshingVetCaseList
-    }, [vetCases.length, isRefreshingVetCaseList])
+    const isElementVisible = !vetCasesContext.items.length && !isRefreshingVetCaseList
 
     function openIntensivetWebPlatformIntoWebView(): void {
         navigation.navigate("WebPage", {

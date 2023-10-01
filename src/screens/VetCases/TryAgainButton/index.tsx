@@ -1,32 +1,26 @@
-import React, { memo } from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import React from "react"
+import { TouchableOpacity, Text } from "react-native"
 
-import { styles } from './styles';
-import { useVetCaseList } from '../script';
-import { useErrorsFeedback } from '../../../context/ErrorsFeedbackContext';
-import { useVetCaseIndicators } from '../../../context/VetCaseIndicators';
+import { styles } from "./styles"
+import { useVetCasesContext } from "../../../context/VetCasesContext"
+import { useVetCaseIndicators } from "../../../context/VetCaseIndicators"
+import { useErrorsFeedback } from "../../../context/ErrorsFeedbackContext"
 
-function TryAgainButton() {
-  const { fetchVetCaseList } = useVetCaseList();
-  const { closeUnexpectedErrorModal } = useErrorsFeedback();
-  const { isTryAgainButtonVisible } = useVetCaseIndicators();
+export default function TryAgainButton() {
+    const vetCasesContext = useVetCasesContext()
+    const { closeUnexpectedErrorModal } = useErrorsFeedback()
+    const { isTryAgainButtonVisible } = useVetCaseIndicators()
 
-  function refreshVetCaseList(): void {
-    closeUnexpectedErrorModal({ toRefresh: true });
-    fetchVetCaseList();
-  };
+    async function refreshVetCaseList(): Promise<void> {
+        closeUnexpectedErrorModal({ toRefresh: true })
+        await vetCasesContext.findAll()
+    }
 
-  if (isTryAgainButtonVisible) {
-    return (
-      <TouchableOpacity onPress={refreshVetCaseList} style={styles.tryAgainBtn}>
-        <Text allowFontScaling={false} style={styles.tryAgainText}>
-          Tentar Novamente
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-
-  return null;
-};
-
-export default memo(TryAgainButton);
+    return isTryAgainButtonVisible ? (
+        <TouchableOpacity onPress={refreshVetCaseList} style={styles.tryAgainBtn}>
+            <Text allowFontScaling={false} style={styles.tryAgainText}>
+                Tentar Novamente
+            </Text>
+        </TouchableOpacity>
+    ) : null
+}

@@ -1,64 +1,56 @@
-import moment from "moment";
-import "moment/locale/pt-br";
-import { useNavigation } from "@react-navigation/native";
-import React, { memo, useContext, useMemo } from "react";
+import React, { memo } from "react"
+import { useNavigation } from "@react-navigation/native"
 
-import SlaMessages from "./SlaMessages";
-import ReceivedMessages from "./ReceivedMessages";
-import { VetCaseOrderTypeEnum, VetCaseModel } from "../../../schemas/VetCase";
-import { useVetCase } from "../../../context/VetCaseContext";
-import { OrderVetCaseContext } from "../../../context/OrderVetCases";
-import { useVetCases } from "../../../context/VetCasesContext";
+import SlaMessages from "./SlaMessages"
+import ReceivedMessages from "./ReceivedMessages"
+import { VetCaseModel } from "../../../schemas/VetCase"
+import { useVetCase } from "../../../context/VetCaseContext"
+import { useVetCasesContext } from "../../../context/VetCasesContext"
+import { localDate } from "../../../infra/adapters/local-date-adapter"
+import { LocalDateFormatEnum } from "../../../infra/adapters/local-date-adapter/index.gateway"
 
 export interface Props {
-    item: VetCaseModel;
+    item: VetCaseModel
 }
 
 export default memo(({ item }: Props) => {
-    const navigation = useNavigation();
-
-    const { setVetCase } = useVetCase();
-    const vetCasesViewModel = useVetCases()
-    const { selected } = useContext(OrderVetCaseContext);
+    const navigation = useNavigation()
+    const { setVetCase } = useVetCase()
+    const vetCasesContext = useVetCasesContext()
 
     function navigateToChat(): void {
-        vetCasesViewModel.readMessages(item.id)
-        setVetCase(item);
+        vetCasesContext.readMessages(item.id)
+        setVetCase(item)
 
-        navigation.navigate('Chat', {
+        navigation.navigate("Chat", {
             vetCaseId: item.id,
             petName: item.pet.name,
             clinicFantasyName: item.clinic.fantasy_name,
-        });
+        })
     }
 
-    function getLastMessageTime(): string {
-        const date = item?.last_message?.created_at || item.created_at;
-        const isToday = moment(date).isSame(moment(), 'date');
-        return isToday ? moment().format('HH:mm') : moment(date).format('DD/MM/YY')
+    function getLastUpdate(): string {
+        const period = item?.last_message?.created_at || item.created_at
+
+        return localDate.isToday(period)
+            ? localDate.format(new Date(), LocalDateFormatEnum.time)
+            : localDate.format(new Date(), LocalDateFormatEnum.date)
     }
 
-    const lastUpdate = getLastMessageTime();
-
-    const thereIsUnreadMessages = useMemo(() => {
-        return !!item.unread_messages;
-    }, [item.unread_messages]);
-
-    const timeStyle = useMemo(() => {
-        return { color: thereIsUnreadMessages ? '#48BACC' : '#757575' };
-    }, [thereIsUnreadMessages]);
+    const hasUnreadMessages = !!item.unread_messages
+    const messagePeriodStyle = { color: hasUnreadMessages ? "#48BACC" : "#757575" }
 
     const Template = () => {
-        return selected === VetCaseOrderTypeEnum.LAST_MESSAGE
+        return vetCasesContext.isOrderedByLastMessage
             ? <ReceivedMessages
                 vetCase={item}
-                timeStyle={timeStyle}
-                lastUpdate={lastUpdate}
+                timeStyle={messagePeriodStyle}
+                lastUpdate={getLastUpdate()}
                 navigateToChat={navigateToChat}
-                thereIsUnreadMessages={thereIsUnreadMessages}
+                thereIsUnreadMessages={hasUnreadMessages}
             />
             : <SlaMessages vetCase={item} navigateToChat={navigateToChat} />
-    };
+    }
 
     return <Template />
-});
+})
