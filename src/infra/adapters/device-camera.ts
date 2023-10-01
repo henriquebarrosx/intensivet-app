@@ -6,6 +6,12 @@ import { DeviceFile } from "../../domain/entities/device-file"
 import { logger } from "./logger-adapter"
 
 export class DeviceCameraAdapter {
+
+    /**
+     * Requests asynchronous permission for camera access.
+     *
+     * @returns {Promise<boolean>} A promise that resolves to `true` if permission is granted, `false` otherwise.
+     */
     async requestAsyncPermission(): Promise<boolean> {
         logger.info("CAMERA", "Get permission")
         const currentPermission = await ExpoCamera.getCameraPermissionsAsync()
@@ -17,6 +23,12 @@ export class DeviceCameraAdapter {
         return permissionResult.granted;
     }
 
+    /**
+     * Takes a picture using the device's camera.
+     *
+     * @returns {Promise<DeviceFile | undefined>} A promise that resolves to a DeviceFile containing the captured image,
+     * or `undefined` if the operation was canceled or permission was denied.
+     */
     async takePicture(): Promise<DeviceFile | undefined> {
         const hasCameraPermission = await this.requestAsyncPermission()
 
