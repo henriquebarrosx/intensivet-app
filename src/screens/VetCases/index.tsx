@@ -46,6 +46,7 @@ export default function VetCases() {
         responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(() => { })
 
         return () => {
+            vetCasesContext.reset()
             pusherService.current.unsubscribe(getChannelName(userData!))
             Notifications.removeNotificationSubscription(notificationListener.current)
             Notifications.removeNotificationSubscription(responseNotificationListener.current)

@@ -19,11 +19,22 @@ export function useVetCases(): IVetCasesContext {
         updateItems((data) => [item, ...data])
     }
 
+    function reset(): void {
+        updateItems([])
+        updatePagination(null)
+        updatedItemsOrderBy(VetCaseOrderTypeEnum.LAST_MESSAGE)
+    }
+
     async function findAll(page = 1, orderBy = VetCaseOrderTypeEnum.LAST_MESSAGE): Promise<void> {
         try {
             displayLoader(true)
             const [data, pagination] = await vetCaseService.findAll(page, orderBy)
-            const nonDuplicatedItems = removeDuplicatedKeysFromCases([...items, ...data])
+
+            const hasBeenPaginated = page > 1
+            const nonDuplicatedItems = hasBeenPaginated
+                ? removeDuplicatedKeysFromCases([...items, ...data])
+                : data
+
             updateItems(nonDuplicatedItems)
             updatePagination(pagination)
         }
@@ -126,6 +137,7 @@ export function useVetCases(): IVetCasesContext {
         add,
         findAll,
         paginate,
+        reset,
         readMessages,
         receiveMessage,
         orderByLastMessage,
@@ -144,6 +156,7 @@ export type IVetCasesContext = {
     add(item: VetCaseModel): void
     findAll(page?: number, orderBy?: VetCaseOrderTypeEnum): Promise<void>
     paginate(): Promise<void>
+    reset(): void
     readMessages(id: number): Promise<void>
     receiveMessage(message: MessageModel, isRead?: boolean): void
     orderByLastMessage(): Promise<void>
