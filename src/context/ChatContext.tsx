@@ -49,7 +49,11 @@ export function ChatProvider({ children }: WithChildren) {
             displayFetchLoader(true)
 
             const [items, pagination] = await messageService.findAllByVetCase(vetCase.id, fromPage)
-            const nonDuplicatedMessages = removeDuplicatedKeysFromMessage([...messages, ...items])
+
+            const hasbeenPaginated = fromPage > 1
+            const nonDuplicatedMessages = hasbeenPaginated
+                ? removeDuplicatedKeysFromMessage([...messages, ...items])
+                : items
 
             updatePagination(pagination)
             updateMessageList(nonDuplicatedMessages)
