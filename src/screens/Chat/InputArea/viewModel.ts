@@ -1,8 +1,7 @@
 import { Animated, Keyboard } from "react-native"
 import { useEffect, useRef, useState } from "react"
 
-import { useChat } from "../../../context/ChatContext"
-import { useVetCase } from "../../../context/VetCaseContext"
+import { useKeyboard } from "../../../app/react-hooks/keyboard"
 import { useVetCasesContext } from "../../../context/VetCasesContext"
 import { useServices } from "../../../context/ServicesContext"
 import { MessageMapper } from "../../../infra/mappers/message-mapper"
@@ -45,19 +44,10 @@ export const useViewModel = () => {
         }
     }
 
-    useEffect(() => {
-        const showSubscription = Keyboard.addListener('keyboardWillShow', (event) => {
-            onFocus(event.endCoordinates.height)
-        });
-        const hideSubscription = Keyboard.addListener('keyboardWillHide', () => {
-            onBlur()
-        });
-
-        return () => {
-            showSubscription.remove()
-            hideSubscription.remove()
-        };
-    }, [])
+    useKeyboard(
+        ({ height }) => onFocus(height),
+        () => onBlur(),
+    )
 
     function onFocus(height: number) {
         Animated.timing(bottomPosition, {
