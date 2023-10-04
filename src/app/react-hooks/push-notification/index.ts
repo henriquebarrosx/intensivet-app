@@ -57,7 +57,9 @@ export function usePushNotification() {
                     const belongsToOpenedChat = messageData.vet_case_id === vetCaseContext.data?.id
 
                     if (belongsToOpenedChat) {
-                        const message = MessageMapper.apply(messageData)
+                        const sessionId = sessionContext.sessionData.current_account?.id
+                        const isSender = messageData.account.id === sessionId
+                        const message = MessageMapper.apply({ ...messageData, is_sender: isSender })
                         vetCaseMessagesContext.add(message)
                         return
                     }
