@@ -14,7 +14,7 @@ interface UserContextType {
     clinicId: number | null | undefined
     clear(): Promise<void>
     retrieve(): Promise<void>
-    update(params: Partial<User>): void
+    update(params: Partial<User>): Promise<void>
     save: (userData: User, expoPushToken: string) => void
 }
 
@@ -47,8 +47,9 @@ export function SessionProvider({ children }: WithChildren) {
         updateSessionState(null)
     }
 
-    function update(params: Partial<User>) {
+    async function update(params: Partial<User>) {
         updateSessionState((prevState) => ({ ...prevState, ...params }))
+        await sessionRepository.update({ ...params })
     }
 
     const isAdmin = sessionData?.current_account?.role === "admin"
