@@ -1,14 +1,15 @@
 import React from "react"
-import colors from "../../../utils/colors"
-import { useChat } from "../../../context/ChatContext"
 import { TouchableOpacity, StyleSheet } from "react-native"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 
+import colors from "../../../utils/colors"
+import { useVetCaseMessagesContext } from "../../../context/VetCaseMessagesContext"
+
 export default function ScrollToEndButton() {
-    const chatViewModel = useChat()
+    const vetCaseMessagesContext = useVetCaseMessagesContext()
 
     return (
-        <TouchableOpacity onPress={chatViewModel.scrollToBottom} style={styles.root}>
+        <TouchableOpacity onPress={vetCaseMessagesContext.scrollToBottom} style={styles.root}>
             <FontAwesome
                 size={22}
                 style={styles.icon}

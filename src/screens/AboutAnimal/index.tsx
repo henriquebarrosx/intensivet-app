@@ -1,7 +1,6 @@
+import React, { useEffect } from "react"
 import { ActivityIndicator } from "react-native"
-import * as Notifications from "expo-notifications"
 import { useIsFocused } from "@react-navigation/native"
-import React, { useCallback, useContext, useEffect, useLayoutEffect } from "react"
 import { Ionicons, MaterialCommunityIcons, AntDesign, FontAwesome5 } from "@expo/vector-icons"
 
 import { ScrollView } from "react-native"
@@ -11,12 +10,10 @@ import { Visibility } from "../../components/Visibility"
 import { InformationBox } from "../../components/InformationBox"
 import { SectionInfoTitle } from "../../components/SectionInfoTitle"
 import { BoxPetIconArea, Subtitle, Title, HeaderArea } from "./styles"
-import { NotificationContext } from "../../context/NotificationContext"
 import { pushNotification } from "../../infra/adapters/push-notification"
 
 export function AboutAnimal() {
     const isCurrentScreenFocused = useIsFocused()
-    const { notificationListener, responseNotificationListener } = useContext(NotificationContext)
 
     const {
         petName,
@@ -37,19 +34,6 @@ export function AboutAnimal() {
             handleFetchVetCaseData()
         }
     }, [isCurrentScreenFocused])
-
-    useLayoutEffect(
-        useCallback(() => {
-            notificationListener.current = Notifications.addNotificationReceivedListener(() => { })
-            responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(() => { })
-
-            return () => {
-                Notifications.removeNotificationSubscription(notificationListener.current)
-                Notifications.removeNotificationSubscription(responseNotificationListener.current)
-            }
-        }, [])
-    )
-
 
     return (
         <ScreenView>

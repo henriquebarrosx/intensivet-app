@@ -23,6 +23,6 @@ export class Notification {
     }
 
     canDisplayNotification(vetCaseId: number) {
-        return this.getVetCaseId() !== (vetCaseId || 0)
+        return this.getVetCaseId() !== vetCaseId
     }
 }

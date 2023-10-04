@@ -1,16 +1,16 @@
-import React, { Fragment, useState } from "react"
-import { View, VirtualizedList, NativeScrollEvent, NativeSyntheticEvent, ImageBackground, FlatList, RefreshControl } from "react-native"
+import React, { useState } from "react"
+import { View, VirtualizedList, NativeScrollEvent, NativeSyntheticEvent, ImageBackground } from "react-native"
 
 import Message from "../Message"
 import { styles } from "./styles"
 import IntroductoryNote from "../IntroductoryNote"
 import ScrollToEndButton from "../ScrollToEndButton"
-import { useChat } from "../../../context/ChatContext"
 import { SendingLoadingFeedback } from "../SendingFeedback"
 import { FetchingLoadingFeedback } from "../FetchingFeedback"
+import { useAudioRecord } from "../../../context/RecordAudio"
 import ChatWallpaper from "../../../../assets/images/chat-wallpaper4.jpg"
 import { Message as MessageEntity } from "../../../domain/entities/message"
-import { useAudioRecord } from "../../../context/RecordAudio"
+import { useVetCaseMessagesContext } from "../../../context/VetCaseMessagesContext"
 
 interface ListInterface {
     index: number
@@ -18,14 +18,14 @@ interface ListInterface {
 }
 
 export default function Messages() {
-    const chatViewModel = useChat()
     const { isRecordingAudio } = useAudioRecord()
+    const vetCaseMessagesContext = useVetCaseMessagesContext()
+
     const [isDisplayingButton, displayButton] = useState(false)
 
-    const isInvertedList = chatViewModel.messages.length > 0
     const internalBottomSpace = isRecordingAudio ? 0 : 90
 
-    const onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    function onScroll({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>): void {
         const isCloseToBottom = nativeEvent.contentOffset.y >= 100
         isCloseToBottom ? displayButton(true) : displayButton(false)
     }
@@ -33,27 +33,27 @@ export default function Messages() {
     return (
         <View style={{ flex: 1, paddingBottom: internalBottomSpace }}>
             <ImageBackground source={ChatWallpaper} style={styles.root}>
-                <FetchingLoadingFeedback isVisible={chatViewModel.isFetching} />
+                <FetchingLoadingFeedback isVisible={vetCaseMessagesContext.isFetching} />
 
                 <VirtualizedList
-                    ref={chatViewModel.virtualizedListRef as any}
-                    data={chatViewModel.messages}
+                    ref={vetCaseMessagesContext.listViewRef}
+                    data={vetCaseMessagesContext.items}
                     getItemCount={(messages) => messages.length}
                     getItem={(messages, index) => messages[index]}
                     keyExtractor={(message: MessageEntity) => message.id.toString()}
                     renderItem={({ item }: ListInterface) => <Message message={item} />}
                     ListEmptyComponent={IntroductoryNote}
-                    inverted={isInvertedList}
+                    inverted={vetCaseMessagesContext.isNotEmpty}
                     style={styles.listview}
                     onEndReachedThreshold={0.9}
-                    onEndReached={chatViewModel.handlePagination}
+                    onEndReached={vetCaseMessagesContext.paginate}
                     onScroll={onScroll}
                     contentContainerStyle={{ paddingVertical: 20 }}
                 />
 
                 <View style={styles.footerArea}>
                     {isDisplayingButton && <ScrollToEndButton />}
-                    <SendingLoadingFeedback isVisible={chatViewModel.isSending} />
+                    <SendingLoadingFeedback isVisible={vetCaseMessagesContext.isSending} />
                 </View>
             </ImageBackground>
         </View>

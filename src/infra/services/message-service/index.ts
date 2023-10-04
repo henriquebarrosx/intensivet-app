@@ -40,7 +40,7 @@ export class MessageService {
         }
     }
 
-    async create(vetCaseId: number, content: CreateMessagesParams, onCompleteCb: Function = () => { }): Promise<MessageModel> {
+    async create(vetCaseId: number, content: CreateMessagesParams, onCompleteCb: Function = () => { }): Promise<Message> {
         const endpoint = `/api/v2/vet_cases/${vetCaseId}/vet_case_messages`
 
         try {
@@ -67,7 +67,7 @@ export class MessageService {
                 }
             )
 
-            return response
+            return MessageMapper.apply(response)
         }
 
         catch (error) {

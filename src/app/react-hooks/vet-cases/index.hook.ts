@@ -4,7 +4,7 @@ import { RefObject, useRef, useState } from "react"
 import { Pagination } from "../../../@types/common"
 import { MessageModel } from "../../../schemas/Message"
 import { useServices } from "../../../context/ServicesContext"
-import { VetCaseModel, VetCaseOrderTypeEnum } from "../../../schemas/VetCase"
+import { LastMessage, VetCaseModel, VetCaseOrderTypeEnum } from "../../../schemas/VetCase"
 
 export function useVetCases(): IVetCasesContext {
     const { vetCaseService } = useServices()
@@ -46,7 +46,11 @@ export function useVetCases(): IVetCasesContext {
 
     function removeDuplicatedKeysFromCases(vetCases: VetCaseModel[]): VetCaseModel[] {
         const items = new Map<number, VetCaseModel>()
-        vetCases.forEach((vetCase) => items.set(vetCase.id, vetCase))
+
+        vetCases.forEach(
+            (vetCase) => items.set(vetCase.id, vetCase)
+        )
+
         return Array.from(items.values())
     }
 
@@ -56,60 +60,53 @@ export function useVetCases(): IVetCasesContext {
         }
     }
 
-    async function readMessages(id: number): Promise<void> {
-        const items = new Map<number, VetCaseModel>()
+    async function readMessages(vetCaseId: number): Promise<void> {
+        function readVetCaseMessages(vetCases: VetCaseModel[]) {
+            const items = new Map<number, VetCaseModel>()
 
-        function addOnBegining(vetCases: VetCaseModel[]) {
-            const vetCase = vetCases.find((item) => item.id === id)
-            items.set(vetCase.id, { ...vetCase, unread_updates: 0, unread_messages: 0 })
-        }
-
-        function appendOtherMessages(vetCases: VetCaseModel[]) {
             vetCases.forEach((vetCase) => {
-                if (id === vetCase.id) return
+                if (vetCase.id === vetCaseId) {
+                    const readMessages = { ...vetCase, unread_updates: 0, unread_messages: 0 }
+                    items.set(vetCaseId, readMessages)
+                    return
+                }
+
                 items.set(vetCase.id, vetCase)
             })
+
+            return Array.from(items.values())
         }
 
-        updateItems((vetCases) => {
-            addOnBegining(vetCases)
-            appendOtherMessages(vetCases)
-            return Array.from(items.values())
-        })
-
-        await vetCaseService.readMessages(id)
+        updateItems(readVetCaseMessages)
+        await vetCaseService.readMessages(vetCaseId)
     }
 
     function receiveMessage(message: MessageModel, isRead: boolean = false): void {
-        const items = new Map<number, VetCaseModel>()
+        const chats = new Map<number, VetCaseModel>()
 
-        function addOnBegining(data: VetCaseModel[]) {
-            const vetCase = data.find((item) => item.id === message.vet_case_id)
+        updateItems((data) => {
+            const chatById = data.find((item) => item.id === message.vet_case_id)
+            const updatedUnreadMessages = isRead ? 0 : chatById.unread_messages += 1
 
-            items.set(vetCase.id, {
-                ...vetCase,
-                last_message: {
-                    message: message.message,
-                    file_name: message?.file_name,
-                    created_at: message.created_at,
-                    message_type: message.message_type,
-                },
-                unread_updates: isRead ? 0 : vetCase.unread_updates += 1,
-                unread_messages: isRead ? 0 : vetCase.unread_messages += 1,
+            const lastMessage: LastMessage = {
+                message: message.message,
+                file_name: message?.file_name,
+                created_at: message.created_at,
+                message_type: message.message_type,
+            }
+
+            chats.set(chatById.id, {
+                ...chatById,
+                last_message: lastMessage,
+                unread_messages: updatedUnreadMessages,
             })
-        }
 
-        function appendOtherMessages(data: VetCaseModel[]) {
             data.forEach((vetCase) => {
-                if (items.has(vetCase.id)) return
-                items.set(vetCase.id, vetCase)
+                if (chats.has(vetCase.id)) return
+                chats.set(vetCase.id, vetCase)
             })
-        }
 
-        updateItems((vetCases) => {
-            addOnBegining(vetCases)
-            appendOtherMessages(vetCases)
-            return Array.from(items.values())
+            return Array.from(chats.values())
         })
     }
 

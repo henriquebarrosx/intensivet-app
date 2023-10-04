@@ -1,16 +1,16 @@
-import { useVetCase } from "../../context/VetCaseContext";
+import { useVetCase } from "../../context/VetCaseContext"
 
 export const useViewModel = () => {
-  const { vetCase } = useVetCase();
+  const vetCaseContext = useVetCase()
 
   function getPetNameWithVetCaseId(): string {
-    return `#${vetCase.id} ${vetCase.pet.name}`;
+    return `#${vetCaseContext.data.id} ${vetCaseContext.data.pet.name}`
   }
 
   return {
     subtitle: getPetNameWithVetCaseId(),
-    clinicName: vetCase.clinic.fantasy_name,
-    isPuctualCase: !vetCase.category.full_case,
-    clinicThumbnail: vetCase.clinic?.thumbnail?.service_url,
+    clinicName: vetCaseContext.data.clinic.fantasy_name,
+    isPuctualCase: !vetCaseContext.data.category.full_case,
+    clinicThumbnail: vetCaseContext.data.clinic?.thumbnail?.service_url,
   }
 }

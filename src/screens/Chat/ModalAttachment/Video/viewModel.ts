@@ -2,23 +2,19 @@ import { useContext } from "react"
 import { Alert } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
-import { useChat } from "../../../../context/ChatContext"
-import { useVetCase } from "../../../../context/VetCaseContext"
-import { useServices } from "../../../../context/ServicesContext"
 import { DeviceFile } from "../../../../domain/entities/device-file"
 import { useVetCasesContext } from "../../../../context/VetCasesContext"
-import { MessageMapper } from "../../../../infra/mappers/message-mapper"
 import { FileAttachmentModalContext } from "../../../../context/AttachModal"
 import { AudioRecordAdapter } from "../../../../infra/adapters/audio-record"
 import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera"
 import { DeviceGalleryAdapter } from "../../../../infra/adapters/device-gallery"
+import { MessageModelMapper } from "../../../../infra/mappers/message-model-mapper"
+import { useVetCaseMessagesContext } from "../../../../context/VetCaseMessagesContext"
 
 export const useViewModel = () => {
-    const chatContext = useChat()
     const navigation = useNavigation()
-    const { messageService } = useServices()
     const vetCasesContext = useVetCasesContext()
-    const { id: vetCaseId } = useVetCase().vetCase
+    const vetCaseMessagesContext = useVetCaseMessagesContext()
     const { displayModal } = useContext(FileAttachmentModalContext)
 
     const recordVideo = async (): Promise<void> => {
@@ -42,28 +38,14 @@ export const useViewModel = () => {
         )
     }
 
-    const handleRecordedVideo = async (uri: string) => {
-        chatContext.displaySendFeedback(true)
+    async function handleRecordedVideo(uri: string): Promise<void> {
+        const deviceFile = DeviceFile.create({ uri, type: "video" })
 
-        try {
-            const deviceFile = DeviceFile.create({ uri, type: "video" })
+        if (!deviceFile) return
 
-            const response = await messageService.create(
-                vetCaseId,
-                { file: deviceFile },
-                () => chatContext.displaySendFeedback(false)
-            )
-
-            chatContext.insertMessage(MessageMapper.apply(response))
-            /* Remove route params to avoid any unexpected side effect */
-            navigation.setParams({ videoUri: '' })
-            vetCasesContext.receiveMessage(response, true)
-            chatContext.scrollToBottom()
-        }
-
-        finally {
-            chatContext.displaySendFeedback(false)
-        }
+        const message = await vetCaseMessagesContext.sendFile(deviceFile)
+        vetCasesContext.receiveMessage(MessageModelMapper.apply(message), true)
+        navigation.setParams({ videoUri: '' })
     }
 
     return { recordVideo, handleRecordedVideo }

@@ -15,12 +15,12 @@ export interface Props {
 
 export default memo(({ item }: Props) => {
     const navigation = useNavigation()
-    const { setVetCase } = useVetCase()
+    const vetCaseContext = useVetCase()
     const vetCasesContext = useVetCasesContext()
 
     function navigateToChat(): void {
         vetCasesContext.readMessages(item.id)
-        setVetCase(item)
+        vetCaseContext.changeOpenedChat(item)
 
         navigation.navigate("Chat", {
             vetCaseId: item.id,

@@ -6,7 +6,7 @@ import { localDate } from "../../infra/adapters/local-date-adapter"
 import { LocalDateFormatEnum } from "../../infra/adapters/local-date-adapter/index.gateway"
 
 export const useViewModel = () => {
-    const { vetCase } = useVetCase()
+    const vetCaseContext = useVetCase()
     const { vetCaseService } = useServices()
 
     const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>()
@@ -15,7 +15,7 @@ export const useViewModel = () => {
     async function handleFetchVetCaseData(): Promise<void> {
         try {
             shouldDisplayLoadingIndicator(true)
-            const response = await vetCaseService.findOne(vetCase.id)
+            const response = await vetCaseService.findOne(vetCaseContext.data.id)
             setVetCaseDetails(response)
         }
 

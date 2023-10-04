@@ -6,8 +6,8 @@ import { useServices } from "../../context/ServicesContext"
 import { EvidencesType } from "../../schemas/VetCaseDetails"
 
 export const useViewModel = () => {
-    const { vetCase } = useVetCase()
     const navigation = useNavigation()
+    const vetCaseContext = useVetCase()
     const { vetCaseService } = useServices()
 
     const [evidences, setEvidences] = useState<EvidencesType[]>([])
@@ -16,7 +16,7 @@ export const useViewModel = () => {
     async function fetchVetCaseDetails(): Promise<void> {
         try {
             displayFetchFeedback(true)
-            const response = await vetCaseService.findOne(vetCase.id)
+            const response = await vetCaseService.findOne(vetCaseContext.data.id)
             setEvidences([...response?.chat_evidences, ...response?.evidences])
         }
 

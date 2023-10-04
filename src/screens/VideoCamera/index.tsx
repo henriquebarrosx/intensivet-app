@@ -7,16 +7,16 @@ import { RecordVideoProvider } from "../../context/RecordVideo"
 import { pushNotification } from "../../infra/adapters/push-notification"
 
 const VideoCamera = () => {
-    const { vetCase } = useVetCase()
     const navigation = useNavigation()
+    const vetCaseContext = useVetCase()
     const isCurrentScreenFocused = useIsFocused()
 
     const onVideoComplete = (assetUri: string): void => {
         navigation.navigate("Chat", {
             videoUri: assetUri,
-            vetCaseId: vetCase.id,
-            petName: vetCase.pet.name,
-            clinicFantasyName: vetCase.clinic.fantasy_name,
+            vetCaseId: vetCaseContext.data.id,
+            petName: vetCaseContext.data.pet.name,
+            clinicFantasyName: vetCaseContext.data.clinic.fantasy_name,
         })
     }
 

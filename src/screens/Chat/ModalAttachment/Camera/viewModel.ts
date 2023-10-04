@@ -1,43 +1,24 @@
-import { useChat } from "../../../../context/ChatContext"
-import { useVetCase } from "../../../../context/VetCaseContext"
 import { useVetCasesContext } from "../../../../context/VetCasesContext"
-import { useServices } from "../../../../context/ServicesContext"
 import { useFileAttachmentModal } from "../../../../context/AttachModal"
-import { MessageMapper } from "../../../../infra/mappers/message-mapper"
 import { DeviceCameraAdapter } from "../../../../infra/adapters/device-camera"
+import { MessageModelMapper } from "../../../../infra/mappers/message-model-mapper"
+import { useVetCaseMessagesContext } from "../../../../context/VetCaseMessagesContext"
 
-export const useViewModel = () => {
-    const chatViewModel = useChat()
-    const vetCaseContext = useVetCase()
+export function useViewModel() {
     const vetCasesContext = useVetCasesContext()
-    const { messageService } = useServices()
+    const vetCaseMessagesContext = useVetCaseMessagesContext()
     const fileAttachmentModalContext = useFileAttachmentModal()
 
     async function uploadAssetFromCamera() {
         const deviceCamera = new DeviceCameraAdapter()
-        const assetFile = await deviceCamera.takePicture()
+        const deviceFile = await deviceCamera.takePicture()
 
         fileAttachmentModalContext.displayModal(false)
 
-        if (!assetFile) return
+        if (!deviceFile) return
 
-        try {
-            chatViewModel.displaySendFeedback(true)
-
-            const response = await messageService.create(
-                vetCaseContext.vetCase.id,
-                { file: assetFile },
-                () => chatViewModel.displaySendFeedback(false)
-            )
-
-            await chatViewModel.insertMessage(MessageMapper.apply(response))
-            vetCasesContext.receiveMessage(response, true)
-        }
-
-        finally {
-            chatViewModel.scrollToBottom()
-            chatViewModel.displaySendFeedback(false)
-        }
+        const message = await vetCaseMessagesContext.sendFile(deviceFile)
+        vetCasesContext.receiveMessage(MessageModelMapper.apply(message))
     }
 
     return { uploadAssetFromCamera }

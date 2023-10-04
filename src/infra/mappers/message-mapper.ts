@@ -6,7 +6,7 @@ import { DeviceFile } from "../../domain/entities/device-file"
 export class MessageMapper {
     private constructor() { }
 
-    static apply(messageData: MessageModel) {
+    static apply(messageData: MessageModel): Message {
         const account = new Account()
             .withId(messageData.account.id)
             .withDoctorName(messageData.account.doctor_name)

@@ -1,18 +1,16 @@
-import { Animated, Keyboard } from "react-native"
-import { useEffect, useRef, useState } from "react"
+import { Animated } from "react-native"
+import { useRef, useState } from "react"
 
 import { useKeyboard } from "../../../app/react-hooks/keyboard"
 import { useVetCasesContext } from "../../../context/VetCasesContext"
-import { useServices } from "../../../context/ServicesContext"
-import { MessageMapper } from "../../../infra/mappers/message-mapper"
+import { MessageModelMapper } from "../../../infra/mappers/message-model-mapper"
+import { useVetCaseMessagesContext } from "../../../context/VetCaseMessagesContext"
 
 export const INPUT_AREA_HEIGHT = 58
 
 export const useViewModel = () => {
-    const chatViewModel = useChat()
-    const { messageService } = useServices()
     const vetCasesContext = useVetCasesContext()
-    const { id: vetCaseId } = useVetCase().vetCase
+    const vetCaseMessagesContext = useVetCaseMessagesContext()
 
     const [inputText, setInputText] = useState("")
     const [isSendButtonEnabled, makeSendButtonEnabled] = useState(true)
@@ -23,23 +21,14 @@ export const useViewModel = () => {
     async function onSend(): Promise<void> {
         try {
             if (inputText && isSendButtonEnabled) {
-                chatViewModel.displaySendFeedback(true)
                 makeSendButtonEnabled(false)
-
-                const response = await messageService.create(
-                    vetCaseId,
-                    { message: inputText }
-                )
-
-                await chatViewModel.insertMessage(MessageMapper.apply(response))
-                vetCasesContext.receiveMessage(response, true)
-                chatViewModel.scrollToBottom()
+                const message = await vetCaseMessagesContext.sendText(inputText)
+                vetCasesContext.receiveMessage(MessageModelMapper.apply(message), true)
             }
         }
 
         finally {
             makeSendButtonEnabled(true)
-            chatViewModel.displaySendFeedback(false)
             setInputText("")
         }
     }

@@ -4,7 +4,7 @@ import { useServices } from "../../context/ServicesContext"
 import { VetCaseDetails } from "../../schemas/VetCaseDetails"
 
 export const useViewModel = () => {
-    const { vetCase } = useVetCase()
+    const vetCaseContext = useVetCase()
     const { vetCaseService } = useServices()
 
     const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>()
@@ -13,7 +13,7 @@ export const useViewModel = () => {
     async function fetchVetCaseDetails(): Promise<void> {
         try {
             shouldDisplayLoadingFeedback(true)
-            const response = await vetCaseService.findOne(vetCase.id)
+            const response = await vetCaseService.findOne(vetCaseContext.data.id)
             setVetCaseDetails(response)
         }
 

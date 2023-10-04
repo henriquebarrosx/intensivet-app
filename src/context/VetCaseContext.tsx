@@ -1,32 +1,30 @@
 import React, { Dispatch, useState, useContext, createContext } from "react"
 
-import { VetCaseModel as VetCaseModel } from "../schemas/VetCase"
-import { logger } from "../infra/adapters/logger-adapter"
 import { WithChildren } from "../@types/common"
-import { useServices } from "./ServicesContext"
+import { logger } from "../infra/adapters/logger-adapter"
+import { VetCaseModel as VetCaseModel } from "../schemas/VetCase"
 
-interface VetCaseContextType {
-    vetCase: VetCaseModel
-    setVetCase: Dispatch<React.SetStateAction<VetCaseModel>>
-    markVetCaseMessageAsRead(): Promise<void>
+type VetCaseContextType = {
+    data: VetCaseModel
+    reset(): void
+    changeOpenedChat(data: VetCaseModel | null): void
 }
 
 export const VetCaseContext = createContext<VetCaseContextType>({} as VetCaseContextType)
 
 export function VetCaseProvider({ children }: WithChildren) {
-    const { vetCaseService } = useServices()
-    const [vetCase, setVetCase] = useState<VetCaseModel>({} as VetCaseModel)
+    const [openedVetCase, changeOpenedChat] = useState<VetCaseModel | null>(null)
 
-    async function markVetCaseMessageAsRead(): Promise<void> {
-        await vetCaseService.readMessages(vetCase.id)
+    function reset() {
+        changeOpenedChat(null)
     }
 
     return (
         <VetCaseContext.Provider
             value={{
-                vetCase,
-                setVetCase,
-                markVetCaseMessageAsRead
+                data: openedVetCase,
+                changeOpenedChat,
+                reset,
             }}>
             {children}
         </VetCaseContext.Provider>
