@@ -1,15 +1,18 @@
 import { useState } from "react"
 import { useSession } from "../../context/UserContext"
 import { useServices } from "../../context/ServicesContext"
+import { useVetCasesContext } from "../../context/VetCasesContext"
 
 export const useViewModel = () => {
     const deviceSession = useSession()
+    const vetCasesContext = useVetCasesContext()
     const { notificationService } = useServices()
     const [isNotificationsEnabled, setNotificationState] = useState(!!deviceSession.sessionData?.expoToken)
 
     const userThumbnail = deviceSession.sessionData?.current_account?.thumbnail
 
     async function removeCurrentSession(): Promise<void> {
+        vetCasesContext.reset()
         await deviceSession.clear()
     }
 
