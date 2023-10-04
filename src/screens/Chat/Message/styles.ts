@@ -58,10 +58,6 @@ interface DoctorNameProps {
 export const DoctorName = styled.Text<DoctorNameProps>`
     color: ${({ theme, isAdmin }) => isAdmin ? theme.COLORS.chatAdminMessage : theme.COLORS.chatUnlessAdminMessage};  
     display: ${({ isVisible }) => isVisible ? 'flex' : 'none'};
-
-    ${({ isAdmin }) => !isAdmin && css`
-        margin-bottom: 4px;
-    `}
 `;
 
 interface MessageTimeProps {
