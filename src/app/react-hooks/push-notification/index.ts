@@ -10,10 +10,10 @@ import { useVetCase } from "../../../context/VetCaseContext"
 import { useServices } from "../../../context/ServicesContext"
 import { logger } from "../../../infra/adapters/logger-adapter"
 import { CHANNELS, CHANNELS_EVENTS } from "../../../schemas/Pusher"
+import { Notification } from "../../../domain/entities/notification"
 import { useVetCasesContext } from "../../../context/VetCasesContext"
 import { MessageMapper } from "../../../infra/mappers/message-mapper"
 import { useVetCaseMessagesContext } from "../../../context/VetCaseMessagesContext"
-
 
 let GENERAL_CHANNEL = null
 
@@ -66,26 +66,26 @@ export function usePushNotification() {
                 }
             )
 
-            //     notificationListener.current = Notifications.addNotificationReceivedListener(
-            //         (event) => {
-            //             const notification = new Notification(event)
+            notificationListener.current = Notifications.addNotificationReceivedListener(
+                (event) => {
+                    const notification = new Notification(event)
 
-            //             const isNotificationEnabled = notification
-            //                 .canDisplayNotification(vetCaseContext.data?.id)
+                    const isNotificationEnabled = notification
+                        .canDisplayNotification(vetCaseContext.data?.id)
 
-            //             isNotificationEnabled
-            //                 ? notificationService.enable()
-            //                 : notificationService.disable()
-            //         }
-            //     )
+                    isNotificationEnabled
+                        ? notificationService.enable()
+                        : notificationService.disable()
+                }
+            )
 
-            //     responseNotificationListener.current = Notifications
-            //         .addNotificationResponseReceivedListener(() => { })
+            responseNotificationListener.current = Notifications
+                .addNotificationResponseReceivedListener(() => { })
 
             return () => {
                 logger.info("PUSH NOTIFICATION", `Unsubscribing channel ${channelName}`)
-                // Notifications.removeNotificationSubscription(responseNotificationListener.current)
-                // Notifications.removeNotificationSubscription(notificationListener.current)
+                Notifications.removeNotificationSubscription(responseNotificationListener.current)
+                Notifications.removeNotificationSubscription(notificationListener.current)
                 GENERAL_CHANNEL.unsubscribe()
                 GENERAL_CHANNEL.unbind_all()
             }

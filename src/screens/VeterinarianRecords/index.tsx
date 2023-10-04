@@ -1,7 +1,6 @@
-import * as Notifications from "expo-notifications"
+import React, { useEffect } from "react"
 import { useIsFocused } from "@react-navigation/native"
 import { ScrollView, ActivityIndicator } from "react-native"
-import React, { useCallback, useContext, useEffect, useLayoutEffect } from "react"
 import { FontAwesome5, FontAwesome, Entypo, MaterialIcons, AntDesign } from "@expo/vector-icons"
 
 import { SpaceArea } from "./styles"
@@ -11,13 +10,10 @@ import { AbsoluteArea } from "../AboutClinic/styles"
 import { Visibility } from "../../components/Visibility"
 import { InformationBox } from "../../components/InformationBox"
 import { SectionInfoTitle } from "../../components/SectionInfoTitle"
-import { NotificationContext } from "../../context/NotificationContext"
-import { pushNotification } from "../../infra/adapters/push-notification"
 import { DetailedInformationBox } from "../../components/DetailedInformationBox"
 
 export function VeterinarianRecords() {
     const isCurrentScreenFocused = useIsFocused()
-    const { notificationListener, responseNotificationListener } = useContext(NotificationContext)
 
     const {
         vetCaseDetails,
@@ -28,22 +24,9 @@ export function VeterinarianRecords() {
 
     useEffect(() => {
         if (isCurrentScreenFocused) {
-            pushNotification.enableNotificationsLocally()
             fetchVetCaseDetails()
         }
     }, [isCurrentScreenFocused])
-
-    useLayoutEffect(
-        useCallback(() => {
-            notificationListener.current = Notifications.addNotificationReceivedListener(() => { })
-            responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(() => { })
-
-            return () => {
-                Notifications.removeNotificationSubscription(notificationListener.current)
-                Notifications.removeNotificationSubscription(responseNotificationListener.current)
-            }
-        }, [])
-    )
 
     return (
         <ScreenView>

@@ -1,18 +1,14 @@
-import * as Notifications from "expo-notifications"
+import React, { useEffect } from "react"
 import { useIsFocused } from "@react-navigation/native"
 import { ScrollView, ActivityIndicator } from "react-native"
-import React, { useCallback, useContext, useEffect, useLayoutEffect } from "react"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
-import { NotificationContext } from "../../context/NotificationContext"
-import { pushNotification } from "../../infra/adapters/push-notification"
 import { Container, Evidence, EvidencesNotFound, AbsoluteArea, Description } from "./styles"
 
 export function EvidencesScreen() {
     const isCurrentScreenFocused = useIsFocused()
-    const { notificationListener, responseNotificationListener } = useContext(NotificationContext)
 
     const {
         evidences,
@@ -25,22 +21,9 @@ export function EvidencesScreen() {
 
     useEffect(() => {
         if (isCurrentScreenFocused) {
-            pushNotification.enableNotificationsLocally()
             fetchVetCaseDetails()
         }
     }, [isCurrentScreenFocused])
-
-    useLayoutEffect(
-        useCallback(() => {
-            notificationListener.current = Notifications.addNotificationReceivedListener(() => { })
-            responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(() => { })
-
-            return () => {
-                Notifications.removeNotificationSubscription(notificationListener.current)
-                Notifications.removeNotificationSubscription(responseNotificationListener.current)
-            }
-        }, [])
-    )
 
     return (
         <ScreenView>

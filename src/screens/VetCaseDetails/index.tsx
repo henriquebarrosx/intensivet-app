@@ -1,14 +1,10 @@
+import React from "react"
 import { ScrollView } from "react-native"
-import * as Notifications from "expo-notifications"
-import { useIsFocused } from "@react-navigation/native"
-import React, { useCallback, useContext, useEffect, useLayoutEffect } from "react"
 
 import { Avatar } from "./Avatar"
 import { useViewModel } from "./useViewModel"
 import ScreenView from "../../components/ScreenView"
 import { SectionInfoTitle } from "../../components/SectionInfoTitle"
-import { NotificationContext } from "../../context/NotificationContext"
-import { pushNotification } from "../../infra/adapters/push-notification"
 import { InformationActionBox } from "../../components/InformationActionBox"
 import { DoctorEmail, DoctorName, HeaderArea, Note, SpaceArea } from "./styles"
 
@@ -21,33 +17,12 @@ import {
 } from "@expo/vector-icons"
 
 export function VetCaseDetails() {
-    const isCurrentScreenFocused = useIsFocused()
-    const { notificationListener, responseNotificationListener } = useContext(NotificationContext)
-
     const {
         subtitle,
         clinicName,
         isPuctualCase,
         clinicThumbnail,
     } = useViewModel()
-
-    useEffect(() => {
-        if (isCurrentScreenFocused) {
-            pushNotification.enableNotificationsLocally()
-        }
-    }, [isCurrentScreenFocused])
-
-    useLayoutEffect(
-        useCallback(() => {
-            notificationListener.current = Notifications.addNotificationReceivedListener(() => { })
-            responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(() => { })
-
-            return () => {
-                Notifications.removeNotificationSubscription(notificationListener.current)
-                Notifications.removeNotificationSubscription(responseNotificationListener.current)
-            }
-        }, [])
-    )
 
     return (
         <ScreenView>
