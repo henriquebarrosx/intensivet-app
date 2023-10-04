@@ -1,8 +1,8 @@
 export interface IEnvironment {
-    name: "production" | "staging"
+    name: "production" | "staging" | "development"
     sentry: {
         dsn: string
-        env: "production" | "staging"
+        env: "production" | "staging" | "development"
     }
     httpClientBaseUrl: string
     pusherjsAppKey: string

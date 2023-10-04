@@ -1,5 +1,15 @@
 import { IEnvironment } from "./index.gateway"
 
+const DEVELOPMENT: IEnvironment = {
+    name: "development",
+    httpClientBaseUrl: "https://staging.intensivet.com.br",
+    pusherjsAppKey: "3e8071ca178d120546a5",
+    sentry: {
+        dsn: "",
+        env: "development",
+    }
+}
+
 const STAGING: IEnvironment = {
     name: "staging",
     httpClientBaseUrl: "https://staging.intensivet.com.br",
@@ -20,4 +30,4 @@ const PRODUCTION: IEnvironment = {
     }
 }
 
-export const env: IEnvironment = STAGING
+export const env: IEnvironment = DEVELOPMENT
