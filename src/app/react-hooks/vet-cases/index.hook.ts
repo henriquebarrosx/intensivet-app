@@ -78,7 +78,7 @@ export function useVetCases(): IVetCasesContext {
         }
 
         updateItems(readVetCaseMessages)
-        await vetCaseService.readMessages(vetCaseId)
+        await vetCaseService.markMessagesRead(vetCaseId)
     }
 
     function receiveMessage(message: MessageModel, isRead: boolean = false): void {

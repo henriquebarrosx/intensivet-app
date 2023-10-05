@@ -38,17 +38,17 @@ export class VetCaseService {
         }
     }
 
-    async readMessages(id: number): Promise<void> {
-        const endpoint = `/vet_cases/${id}/unread_messages`
+    async markMessagesRead(id: number): Promise<void> {
+        const endpoint = `/api/v2/vet_cases/${id}/mark_messages_read`
 
         try {
-            logger.info("VET CASE MESSAGES", "Mark as read", { endpoint })
+            logger.info("VET CASE", "Mark messages as read", { endpoint })
             await this.httpClient.get<void>(endpoint)
             return
         }
 
         catch (error) {
-            logger.error("VET CASE MESSAGES", "Mark as read", { endpoint, cause: error?.message })
+            logger.error("VET CASE", "Mark messages as read", { endpoint, cause: error?.message })
             throw error
         }
     }
