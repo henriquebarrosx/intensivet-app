@@ -1,8 +1,9 @@
 // Docs: https://docs.sentry.io/platforms/react-native
 import * as Sentry from "@sentry/react-native"
-import { env } from "../../config/environment"
 import { localDate } from "../local-date-adapter"
+import { env, envTypes } from "../../config/environment"
 import { LocalDateFormatEnum } from "../local-date-adapter/index.gateway"
+import { EnvName } from "../../config/environment/index.gateway"
 
 type LoggerParams = {
     endpoint?: string
@@ -39,7 +40,15 @@ export const logger = {
     error(event: string, description: string, params: LoggerParams = {}) {
         const zonedTime = localDate.format(localDate.toZone(new Date()), LocalDateFormatEnum.datetime)
         const message = `[${zonedTime}] INFO: (${event.toUpperCase()}): ${description.toLowerCase()}`
-        Sentry.captureException(new Error(message, { cause: params.cause }))
+
+        const validSentryEnvs: EnvName[] = ["production", "staging"]
+
+        if (validSentryEnvs.includes(env.name)) {
+            Sentry.captureException(
+                new Error(message, { cause: params.cause })
+            )
+        }
+
         console.error(message, params)
     }
 }
