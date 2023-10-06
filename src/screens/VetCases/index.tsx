@@ -8,10 +8,12 @@ import TryAgainButton from "./TryAgainButton"
 import RefreshIndicator from "./RefreshIndicator"
 import ScrollToTopButton from "./ScrollToTopButton"
 import ScreenView from "../../components/ScreenView"
+import { useVetCaseContext } from "../../context/VetCaseContext"
 import { useVetCasesContext } from "../../context/VetCasesContext"
 import { pushNotification } from "../../infra/adapters/push-notification"
 
 export default function VetCases() {
+    const vetCaseContext = useVetCaseContext()
     const vetCasesContext = useVetCasesContext()
     const isCurrentScreenFocused = useIsFocused()
 
@@ -20,6 +22,7 @@ export default function VetCases() {
     useEffect(() => {
         if (isCurrentScreenFocused) {
             const DEFAULT_PAGE = 1
+            vetCaseContext.changeOpenedChat(null)
             pushNotification.enableNotificationsLocally()
             vetCasesContext.findAll(DEFAULT_PAGE, vetCasesContext.orderedBy)
         }
