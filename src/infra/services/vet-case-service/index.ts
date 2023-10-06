@@ -43,7 +43,7 @@ export class VetCaseService {
 
         try {
             logger.info("VET CASE", "Mark messages as read", { endpoint })
-            await this.httpClient.get<void>(endpoint)
+            await this.httpClient.put<{}, void>(endpoint, {})
             return
         }
 
