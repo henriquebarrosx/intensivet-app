@@ -1,7 +1,7 @@
 // Docs: https://docs.sentry.io/platforms/react-native
 import * as Sentry from "@sentry/react-native"
+import { env } from "../../config/environment"
 import { localDate } from "../local-date-adapter"
-import { env, envTypes } from "../../config/environment"
 import { LocalDateFormatEnum } from "../local-date-adapter/index.gateway"
 import { EnvName } from "../../config/environment/index.gateway"
 
