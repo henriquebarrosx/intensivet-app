@@ -6,9 +6,9 @@ import { env } from "../../../infra/config/environment"
 import { VetCaseModel } from "../../../schemas/VetCase"
 import { MessageModel } from "../../../schemas/Message"
 import { useSession } from "../../../context/UserContext"
-import { useVetCase } from "../../../context/VetCaseContext"
 import { useServices } from "../../../context/ServicesContext"
 import { logger } from "../../../infra/adapters/logger-adapter"
+import { useVetCaseContext } from "../../../context/VetCaseContext"
 import { CHANNELS, CHANNELS_EVENTS } from "../../../schemas/Pusher"
 import { Notification } from "../../../domain/entities/notification"
 import { useVetCasesContext } from "../../../context/VetCasesContext"
@@ -19,7 +19,7 @@ let GENERAL_CHANNEL = null
 
 export function usePushNotification() {
     const sessionContext = useSession()
-    const vetCaseContext = useVetCase()
+    const vetCaseContext = useVetCaseContext()
     const vetCasesContext = useVetCasesContext()
     const { notificationService } = useServices()
     const vetCaseMessagesContext = useVetCaseMessagesContext()

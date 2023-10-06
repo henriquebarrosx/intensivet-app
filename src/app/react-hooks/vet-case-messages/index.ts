@@ -3,13 +3,13 @@ import { RefObject, useRef, useState } from "react"
 
 import { Pagination } from "../../../@types/common"
 import { Message } from "../../../domain/entities/message"
-import { useVetCase } from "../../../context/VetCaseContext"
 import { useServices } from "../../../context/ServicesContext"
 import { DeviceFile } from "../../../domain/entities/device-file"
+import { useVetCaseContext } from "../../../context/VetCaseContext"
 
 export function useVetCaseMessages(): IVetCaseMessagesContext {
-    const vetCaseContext = useVetCase()
     const { messageService } = useServices()
+    const vetCaseContext = useVetCaseContext()
 
     const listViewRef = useRef<VirtualizedList<Message>>(null)
     const [items, updateItems] = useState<Message[]>([])

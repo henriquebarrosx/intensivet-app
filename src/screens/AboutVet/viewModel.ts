@@ -1,13 +1,13 @@
 import { useState } from "react"
-import { useVetCase } from "../../context/VetCaseContext"
 import { useServices } from "../../context/ServicesContext"
 import { VetCaseDetails } from "../../schemas/VetCaseDetails"
+import { useVetCaseContext } from "../../context/VetCaseContext"
 import { localDate } from "../../infra/adapters/local-date-adapter"
 import { LocalDateFormatEnum } from "../../infra/adapters/local-date-adapter/index.gateway"
 
 export const useViewModel = () => {
-    const vetCaseContext = useVetCase()
     const { vetCaseService } = useServices()
+    const vetCaseContext = useVetCaseContext()
 
     const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>()
     const [isLoadingIndicatorDisplayed, shouldDisplayLoadingIndicator] = useState(true)

@@ -7,9 +7,9 @@ import ModalAttachment from "./ModalAttachment"
 import ScreenView from "../../components/ScreenView"
 import ModalToVideoPreview from "./ModalToPreview/Video"
 import ModalToImagePreview from "./ModalToPreview/Image"
-import { useVetCase } from "../../context/VetCaseContext"
 import { MessageProvider } from "../../context/MessageContext"
 import { AudioRecordProvider } from "../../context/RecordAudio"
+import { useVetCaseContext } from "../../context/VetCaseContext"
 import { useVetCasesContext } from "../../context/VetCasesContext"
 import { FileAttachmentModalProvider } from "../../context/AttachModal"
 import { useVetCaseMessagesContext } from "../../context/VetCaseMessagesContext"
@@ -22,7 +22,7 @@ function Chat(props: Props) {
     const isCurrentScreenFocused = useIsFocused()
     const videoUri = props?.route?.params?.videoUri
 
-    const vetCaseContext = useVetCase()
+    const vetCaseContext = useVetCaseContext()
     const vetCasesContext = useVetCasesContext()
     const vetCaseMessagesContext = useVetCaseMessagesContext()
 
@@ -34,7 +34,6 @@ function Chat(props: Props) {
         }
 
         return () => {
-            vetCaseContext.reset()
             vetCaseMessagesContext.reset()
             vetCasesContext.readMessages(vetCaseContext.data.id)
         }
