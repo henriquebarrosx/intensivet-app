@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { View, StyleSheet } from "react-native"
 import { ResizeMode, Video, VideoFullscreenUpdate, VideoFullscreenUpdateEvent } from "expo-av"
+
 import { logger } from "../infra/adapters/logger-adapter"
 
 type Props = {
@@ -14,31 +15,33 @@ type Props = {
 export default function VideoPlayer({ uri, isFullScreen, onFinish = () => { } }: Props) {
     const video = React.useRef<Video>(null)
 
-    async function unloadAsync(event: VideoFullscreenUpdateEvent) {
-        if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
-            logger.info("VIDEO PLAYER", "unloading video player...")
-            await video?.current?.unloadAsync()
-            await video?.current?.stopAsync()
-            onFinish()
+    async function loadAsync() {
+        logger.info("VIDEO PLAYER", "loading video player...")
+        await video?.current?.playAsync()
+
+        if (isFullScreen) {
+            logger.info("VIDEO PLAYER", "opening full screen...")
+            await video.current.presentFullscreenPlayer()
         }
     }
 
-    useEffect(() => {
-        (async () => {
-            logger.info("VIDEO PLAYER", "loading video player...")
-            await video?.current?.playAsync()
-            if (isFullScreen) await video.current.presentFullscreenPlayer()
-        })()
-
-        return () => {
-            (async () => {
-                if (!isFullScreen) {
-                    await video?.current?.unloadAsync()
-                    await video?.current?.stopAsync()
-                    onFinish()
-                }
-            })()
+    async function exitFromFullScreen(event: VideoFullscreenUpdateEvent) {
+        if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
+            logger.info("VIDEO PLAYER", "exiting from full screen...")
+            await unloadAsync()
         }
+    }
+
+    async function unloadAsync() {
+        logger.info("VIDEO PLAYER", "unloading video player...")
+        await video?.current?.unloadAsync()
+        await video?.current?.stopAsync()
+        onFinish()
+    }
+
+    useEffect(() => {
+        loadAsync()
+        return () => { unloadAsync() }
     }, [])
 
     return (
@@ -50,7 +53,7 @@ export default function VideoPlayer({ uri, isFullScreen, onFinish = () => { } }:
                 useNativeControls
                 style={styles.video}
                 resizeMode={ResizeMode.CONTAIN}
-                onFullscreenUpdate={unloadAsync}
+                onFullscreenUpdate={exitFromFullScreen}
             />
         </View>
     )
