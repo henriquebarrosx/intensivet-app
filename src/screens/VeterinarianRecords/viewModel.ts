@@ -1,12 +1,12 @@
 import { useState } from "react"
 
-import { useVetCase } from "../../context/VetCaseContext"
 import { useServices } from "../../context/ServicesContext"
 import { VetCaseDetails } from "../../schemas/VetCaseDetails"
+import { useVetCaseContext } from "../../context/VetCaseContext"
 
 export function useViewModel() {
-    const vetCaseContext = useVetCase()
     const { vetCaseService } = useServices()
+    const vetCaseContext = useVetCaseContext()
 
     const [vetCaseDetails, setVetCaseDetails] = useState<VetCaseDetails>()
     const [isLoadingIndicatorDisplayed, shouldDisplayLoadingFeedback] = useState(true)

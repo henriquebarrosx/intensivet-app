@@ -1,14 +1,14 @@
 import React, { useEffect } from "react"
 import { useIsFocused, useNavigation } from "@react-navigation/native"
 
-import { useVetCase } from "../../context/VetCaseContext"
 import VideoCameraComponent from "../../components/VideoRecord"
 import { RecordVideoProvider } from "../../context/RecordVideo"
+import { useVetCaseContext } from "../../context/VetCaseContext"
 import { pushNotification } from "../../infra/adapters/push-notification"
 
 const VideoCamera = () => {
     const navigation = useNavigation()
-    const vetCaseContext = useVetCase()
+    const vetCaseContext = useVetCaseContext()
     const isCurrentScreenFocused = useIsFocused()
 
     const onVideoComplete = (assetUri: string): void => {

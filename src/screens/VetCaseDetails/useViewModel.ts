@@ -1,7 +1,7 @@
-import { useVetCase } from "../../context/VetCaseContext"
+import { useVetCaseContext } from "../../context/VetCaseContext"
 
 export const useViewModel = () => {
-  const vetCaseContext = useVetCase()
+  const vetCaseContext = useVetCaseContext()
 
   function getPetNameWithVetCaseId(): string {
     return `#${vetCaseContext.data.id} ${vetCaseContext.data.pet.name}`

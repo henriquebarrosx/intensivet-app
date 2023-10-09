@@ -1,14 +1,14 @@
 import { useState } from "react"
 import { useNavigation } from "@react-navigation/native"
 
-import { useVetCase } from "../../context/VetCaseContext"
 import { useServices } from "../../context/ServicesContext"
 import { EvidencesType } from "../../schemas/VetCaseDetails"
+import { useVetCaseContext } from "../../context/VetCaseContext"
 
 export const useViewModel = () => {
     const navigation = useNavigation()
-    const vetCaseContext = useVetCase()
     const { vetCaseService } = useServices()
+    const vetCaseContext = useVetCaseContext()
 
     const [evidences, setEvidences] = useState<EvidencesType[]>([])
     const [isFetchingEvidences, displayFetchFeedback] = useState<boolean>(true)

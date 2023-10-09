@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native"
 import SlaMessages from "./SlaMessages"
 import ReceivedMessages from "./ReceivedMessages"
 import { VetCaseModel } from "../../../schemas/VetCase"
-import { useVetCase } from "../../../context/VetCaseContext"
+import { useVetCaseContext } from "../../../context/VetCaseContext"
 import { useVetCasesContext } from "../../../context/VetCasesContext"
 import { localDate } from "../../../infra/adapters/local-date-adapter"
 import { LocalDateFormatEnum } from "../../../infra/adapters/local-date-adapter/index.gateway"
@@ -15,11 +15,10 @@ export interface Props {
 
 export default memo(({ item }: Props) => {
     const navigation = useNavigation()
-    const vetCaseContext = useVetCase()
+    const vetCaseContext = useVetCaseContext()
     const vetCasesContext = useVetCasesContext()
 
     function navigateToChat(): void {
-        vetCasesContext.readMessages(item.id)
         vetCaseContext.changeOpenedChat(item)
 
         navigation.navigate("Chat", {
