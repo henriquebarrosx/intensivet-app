@@ -1,16 +1,16 @@
 import { useState } from "react"
-import { useNavigation } from "@react-navigation/native"
 
 import { useServices } from "../../context/ServicesContext"
-import { EvidencesType } from "../../schemas/VetCaseDetails"
+import { EvidenceModel } from "../../schemas/VetCaseDetails"
 import { useVetCaseContext } from "../../context/VetCaseContext"
+import { useFileReader } from "../../app/react-hooks/file-reader"
 
 export const useViewModel = () => {
-    const navigation = useNavigation()
+    const fileReader = useFileReader()
     const { vetCaseService } = useServices()
     const vetCaseContext = useVetCaseContext()
 
-    const [evidences, setEvidences] = useState<EvidencesType[]>([])
+    const [evidences, setEvidences] = useState<EvidenceModel[]>([])
     const [isFetchingEvidences, displayFetchFeedback] = useState<boolean>(true)
 
     async function fetchVetCaseDetails(): Promise<void> {
@@ -25,11 +25,8 @@ export const useViewModel = () => {
         }
     }
 
-    function openEvidenceFile(source: string): void {
-        navigation.navigate('WebPage', {
-            screenTitle: 'Evidências',
-            source: source,
-        })
+    async function openEvidenceFile(evidence: EvidenceModel): Promise<void> {
+        await fileReader.read(evidence.file_name, evidence.service_url)
     }
 
     function isEvidencesNotFoundTextVisible(): boolean {

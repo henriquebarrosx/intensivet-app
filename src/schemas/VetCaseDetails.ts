@@ -119,15 +119,17 @@ export interface VetCaseDetails {
 	pet: Pet;
 	pet_anamnesis: PetAnamnesis;
 	clinic: Clinic;
-	evidences: EvidencesType[];
-	chat_evidences: EvidencesType[];
+	evidences: EvidenceModel[];
+	chat_evidences: EvidenceModel[];
 	started_at: Date;
 	responded_at?: any;
 	created_at: Date;
 	updated_at: Date;
 }
 
-export type EvidencesType = {
+export type EvidenceModel = {
 	type: string
+	file_name: string
 	service_url: string
+	video_thumbnail_url?: string
 }

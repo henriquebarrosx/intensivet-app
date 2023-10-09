@@ -42,7 +42,7 @@ export function EvidencesScreen() {
                     {evidences.map((evidence) => (
                         <Evidence
                             key={evidence.service_url}
-                            onPress={() => openEvidenceFile(evidence.service_url)}
+                            onPress={() => openEvidenceFile(evidence)}
                         >
                             <MaterialCommunityIcons
                                 size={32}
@@ -51,8 +51,7 @@ export function EvidencesScreen() {
                             />
 
                             <Description ellipsizeMode="tail" numberOfLines={1}>
-                                {/* TODO: Adicionar nome do arquivo */}
-                                {new Date().toISOString()}
+                                {evidence.file_name}
                             </Description>
                         </Evidence>
                     ))}
