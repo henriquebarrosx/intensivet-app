@@ -1,38 +1,55 @@
-import { ResizeMode, Video } from "expo-av"
 import React, { useEffect } from "react"
-import { View, StyleSheet, Dimensions, Button } from "react-native"
+import { View, StyleSheet } from "react-native"
+import { ResizeMode, Video, VideoFullscreenUpdate, VideoFullscreenUpdateEvent } from "expo-av"
 
 type Props = {
     uri: string
+    isFullScreen?: boolean
+    onFinish?: () => void
 }
 
 // https://docs.expo.dev/versions/latest/sdk/video/
 
-export default function VideoPlayer({ uri }: Props) {
+export default function VideoPlayer({ uri, isFullScreen, onFinish = () => { } }: Props) {
     const video = React.useRef<Video>(null)
 
+    async function unloadAsync(event: VideoFullscreenUpdateEvent) {
+        if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
+            console.log("Unloading video player...")
+            await video?.current?.unloadAsync()
+            await video?.current?.stopAsync()
+            onFinish()
+        }
+    }
+
     useEffect(() => {
-        video?.current?.playAsync()
+        (async () => {
+            console.log("loading video player...")
+            await video?.current?.playAsync()
+            if (isFullScreen) await video.current.presentFullscreenPlayer()
+        })()
+
         return () => {
-            Promise.all(
-                [
-                    video?.current?.stopAsync(),
-                    video?.current?.unloadAsync()
-                ]
-            )
+            (async () => {
+                if (!isFullScreen) {
+                    await video?.current?.unloadAsync()
+                    await video?.current?.stopAsync()
+                    onFinish()
+                }
+            })()
         }
     }, [])
 
     return (
         <View style={styles.container}>
             <Video
-                isLooping
                 ref={video}
                 shouldPlay
                 source={{ uri }}
                 useNativeControls
                 style={styles.video}
                 resizeMode={ResizeMode.CONTAIN}
+                onFullscreenUpdate={unloadAsync}
             />
         </View>
     )

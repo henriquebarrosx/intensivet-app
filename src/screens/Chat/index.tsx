@@ -4,7 +4,6 @@ import Messages from "./Messages"
 import { InputArea } from "./InputArea"
 import ModalAttachment from "./ModalAttachment"
 import ScreenView from "../../components/ScreenView"
-import ModalToVideoPreview from "./ModalToPreview/Video"
 import ModalToImagePreview from "./ModalToPreview/Image"
 import { MessageProvider } from "../../context/MessageContext"
 import { AudioRecordProvider } from "../../context/RecordAudio"
@@ -47,7 +46,6 @@ function Chat(props: Props) {
             </ScreenView>
 
             <ModalToImagePreview />
-            <ModalToVideoPreview />
             <ModalAttachment assetMediaUri={videoUri} />
         </Fragment>
     )

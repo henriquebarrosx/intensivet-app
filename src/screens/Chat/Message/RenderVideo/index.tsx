@@ -1,26 +1,25 @@
-import React, { memo, useContext } from "react"
+import React, { memo, useState } from "react"
 import { TouchableOpacity, View } from "react-native"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import { styles } from "./styles"
 import ImageView from "../../../../components/ImageView"
+import VideoPlayer from "../../../../components/VideoPlayer"
 import { Message } from "../../../../domain/entities/message"
-import { MessageContext } from "../../../../context/MessageContext"
 
 type Props = {
     message: Message
 }
 
 function RenderVideoThumbnail({ message }: Props) {
-    const { setMessage, displayVideoPreview } = useContext(MessageContext)
+    const [isFullScreen, shouldDisplayFullScreen] = useState(false)
 
-    function previewImage(): void {
-        setMessage(message)
-        displayVideoPreview(true)
+    function toggleFullScreen(): void {
+        shouldDisplayFullScreen((isVisible) => !isVisible)
     }
 
     return (
-        <TouchableOpacity style={styles.root} onPress={previewImage}>
+        <TouchableOpacity style={styles.root} onPress={() => toggleFullScreen()}>
             <View style={styles.image}>
                 <ImageView uri={message.attachment.preview} resizeMode="cover" />
 
@@ -33,6 +32,16 @@ function RenderVideoThumbnail({ message }: Props) {
                     />
                 </View>
             </View>
+
+            {isFullScreen && (
+                <View style={styles.videoContainer}>
+                    <VideoPlayer
+                        isFullScreen
+                        uri={message.attachment.uri}
+                        onFinish={() => toggleFullScreen()}
+                    />
+                </View>
+            )}
         </TouchableOpacity>
     )
 }

@@ -37,4 +37,9 @@ export const styles = StyleSheet.create({
         alignSelf: "center",
         position: "absolute",
     },
+
+    videoContainer: {
+        display: "none",
+        position: "absolute",
+    }
 });
