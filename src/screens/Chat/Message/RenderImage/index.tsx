@@ -1,23 +1,20 @@
 import React from "react"
 import { TouchableOpacity, View } from "react-native"
-import { useNavigation } from "@react-navigation/native"
 
 import { styles } from "./styles"
 import ImageView from "../../../../components/ImageView"
 import { Message } from "../../../../domain/entities/message"
+import { useFileReader } from "../../../../app/react-hooks/file-reader"
 
 type Props = {
     message: Message
 }
 
 export default function RenderImage({ message }: Props) {
-    const navigation = useNavigation()
+    const fileReader = useFileReader()
 
-    function previewImage(): void {
-        navigation.navigate('WebPage', {
-            screenTitle: message.account.doctorName,
-            source: message.attachment.uri,
-        })
+    async function previewImage(): Promise<void> {
+        await fileReader.read(message.attachment.name, message.attachment.uri)
     }
 
     return (

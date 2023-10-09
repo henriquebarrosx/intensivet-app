@@ -1,22 +1,21 @@
-import React, { memo, useContext } from "react"
+import React from "react"
 import { TouchableOpacity, View } from "react-native"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import { styles } from "./styles"
 import ImageView from "../../../../components/ImageView"
 import { Message } from "../../../../domain/entities/message"
-import { MessageContext } from "../../../../context/MessageContext"
+import { useFileReader } from "../../../../app/react-hooks/file-reader"
 
 type Props = {
     message: Message
 }
 
-function RenderVideoThumbnail({ message }: Props) {
-    const { setMessage, displayVideoPreview } = useContext(MessageContext)
+export default function RenderVideoThumbnail({ message }: Props) {
+    const fileReader = useFileReader()
 
-    function previewImage(): void {
-        setMessage(message)
-        displayVideoPreview(true)
+    async function previewImage(): Promise<void> {
+        await fileReader.read(message.attachment.name, message.attachment.uri)
     }
 
     return (
@@ -36,5 +35,3 @@ function RenderVideoThumbnail({ message }: Props) {
         </TouchableOpacity>
     )
 }
-
-export default memo(RenderVideoThumbnail)

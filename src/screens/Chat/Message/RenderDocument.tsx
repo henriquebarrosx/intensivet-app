@@ -1,24 +1,21 @@
 import React, { memo } from "react"
-import { useNavigation } from "@react-navigation/native"
 import { Text, StyleSheet, TouchableOpacity } from "react-native"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import colors from "../../../utils/colors"
 import { Message } from "../../../domain/entities/message"
+import { useFileReader } from "../../../app/react-hooks/file-reader"
 
 interface RenderDocumentProps {
     message: Message
 }
 
 export default memo(({ message }: RenderDocumentProps) => {
-    const navigation = useNavigation()
+    const fileReader = useFileReader()
     const documentColors = message.isSender ? colors.white : colors.primary
 
     async function openResource() {
-        navigation.navigate("WebPage", {
-            source: message.attachment.uri,
-            screenTitle: message.account.doctorName,
-        })
+        await fileReader.read(message.attachment.name, message.attachment.uri)
     }
 
     function getIconName() {

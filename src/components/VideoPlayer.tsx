@@ -1,6 +1,6 @@
-import { ResizeMode, Video } from "expo-av"
 import React, { useEffect } from "react"
-import { View, StyleSheet, Dimensions, Button } from "react-native"
+import { ResizeMode, Video } from "expo-av"
+import { View, StyleSheet } from "react-native"
 
 type Props = {
     uri: string
