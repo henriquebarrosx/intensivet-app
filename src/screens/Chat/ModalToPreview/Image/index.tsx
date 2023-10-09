@@ -11,58 +11,54 @@ import { localDate } from "../../../../infra/adapters/local-date-adapter"
 import { LocalDateFormatEnum } from "../../../../infra/adapters/local-date-adapter/index.gateway"
 
 function ImagePreview() {
-  const { displayingImagePreview } = useContext(MessageContext)
-  return displayingImagePreview ? <Template /> : null
+    const { displayingImagePreview } = useContext(MessageContext)
+    return displayingImagePreview ? <Template /> : null
 }
 
 function Template() {
-  const { message, setMessage, displayImagePreview, displayingImagePreview } = useContext(MessageContext)
+    const { message, setMessage, displayImagePreview, displayingImagePreview } = useContext(MessageContext)
+    const createdAtDateTime = localDate.format(message.createdAt, LocalDateFormatEnum.datetime)
 
-  function closeModal() {
-    setMessage(null)
-    displayImagePreview(false)
-  }
+    function closeModal() {
+        setMessage(null)
+        displayImagePreview(false)
+    }
 
-  const createdAtDateTime = localDate.format(
-    message.createdAt,
-    LocalDateFormatEnum.datetime
-  )
+    return (
+        <Fragment>
+            <StatusBar barStyle={"light-content"} />
 
-  return (
-    <Fragment>
-      <StatusBar barStyle={"light-content"} />
+            <Modal
+                propagateSwipe
+                style={styles.modal}
+                animationIn="fadeIn"
+                animationOut="fadeOut"
+                swipeDirection={"right"}
+                onSwipeComplete={closeModal}
+                onBackdropPress={closeModal}
+                onBackButtonPress={closeModal}
+                isVisible={displayingImagePreview}
+            >
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <TouchableOpacity onPress={closeModal}>
+                            <MaterialCommunityIcons size={42} color={"#FFF"} name="chevron-left" />
+                        </TouchableOpacity>
 
-      <Modal
-        propagateSwipe
-        style={styles.modal}
-        animationIn="fadeIn"
-        animationOut="fadeOut"
-        swipeDirection={"right"}
-        onSwipeComplete={closeModal}
-        onBackdropPress={closeModal}
-        onBackButtonPress={closeModal}
-        isVisible={displayingImagePreview}
-      >
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={closeModal}>
-              <MaterialCommunityIcons size={42} color={"#FFF"} name="chevron-left" />
-            </TouchableOpacity>
+                        <View style={styles.headerRightSide}>
+                            <Text style={styles.doctorName}>
+                                {message?.account.doctorName}
+                            </Text>
 
-            <View style={styles.headerRightSide}>
-              <Text style={styles.doctorName}>
-                {message?.account.doctorName}
-              </Text>
+                            <Text style={styles.timestamp}>{createdAtDateTime}</Text>
+                        </View>
+                    </View>
 
-              <Text style={styles.timestamp}>{createdAtDateTime}</Text>
-            </View>
-          </View>
-
-          <ImageView uri={message?.attachment.uri!} resizeMode="contain" />
-        </View>
-      </Modal>
-    </Fragment>
-  )
+                    <ImageView uri={message?.attachment.uri!} resizeMode="contain" />
+                </View>
+            </Modal>
+        </Fragment>
+    )
 }
 
 export default memo(ImagePreview)

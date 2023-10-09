@@ -1,19 +1,19 @@
-import React from "react"
+import React, { useContext } from "react"
 import * as FileSystem from "expo-file-system"
 import * as IntentLauncher from "expo-intent-launcher"
-import { useNavigation } from "@react-navigation/native"
 import { Platform, TouchableOpacity, View } from "react-native"
 
 import { styles } from "./styles"
 import ImageView from "../../../../components/ImageView"
 import { Message } from "../../../../domain/entities/message"
+import { MessageContext } from "../../../../context/MessageContext"
 
 type Props = {
     message: Message
 }
 
 export default function RenderImage({ message }: Props) {
-    const navigation = useNavigation()
+    const messageContext = useContext(MessageContext)
 
     async function previewImage(): Promise<void> {
         if (Platform.OS === "android") {
@@ -30,10 +30,8 @@ export default function RenderImage({ message }: Props) {
             return
         }
 
-        navigation.navigate('WebPage', {
-            screenTitle: message.account.doctorName,
-            source: message.attachment.uri,
-        })
+        messageContext.displayImagePreview(true)
+        messageContext.setMessage(message)
     }
 
     return (
