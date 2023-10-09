@@ -1,6 +1,8 @@
 import React, { memo } from "react"
+import * as FileSystem from "expo-file-system"
+import * as IntentLauncher from "expo-intent-launcher"
 import { useNavigation } from "@react-navigation/native"
-import { Text, StyleSheet, TouchableOpacity } from "react-native"
+import { Text, StyleSheet, TouchableOpacity, Platform } from "react-native"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import colors from "../../../utils/colors"
@@ -15,6 +17,20 @@ export default memo(({ message }: RenderDocumentProps) => {
     const documentColors = message.isSender ? colors.white : colors.primary
 
     async function openResource() {
+        if (Platform.OS === "android") {
+            const localURL = FileSystem.documentDirectory + message.attachment.name
+            const { uri } = await FileSystem.downloadAsync(message.attachment.uri, localURL)
+
+            const contentURI = await FileSystem.getContentUriAsync(uri)
+
+            await IntentLauncher.startActivityAsync(
+                "android.intent.action.VIEW",
+                { data: contentURI, flags: 1 }
+            )
+
+            return
+        }
+
         navigation.navigate("WebPage", {
             source: message.attachment.uri,
             screenTitle: message.account.doctorName,

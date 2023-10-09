@@ -1,6 +1,8 @@
 import React from "react"
-import { TouchableOpacity, View } from "react-native"
+import * as FileSystem from "expo-file-system"
+import * as IntentLauncher from "expo-intent-launcher"
 import { useNavigation } from "@react-navigation/native"
+import { Platform, TouchableOpacity, View } from "react-native"
 
 import { styles } from "./styles"
 import ImageView from "../../../../components/ImageView"
@@ -13,7 +15,21 @@ type Props = {
 export default function RenderImage({ message }: Props) {
     const navigation = useNavigation()
 
-    function previewImage(): void {
+    async function previewImage(): Promise<void> {
+        if (Platform.OS === "android") {
+            const localURL = FileSystem.documentDirectory + message.attachment.name
+            const { uri } = await FileSystem.downloadAsync(message.attachment.uri, localURL)
+
+            const contentURI = await FileSystem.getContentUriAsync(uri)
+
+            await IntentLauncher.startActivityAsync(
+                "android.intent.action.VIEW",
+                { data: contentURI, flags: 1 }
+            )
+
+            return
+        }
+
         navigation.navigate('WebPage', {
             screenTitle: message.account.doctorName,
             source: message.attachment.uri,
