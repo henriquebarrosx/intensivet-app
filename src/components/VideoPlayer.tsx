@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { View, StyleSheet } from "react-native"
 import { ResizeMode, Video, VideoFullscreenUpdate, VideoFullscreenUpdateEvent } from "expo-av"
+import { logger } from "../infra/adapters/logger-adapter"
 
 type Props = {
     uri: string
@@ -15,7 +16,7 @@ export default function VideoPlayer({ uri, isFullScreen, onFinish = () => { } }:
 
     async function unloadAsync(event: VideoFullscreenUpdateEvent) {
         if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
-            console.log("Unloading video player...")
+            logger.info("VIDEO PLAYER", "unloading video player...")
             await video?.current?.unloadAsync()
             await video?.current?.stopAsync()
             onFinish()
@@ -24,7 +25,7 @@ export default function VideoPlayer({ uri, isFullScreen, onFinish = () => { } }:
 
     useEffect(() => {
         (async () => {
-            console.log("loading video player...")
+            logger.info("VIDEO PLAYER", "loading video player...")
             await video?.current?.playAsync()
             if (isFullScreen) await video.current.presentFullscreenPlayer()
         })()
