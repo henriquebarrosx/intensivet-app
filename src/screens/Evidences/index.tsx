@@ -51,8 +51,7 @@ export function EvidencesScreen() {
                             />
 
                             <Description ellipsizeMode="tail" numberOfLines={1}>
-                                {/* TODO: Adicionar nome do arquivo */}
-                                {new Date().toISOString()}
+                                {evidence.file_name}
                             </Description>
                         </Evidence>
                     ))}

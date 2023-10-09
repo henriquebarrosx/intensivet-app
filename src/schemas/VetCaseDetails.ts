@@ -129,5 +129,7 @@ export interface VetCaseDetails {
 
 export type EvidencesType = {
 	type: string
+	file_name: string
 	service_url: string
+	video_thumbnail_url?: string
 }
