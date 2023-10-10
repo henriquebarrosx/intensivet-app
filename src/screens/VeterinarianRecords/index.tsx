@@ -157,7 +157,7 @@ export function VeterinarianRecords() {
                         unified
                         label="Proteínas Totais"
                         iconZoneColor="#f44336"
-                        value={`${vetCaseDetails?.pet_anamnesis?.total_proteins || "---"} g/L`}
+                        value={`${vetCaseDetails?.pet_anamnesis?.proteinas_totais || "---"} g/L`}
                         icon={() => <AntDesign name="sharealt" size={18} color="#FFF" />}
                     />
 
