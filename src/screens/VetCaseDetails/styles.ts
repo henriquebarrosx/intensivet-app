@@ -1,12 +1,12 @@
 import { Image } from "react-native";
 import styled from "styled-components/native";
 
-export const HeaderArea = styled.View`
+export const HeaderContainer = styled.View`
   margin: 32px 0 24px;
   align-items: center;
 `;
 
-export const AvatarArea = styled.View`
+export const AvatarContainer = styled.View`
   width: 80px;
   height: 80px;
   margin-bottom: 10px;
@@ -36,7 +36,7 @@ export const DoctorEmail = styled.Text`
   font-family: ${({ theme }) => theme.FONTS.REGULAR};
 `;
 
-export const Note = styled.Text`
+export const Description = styled.Text`
   font-size: 14px;
   line-height: 18px;
   margin: 10px 30px 0;

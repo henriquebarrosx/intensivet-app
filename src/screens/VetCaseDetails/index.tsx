@@ -4,9 +4,9 @@ import { ScrollView } from "react-native"
 import { Avatar } from "./Avatar"
 import { useViewModel } from "./useViewModel"
 import ScreenView from "../../components/ScreenView"
-import { SectionInfoTitle } from "../../components/SectionInfoTitle"
+import { SectionTitle } from "../../components/SectionTitle"
 import { InformationActionBox } from "../../components/InformationActionBox"
-import { DoctorEmail, DoctorName, HeaderArea, Note, SpaceArea } from "./styles"
+import { DoctorEmail, DoctorName, HeaderContainer, Description, SpaceArea } from "./styles"
 
 import {
     Entypo,
@@ -28,13 +28,13 @@ export function VetCaseDetails() {
         <ScreenView>
             <ScrollView>
                 <SpaceArea top={0} bottom={140}>
-                    <HeaderArea>
+                    <HeaderContainer>
                         <Avatar uri={clinicThumbnail} />
                         <DoctorName>{clinicName}</DoctorName>
                         <DoctorEmail>{subtitle}</DoctorEmail>
-                    </HeaderArea>
+                    </HeaderContainer>
 
-                    <SectionInfoTitle value="Dados do caso" />
+                    <SectionTitle value="Dados do caso" />
 
                     <InformationActionBox
                         unified
@@ -62,7 +62,7 @@ export function VetCaseDetails() {
                         icon={() => <Fontisto name="doctor" size={21} color="#FFF" />}
                     />
 
-                    <SectionInfoTitle value="Sobre" />
+                    <SectionTitle value="Sobre" />
 
                     <InformationActionBox
                         unified
@@ -83,11 +83,11 @@ export function VetCaseDetails() {
                         icon={() => <Foundation name={"clipboard-notes"} size={21} color={"#FFF"} />}
                     />
 
-                    <Note>
+                    <Description>
                         Apenas casos do tipo completo possuem uma ficha veterinária.
-                    </Note>
+                    </Description>
 
-                    <SectionInfoTitle value="Anexos" />
+                    <SectionTitle value="Anexos" />
 
                     <InformationActionBox
                         label="Evidências"
