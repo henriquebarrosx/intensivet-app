@@ -11,17 +11,23 @@ type Props = {
     message: Message
 }
 
-export default function RenderVideoThumbnail({ message }: Props) {
+export function VideoView({ message }: Props) {
     const fileReader = useFileReader()
 
-    async function previewImage(): Promise<void> {
+    async function onPress(): Promise<void> {
         await fileReader.read(message.attachment.name, message.attachment.uri)
     }
 
     return (
-        <TouchableOpacity style={styles.root} onPress={previewImage}>
+        <TouchableOpacity
+            onPress={onPress}
+            style={styles.root}
+        >
             <View style={styles.image}>
-                <ImageView uri={message.attachment.preview} resizeMode="cover" />
+                <ImageView
+                    uri={message.attachment.preview}
+                    resizeMode="cover"
+                />
 
                 <View style={styles.playButtonContainer}>
                     <MaterialCommunityIcons

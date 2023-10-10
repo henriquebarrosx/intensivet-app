@@ -15,7 +15,7 @@ interface Props {
     message: Message
 }
 
-export default function RenderAudio({ message }: Props) {
+export function AudioView({ message }: Props) {
     const [isLoaderVisible, displayLoaderFeedback] = useState(false)
     const [audioBuffer, updateAudioBuffer] = useState<Audio.Sound | undefined>()
     const [audioBufferState, updateAudioBufferState] = useState<AudioState>(AudioState.PAUSED)

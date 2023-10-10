@@ -6,7 +6,7 @@ type Props = {
     message: Message
 }
 
-export default function RenderText({ message }: Props) {
+export function TextView({ message }: Props) {
     return (
         <Container>
             <Content isSender={message.isSender}>
