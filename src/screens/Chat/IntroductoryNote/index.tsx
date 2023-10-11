@@ -1,5 +1,5 @@
 import React from "react"
-import { Container, Label, Period } from "./styles"
+import { Container, Label } from "./styles"
 import { useSession } from "../../../context/UserContext"
 import { useVetCaseContext } from "../../../context/VetCaseContext"
 import { localDate } from "../../../infra/adapters/local-date-adapter"
