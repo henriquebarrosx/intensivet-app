@@ -8,7 +8,7 @@ import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
 import { Visibility } from "../../components/Visibility"
 import { InformationBox } from "../../components/InformationBox"
-import { SectionInfoTitle } from "../../components/SectionInfoTitle"
+import { SectionTitle } from "../../components/SectionTitle"
 import { Subtitle, Title, HeaderArea, AbsoluteArea } from "./styles"
 
 export function AboutClinic() {
@@ -48,7 +48,7 @@ export function AboutClinic() {
                     <Subtitle>{clinicEmail}</Subtitle>
                 </HeaderArea>
 
-                <SectionInfoTitle value="Sobre" />
+                <SectionTitle value="Sobre" />
 
                 <InformationBox
                     unified
@@ -68,7 +68,7 @@ export function AboutClinic() {
                     icon={() => <FontAwesome5 name="phone-alt" size={21} color="#FFF" />}
                 />
 
-                <SectionInfoTitle value="Endereço" />
+                <SectionTitle value="Endereço" />
 
                 <InformationBox
                     unified

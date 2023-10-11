@@ -5,6 +5,6 @@ interface Props {
   value: string
 }
 
-export function SectionInfoTitle({ value }: Props) {
+export function SectionTitle({ value }: Props) {
   return <Title>{value}</Title>
 }

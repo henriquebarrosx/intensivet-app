@@ -9,7 +9,7 @@ import ScreenView from "../../components/ScreenView"
 import { AbsoluteArea } from "../AboutClinic/styles"
 import { Visibility } from "../../components/Visibility"
 import { InformationBox } from "../../components/InformationBox"
-import { SectionInfoTitle } from "../../components/SectionInfoTitle"
+import { SectionTitle } from "../../components/SectionTitle"
 import { DetailedInformationBox } from "../../components/DetailedInformationBox"
 
 export function VeterinarianRecords() {
@@ -38,7 +38,7 @@ export function VeterinarianRecords() {
                 </Visibility>
 
                 <SpaceArea top={10} bottom={140}>
-                    <SectionInfoTitle value="Exames" />
+                    <SectionTitle value="Exames" />
 
                     <InformationBox
                         unified
@@ -101,7 +101,7 @@ export function VeterinarianRecords() {
                         unified
                         label="Temperatura Central"
                         iconZoneColor="#ec407a"
-                        value={vetCaseDetails?.pet_anamnesis?.peripheral_temperature}
+                        value={vetCaseDetails?.pet_anamnesis?.rectal_temperature}
                         icon={() => <FontAwesome name="thermometer-three-quarters" size={21} color="#FFF" />}
                     />
 
@@ -109,7 +109,7 @@ export function VeterinarianRecords() {
                         unified
                         label="Temperatura Periférica"
                         iconZoneColor="#ec407a"
-                        value={vetCaseDetails?.pet_anamnesis?.rectal_temperature}
+                        value={vetCaseDetails?.pet_anamnesis?.peripheral_temperature}
                         icon={() => <FontAwesome name="thermometer-three-quarters" size={21} color="#FFF" />}
                     />
 
@@ -157,7 +157,7 @@ export function VeterinarianRecords() {
                         unified
                         label="Proteínas Totais"
                         iconZoneColor="#f44336"
-                        value={`${vetCaseDetails?.pet_anamnesis?.total_proteins || "---"} g/L`}
+                        value={`${vetCaseDetails?.pet_anamnesis?.proteinas_totais || "---"} g/L`}
                         icon={() => <AntDesign name="sharealt" size={18} color="#FFF" />}
                     />
 
@@ -178,7 +178,7 @@ export function VeterinarianRecords() {
                         icon={() => <Entypo name="lab-flask" size={18} color="#FFF" />}
                     />
 
-                    <SectionInfoTitle value={"SBAR (Situação)"} />
+                    <SectionTitle value={"SBAR (Situação)"} />
 
                     <DetailedInformationBox
                         label="Background"

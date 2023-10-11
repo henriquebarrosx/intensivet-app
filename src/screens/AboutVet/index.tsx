@@ -10,7 +10,7 @@ import { AbsoluteArea } from "../AboutClinic/styles"
 import { Subtitle, Title, HeaderArea } from "./styles"
 import { Visibility } from "../../components/Visibility"
 import { InformationBox } from "../../components/InformationBox"
-import { SectionInfoTitle } from "../../components/SectionInfoTitle"
+import { SectionTitle } from "../../components/SectionTitle"
 
 export function AboutVet() {
     const isCurrentScreenFocused = useIsFocused()
@@ -47,7 +47,7 @@ export function AboutVet() {
                     <Subtitle>{subtitle}</Subtitle>
                 </HeaderArea>
 
-                <SectionInfoTitle value="Sobre" />
+                <SectionTitle value="Sobre" />
 
                 <InformationBox
                     unified

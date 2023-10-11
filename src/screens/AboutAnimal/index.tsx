@@ -8,7 +8,7 @@ import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
 import { Visibility } from "../../components/Visibility"
 import { InformationBox } from "../../components/InformationBox"
-import { SectionInfoTitle } from "../../components/SectionInfoTitle"
+import { SectionTitle } from "../../components/SectionTitle"
 import { BoxPetIconArea, Subtitle, Title, HeaderArea } from "./styles"
 import { pushNotification } from "../../infra/adapters/push-notification"
 
@@ -53,7 +53,7 @@ export function AboutAnimal() {
                     <Subtitle>{petBreed}</Subtitle>
                 </HeaderArea>
 
-                <SectionInfoTitle value="Sobre" />
+                <SectionTitle value="Sobre" />
 
                 <InformationBox
                     unified

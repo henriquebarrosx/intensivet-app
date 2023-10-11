@@ -1,11 +1,12 @@
 import React, { memo } from "react"
 import { View } from "react-native"
 
-import RenderText from "./RenderText"
-import RenderAudio from "./RenderAudio"
-import RenderVideo from "./RenderVideo"
-import RenderImage from "./RenderImage"
-import RenderDocument from "./RenderDocument"
+import { TextView } from "./TextView"
+import { AudioView } from "./AudioView"
+import { ImageView } from "./ImageView"
+import { VideoView } from "./VideoView"
+import { DocumentView } from "./DocumentView"
+
 import { Message } from "../../../domain/entities/message"
 import { localDate } from "../../../infra/adapters/local-date-adapter"
 import { ContainerArea, DoctorName, MessageTime, styles } from "./styles"
@@ -29,11 +30,11 @@ function MessageView({ message }: Props) {
                     {message.account.doctorName}
                 </DoctorName>
 
-                {message.type === "text" && <RenderText message={message} />}
-                {message.type === "image" && <RenderImage message={message} />}
-                {message.type === "video" && <RenderVideo message={message} />}
-                {message.type === "audio" && <RenderAudio message={message} />}
-                {message.type === "file" && <RenderDocument message={message} />}
+                {message.type === "text" && <TextView message={message} />}
+                {message.type === "image" && <ImageView message={message} />}
+                {message.type === "video" && <VideoView message={message} />}
+                {message.type === "audio" && <AudioView message={message} />}
+                {message.type === "file" && <DocumentView message={message} />}
 
                 <MessageTime isSender={message.isSender}>
                     {messageTime}

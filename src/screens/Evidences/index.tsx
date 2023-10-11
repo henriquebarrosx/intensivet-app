@@ -42,7 +42,7 @@ export function EvidencesScreen() {
                     {evidences.map((evidence) => (
                         <Evidence
                             key={evidence.service_url}
-                            onPress={() => openEvidenceFile(evidence.service_url)}
+                            onPress={() => openEvidenceFile(evidence)}
                         >
                             <MaterialCommunityIcons
                                 size={32}

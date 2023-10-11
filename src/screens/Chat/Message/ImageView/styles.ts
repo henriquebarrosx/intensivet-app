@@ -6,7 +6,15 @@ export const styles = StyleSheet.create({
         height: 250,
         paddingVertical: 8,
         paddingHorizontal: 8,
+        position: "relative",
         justifyContent: "center",
+    },
+    loader: {
+        zIndex: 999,
+        top: "50%",
+        right: "50%",
+        bottom: "50%",
+        position: "absolute",
     },
     image: {
         width: 230,

@@ -29,6 +29,7 @@
     "expo-file-system": "~15.4.4",
     "expo-google-fonts": "^0.0.0",
     "expo-image-picker": "~14.3.2",
+    "expo-intent-launcher": "~10.7.0",
     "expo-media-library": "~15.4.1",
     "expo-notifications": "~0.20.1",
     "expo-splash-screen": "~0.20.5",

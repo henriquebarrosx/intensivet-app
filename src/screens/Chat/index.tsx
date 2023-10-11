@@ -3,13 +3,10 @@ import React, { Fragment, useEffect } from "react"
 import Messages from "./Messages"
 import { InputArea } from "./InputArea"
 import ModalAttachment from "./ModalAttachment"
+import { injectChatProviders } from "../../context"
 import ScreenView from "../../components/ScreenView"
-import ModalToImagePreview from "./ModalToPreview/Image"
-import { MessageProvider } from "../../context/MessageContext"
-import { AudioRecordProvider } from "../../context/RecordAudio"
 import { useVetCaseContext } from "../../context/VetCaseContext"
 import { useVetCasesContext } from "../../context/VetCasesContext"
-import { FileAttachmentModalProvider } from "../../context/AttachModal"
 import { useVetCaseMessagesContext } from "../../context/VetCaseMessagesContext"
 
 type Props = {
@@ -45,18 +42,9 @@ function Chat(props: Props) {
                 <InputArea />
             </ScreenView>
 
-            <ModalToImagePreview />
             <ModalAttachment assetMediaUri={videoUri} />
         </Fragment>
     )
 }
 
-export default (props: Props) => (
-    <MessageProvider>
-        <FileAttachmentModalProvider>
-            <AudioRecordProvider>
-                <Chat {...props} />
-            </AudioRecordProvider>
-        </FileAttachmentModalProvider>
-    </MessageProvider>
-)
+export default injectChatProviders(Chat)
