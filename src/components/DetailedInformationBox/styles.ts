@@ -47,7 +47,6 @@ export const SectionTitleValue = styled.Text`
   line-height: 22px;
   margin-left: 36px;
   margin-bottom: 12px;
-  text-transform: capitalize;
   color: ${({ theme }) => theme.COLORS.gray};
   font-family: ${({ theme }) => theme.FONTS.REGULAR};
 `;

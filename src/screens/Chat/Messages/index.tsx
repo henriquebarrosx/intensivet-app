@@ -22,7 +22,6 @@ export default function Messages() {
     const vetCaseMessagesContext = useVetCaseMessagesContext()
 
     const [isDisplayingButton, displayButton] = useState(false)
-
     const internalBottomSpace = isRecordingAudio ? 0 : 90
 
     function onScroll({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>): void {
