@@ -1,5 +1,5 @@
-import React from "react"
-import { Text, TouchableOpacity } from "react-native"
+import React, { useState } from "react"
+import { ActivityIndicator, Text, TouchableOpacity } from "react-native"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import { styles } from "./styles"
@@ -13,13 +13,16 @@ type Props = {
 
 export function DocumentView({ message }: Props) {
     const fileReader = useFileReader()
+    const [isOpening, shouldDisplayLoader] = useState(false)
 
     const fileUri = message.attachment.uri
     const fileName = message.attachment.name
     const fileColor = message.isSender ? colors.white : colors.primary
 
     async function onPress(): Promise<void> {
+        shouldDisplayLoader(true)
         await fileReader.read(fileName, fileUri)
+        shouldDisplayLoader(false)
     }
 
     function getFileIconName(): string {
@@ -40,7 +43,10 @@ export function DocumentView({ message }: Props) {
 
     return (
         <TouchableOpacity style={styles.content} onPress={onPress}>
-            <MaterialCommunityIcons size={32} color={fileColor} name={getFileIconName()} />
+            {isOpening
+                ? <ActivityIndicator size={28} color={fileColor} />
+                : <MaterialCommunityIcons size={32} color={fileColor} name={getFileIconName()} />
+            }
 
             <Text ellipsizeMode="tail" numberOfLines={1} style={[styles.text, { color: fileColor }]}>
                 {fileName}

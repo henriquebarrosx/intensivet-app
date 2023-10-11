@@ -1,5 +1,5 @@
-import React from "react"
-import { TouchableOpacity, View } from "react-native"
+import React, { useState } from "react"
+import { ActivityIndicator, TouchableOpacity, View } from "react-native"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import { styles } from "./styles"
@@ -13,29 +13,24 @@ type Props = {
 
 export function VideoView({ message }: Props) {
     const fileReader = useFileReader()
+    const [isOpening, shouldDisplayLoader] = useState(false)
 
     async function onPress(): Promise<void> {
+        shouldDisplayLoader(true)
         await fileReader.read(message.attachment.name, message.attachment.uri)
+        shouldDisplayLoader(false)
     }
 
     return (
-        <TouchableOpacity
-            onPress={onPress}
-            style={styles.root}
-        >
+        <TouchableOpacity onPress={onPress} style={styles.root}>
             <View style={styles.image}>
-                <ImageView
-                    uri={message.attachment.preview}
-                    resizeMode="cover"
-                />
+                <ImageView uri={message.attachment.preview} resizeMode="cover" />
 
                 <View style={styles.playButtonContainer}>
-                    <MaterialCommunityIcons
-                        size={30}
-                        name="play"
-                        color={"#FFFFFF"}
-                        style={styles.icon}
-                    />
+                    {isOpening
+                        ? <ActivityIndicator size={28} />
+                        : <MaterialCommunityIcons size={30} name="play" color={"#FFFFFF"} style={styles.icon} />
+                    }
                 </View>
             </View>
         </TouchableOpacity>

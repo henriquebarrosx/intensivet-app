@@ -31,6 +31,11 @@ export function useFileReader(): IFileReader {
         }
 
         catch (error) {
+            navigation.navigate(
+                "WebPage",
+                { source: remoteURL, screenTitle: fileName }
+            )
+
             logger.error(
                 "File Reader",
                 "Something wrong when reading media",
