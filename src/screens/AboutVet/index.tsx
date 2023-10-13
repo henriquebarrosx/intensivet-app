@@ -7,10 +7,9 @@ import { Avatar } from "./Avatar"
 import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
 import { AbsoluteArea } from "../AboutClinic/styles"
-import { Subtitle, Title, HeaderArea } from "./styles"
+import { CardInfo } from "../../components/CardInfo"
 import { Visibility } from "../../components/Visibility"
-import { InformationBox } from "../../components/InformationBox"
-import { SectionTitle } from "../../components/SectionTitle"
+import { Subtitle, Title, HeaderArea, SectionTitle } from "./styles"
 
 export function AboutVet() {
     const isCurrentScreenFocused = useIsFocused()
@@ -47,9 +46,9 @@ export function AboutVet() {
                     <Subtitle>{subtitle}</Subtitle>
                 </HeaderArea>
 
-                <SectionTitle value="Sobre" />
+                <SectionTitle>Sobre</SectionTitle>
 
-                <InformationBox
+                <CardInfo
                     unified
                     borderTop
                     label="CRMV"
@@ -58,7 +57,7 @@ export function AboutVet() {
                     icon={() => <AntDesign name="idcard" size={19} color="#FFF" />}
                 />
 
-                <InformationBox
+                <CardInfo
                     unified
                     label="Nascimento"
                     value={vetBirthDate}
@@ -66,7 +65,7 @@ export function AboutVet() {
                     icon={() => <Ionicons name="ios-calendar" size={21} color="#FFF" />}
                 />
 
-                <InformationBox
+                <CardInfo
                     unified
                     borderBottom
                     label="Contato"

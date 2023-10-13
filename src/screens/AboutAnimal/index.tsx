@@ -1,16 +1,14 @@
 import React, { useEffect } from "react"
-import { ActivityIndicator } from "react-native"
 import { useIsFocused } from "@react-navigation/native"
+import { ScrollView, ActivityIndicator } from "react-native"
 import { Ionicons, MaterialCommunityIcons, AntDesign, FontAwesome5 } from "@expo/vector-icons"
 
-import { ScrollView } from "react-native"
 import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
+import { CardInfo } from "../../components/CardInfo"
 import { Visibility } from "../../components/Visibility"
-import { InformationBox } from "../../components/InformationBox"
-import { SectionTitle } from "../../components/SectionTitle"
-import { BoxPetIconArea, Subtitle, Title, HeaderArea } from "./styles"
 import { pushNotification } from "../../infra/adapters/push-notification"
+import { BoxPetIconArea, Subtitle, Title, HeaderArea, SectionTitle } from "./styles"
 
 export function AboutAnimal() {
     const isCurrentScreenFocused = useIsFocused()
@@ -53,9 +51,9 @@ export function AboutAnimal() {
                     <Subtitle>{petBreed}</Subtitle>
                 </HeaderArea>
 
-                <SectionTitle value="Sobre" />
+                <SectionTitle>Sobre</SectionTitle>
 
-                <InformationBox
+                <CardInfo
                     unified
                     borderTop
                     label="Raça"
@@ -64,7 +62,7 @@ export function AboutAnimal() {
                     icon={() => <AntDesign name="idcard" size={19} color="#FFF" />}
                 />
 
-                <InformationBox
+                <CardInfo
                     unified
                     label="Nascimento"
                     value={petBirthDate}
@@ -72,7 +70,7 @@ export function AboutAnimal() {
                     icon={() => <Ionicons name="ios-calendar" size={21} color="#FFF" />}
                 />
 
-                <InformationBox
+                <CardInfo
                     unified
                     label="Gênero"
                     value={petGender}
@@ -80,7 +78,7 @@ export function AboutAnimal() {
                     icon={() => <MaterialCommunityIcons name="gender-male-female" size={24} color="#FFF" />}
                 />
 
-                <InformationBox
+                <CardInfo
                     unified
                     label="Peso"
                     borderBottom

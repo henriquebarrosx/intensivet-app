@@ -39,3 +39,12 @@ export const Subtitle = styled.Text`
   color: ${({ theme }) => theme.COLORS.darkGray};
   font-family: ${({ theme }) => theme.FONTS.REGULAR};
 `;
+
+export const SectionTitle = styled.Text`
+    font-size: 14px;
+    line-height: 18px;
+    margin: 40px 30px 10px;
+    color: rgb(127, 127, 132);
+    text-transform: uppercase;
+    font-family: ${({ theme }) => theme.FONTS.REGULAR};
+`

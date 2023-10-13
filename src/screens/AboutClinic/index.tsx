@@ -6,10 +6,9 @@ import { FontAwesome, FontAwesome5, Ionicons } from "@expo/vector-icons"
 import { Avatar } from "./Avatar"
 import { useViewModel } from "./viewModel"
 import ScreenView from "../../components/ScreenView"
+import { CardInfo } from "../../components/CardInfo"
 import { Visibility } from "../../components/Visibility"
-import { InformationBox } from "../../components/InformationBox"
-import { SectionTitle } from "../../components/SectionTitle"
-import { Subtitle, Title, HeaderArea, AbsoluteArea } from "./styles"
+import { SectionTitle, Subtitle, Title, HeaderArea, AbsoluteArea } from "./styles"
 
 export function AboutClinic() {
     const isCurrentScreenFocused = useIsFocused()
@@ -48,9 +47,9 @@ export function AboutClinic() {
                     <Subtitle>{clinicEmail}</Subtitle>
                 </HeaderArea>
 
-                <SectionTitle value="Sobre" />
+                <SectionTitle>Sobre</SectionTitle>
 
-                <InformationBox
+                <CardInfo
                     unified
                     borderTop
                     label="CNPJ"
@@ -59,7 +58,7 @@ export function AboutClinic() {
                     icon={() => <FontAwesome name="id-card-o" size={18} color="#FFF" />}
                 />
 
-                <InformationBox
+                <CardInfo
                     unified
                     borderBottom
                     label="Contato"
@@ -68,9 +67,9 @@ export function AboutClinic() {
                     icon={() => <FontAwesome5 name="phone-alt" size={21} color="#FFF" />}
                 />
 
-                <SectionTitle value="Endereço" />
+                <SectionTitle>Endereço</SectionTitle>
 
-                <InformationBox
+                <CardInfo
                     unified
                     borderTop
                     label="CEP"
@@ -79,7 +78,7 @@ export function AboutClinic() {
                     icon={() => <Ionicons name="location" size={21} color="#FFF" />}
                 />
 
-                <InformationBox
+                <CardInfo
                     unified
                     label="Endereço"
                     value={clinicAddress}
@@ -87,7 +86,7 @@ export function AboutClinic() {
                     icon={() => <FontAwesome name="street-view" size={21} color="#FFF" />}
                 />
 
-                <InformationBox
+                <CardInfo
                     unified
                     borderBottom
                     label="Localidade"

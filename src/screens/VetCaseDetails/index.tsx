@@ -1,28 +1,16 @@
 import React from "react"
 import { ScrollView } from "react-native"
+import { Entypo, Fontisto, Foundation, FontAwesome5, MaterialIcons } from "@expo/vector-icons"
 
 import { Avatar } from "./Avatar"
 import { useViewModel } from "./useViewModel"
 import ScreenView from "../../components/ScreenView"
-import { SectionTitle } from "../../components/SectionTitle"
-import { InformationActionBox } from "../../components/InformationActionBox"
-import { DoctorEmail, DoctorName, HeaderContainer, Description, SpaceArea } from "./styles"
+import { CardAction } from "../../components/CardAction"
+import { DoctorEmail, DoctorName, HeaderContainer, SectionTitle, SpaceArea } from "./styles"
 
-import {
-    Entypo,
-    Fontisto,
-    Foundation,
-    FontAwesome5,
-    MaterialIcons,
-} from "@expo/vector-icons"
 
 export function VetCaseDetails() {
-    const {
-        subtitle,
-        clinicName,
-        isPuctualCase,
-        clinicThumbnail,
-    } = useViewModel()
+    const { subtitle, clinicName, isPuctualCase, clinicThumbnail } = useViewModel()
 
     return (
         <ScreenView>
@@ -34,9 +22,9 @@ export function VetCaseDetails() {
                         <DoctorEmail>{subtitle}</DoctorEmail>
                     </HeaderContainer>
 
-                    <SectionTitle value="Dados do caso" />
+                    <SectionTitle>Dados do caso</SectionTitle>
 
-                    <InformationActionBox
+                    <CardAction
                         unified
                         borderTop
                         label="Animal"
@@ -45,7 +33,7 @@ export function VetCaseDetails() {
                         icon={() => <MaterialIcons name="pets" size={21} color="#FFF" />}
                     />
 
-                    <InformationActionBox
+                    <CardAction
                         unified
                         label="Clínica"
                         iconZoneColor="#f44336"
@@ -53,7 +41,7 @@ export function VetCaseDetails() {
                         icon={() => <FontAwesome5 name="hospital-alt" size={16} color="#FFF" />}
                     />
 
-                    <InformationActionBox
+                    <CardAction
                         unified
                         borderBottom
                         label="Veterinário"
@@ -62,9 +50,9 @@ export function VetCaseDetails() {
                         icon={() => <Fontisto name="doctor" size={21} color="#FFF" />}
                     />
 
-                    <SectionTitle value="Sobre" />
+                    <SectionTitle>Sobre</SectionTitle>
 
-                    <InformationActionBox
+                    <CardAction
                         unified
                         borderTop
                         label="Categoria do Caso"
@@ -73,23 +61,20 @@ export function VetCaseDetails() {
                         icon={() => <MaterialIcons name={"category"} size={24} color={"#FFF"} />}
                     />
 
-                    <InformationActionBox
+                    <CardAction
                         unified
                         borderBottom
                         label="Ficha Veterinária"
                         iconZoneColor="#4db6ac"
                         disabled={isPuctualCase}
                         redirectToPath="VetCaseVeterinarianRecords"
+                        description="Apenas casos do tipo completo possuem uma ficha veterinária."
                         icon={() => <Foundation name={"clipboard-notes"} size={21} color={"#FFF"} />}
                     />
 
-                    <Description>
-                        Apenas casos do tipo completo possuem uma ficha veterinária.
-                    </Description>
+                    <SectionTitle>Anexos</SectionTitle>
 
-                    <SectionTitle value="Anexos" />
-
-                    <InformationActionBox
+                    <CardAction
                         label="Evidências"
                         iconZoneColor="#5c6bc0"
                         redirectToPath="VetCaseEvidences"

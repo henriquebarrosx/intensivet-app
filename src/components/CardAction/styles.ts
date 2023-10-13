@@ -1,9 +1,9 @@
 import styled from "styled-components/native";
 
 interface ContainerProps {
-  unified: boolean;
-  hasBorderTop: boolean;
-  hasBorderBottom: boolean;
+    unified: boolean;
+    hasBorderTop: boolean;
+    hasBorderBottom: boolean;
 }
 
 export const Container = styled.View<ContainerProps>`
@@ -11,36 +11,36 @@ export const Container = styled.View<ContainerProps>`
   background-color: ${({ theme }) => theme.COLORS.white};
 
   border-top-right-radius: ${({ unified, hasBorderTop }) => {
-    if (unified) {
-      return hasBorderTop ? '6px' : '0px';
-    }
+        if (unified) {
+            return hasBorderTop ? '6px' : '0px';
+        }
 
-    return '6px';
-  }};
+        return '6px';
+    }};
 
   border-top-left-radius: ${({ unified, hasBorderTop }) => {
-    if (unified) {
-      return hasBorderTop ? '6px' : '0px';
-    }
+        if (unified) {
+            return hasBorderTop ? '6px' : '0px';
+        }
 
-    return '6px';
-  }};
+        return '6px';
+    }};
 
   border-bottom-right-radius: ${({ unified, hasBorderBottom }) => {
-    if (unified) {
-      return hasBorderBottom ? '6px' : '0px';
-    }
+        if (unified) {
+            return hasBorderBottom ? '6px' : '0px';
+        }
 
-    return '6px';
-  }};
+        return '6px';
+    }};
 
   border-bottom-left-radius: ${({ unified, hasBorderBottom }) => {
-    if (unified) {
-      return hasBorderBottom ? '6px' : '0px';
-    }
+        if (unified) {
+            return hasBorderBottom ? '6px' : '0px';
+        }
 
-    return '6px';
-  }};
+        return '6px';
+    }};
 `;
 
 export const Divider = styled.View`
@@ -51,7 +51,7 @@ export const Divider = styled.View`
 `;
 
 interface InfoViewProps {
-  disabled: boolean;
+    disabled: boolean;
 }
 
 export const InfoView = styled.TouchableOpacity<InfoViewProps>`
@@ -68,16 +68,8 @@ export const LeftInfoViewSide = styled.View`
   align-items: center;
 `;
 
-export const InfoViewValue = styled.Text`
-  max-width: 60%;
-  font-size: 14px;
-  line-height: 21px;
-  color: ${({ theme }) => theme.COLORS.gray};
-  font-family: ${({ theme }) => theme.FONTS.MEDIUM};
-`;
-
 interface ActionIconBoxProps {
-  color: string;
+    color: string;
 }
 
 export const ActionIconBox = styled.View<ActionIconBoxProps>`
@@ -94,4 +86,12 @@ export const ActionText = styled.Text`
   margin-left: 8px;
   line-height: 22px;
   font-family: ${({ theme }) => theme.FONTS.MEDIUM};
+`;
+
+export const Description = styled.Text`
+    font-size: 14px;
+    line-height: 18px;
+    margin: 10px 30px 0;
+    color: rgb(127, 127, 132);
+    font-family: ${({ theme }) => theme.FONTS.REGULAR};
 `;
