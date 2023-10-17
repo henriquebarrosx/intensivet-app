@@ -2,8 +2,8 @@
 import * as Sentry from "@sentry/react-native"
 import { env } from "../../config/environment"
 import { localDate } from "../local-date-adapter"
-import { LocalDateFormatEnum } from "../local-date-adapter/index.gateway"
 import { EnvName } from "../../config/environment/index.gateway"
+import { LocalDateFormatEnum } from "../local-date-adapter/types"
 
 type LoggerParams = {
     endpoint?: string
