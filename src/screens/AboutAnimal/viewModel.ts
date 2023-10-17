@@ -3,7 +3,7 @@ import { useServices } from "../../context/ServicesContext"
 import { VetCaseDetails } from "../../schemas/VetCaseDetails"
 import { useVetCaseContext } from "../../context/VetCaseContext"
 import { localDate } from "../../infra/adapters/local-date-adapter"
-import { LocalDateFormatEnum } from "../../infra/adapters/local-date-adapter/index.gateway"
+import { LocalDateFormatEnum } from "../../infra/adapters/local-date-adapter/types"
 
 export const useViewModel = () => {
     const { vetCaseService } = useServices()

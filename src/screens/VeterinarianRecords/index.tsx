@@ -3,13 +3,12 @@ import { useIsFocused } from "@react-navigation/native"
 import { ScrollView, ActivityIndicator } from "react-native"
 import { FontAwesome5, FontAwesome, Entypo, MaterialIcons, AntDesign } from "@expo/vector-icons"
 
-import { SpaceArea } from "./styles"
 import { useViewModel } from "./viewModel"
+import { SpaceArea, SectionTitle } from "./styles"
 import ScreenView from "../../components/ScreenView"
 import { AbsoluteArea } from "../AboutClinic/styles"
+import { CardInfo } from "../../components/CardInfo"
 import { Visibility } from "../../components/Visibility"
-import { InformationBox } from "../../components/InformationBox"
-import { SectionTitle } from "../../components/SectionTitle"
 import { DetailedInformationBox } from "../../components/DetailedInformationBox"
 
 export function VeterinarianRecords() {
@@ -38,9 +37,9 @@ export function VeterinarianRecords() {
                 </Visibility>
 
                 <SpaceArea top={10} bottom={140}>
-                    <SectionTitle value="Exames" />
+                    <SectionTitle>Exames</SectionTitle>
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         borderTop
                         label="Peso"
@@ -49,7 +48,7 @@ export function VeterinarianRecords() {
                         icon={() => <FontAwesome5 name="weight" size={16} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         iconZoneColor="#f44336"
                         label="Frequência Cardíaca"
@@ -57,7 +56,7 @@ export function VeterinarianRecords() {
                         icon={() => <FontAwesome name="heartbeat" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         iconZoneColor="#03a9f4"
                         label="Frequência Respiratória"
@@ -65,7 +64,7 @@ export function VeterinarianRecords() {
                         value={`${vetCaseDetails?.pet_anamnesis?.respiratory_frequency || "---"} mpm`}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label=" Consciência"
                         iconZoneColor="#3f51b5"
@@ -73,7 +72,7 @@ export function VeterinarianRecords() {
                         icon={() => <MaterialIcons name="priority-high" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label="TPC"
                         iconZoneColor="#fbc02d"
@@ -81,7 +80,7 @@ export function VeterinarianRecords() {
                         icon={() => <Entypo name="thermometer" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label="Pressão Art. Sistólica"
                         iconZoneColor="#90a4ae"
@@ -89,7 +88,7 @@ export function VeterinarianRecords() {
                         icon={() => <Entypo name="thermometer" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label="Pressão Art. Diastólica"
                         iconZoneColor="#90a4ae"
@@ -97,7 +96,7 @@ export function VeterinarianRecords() {
                         icon={() => <Entypo name="thermometer" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label="Temperatura Central"
                         iconZoneColor="#ec407a"
@@ -105,7 +104,7 @@ export function VeterinarianRecords() {
                         icon={() => <FontAwesome name="thermometer-three-quarters" size={21} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label="Temperatura Periférica"
                         iconZoneColor="#ec407a"
@@ -113,7 +112,7 @@ export function VeterinarianRecords() {
                         icon={() => <FontAwesome name="thermometer-three-quarters" size={21} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label="Mucosas"
                         iconZoneColor="#42a5f5"
@@ -121,7 +120,7 @@ export function VeterinarianRecords() {
                         icon={() => <Entypo name="water" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         iconZoneColor="#7e57c2"
                         label="Saturação Arterial"
@@ -129,7 +128,7 @@ export function VeterinarianRecords() {
                         icon={() => <FontAwesome5 name="percentage" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         iconZoneColor="#ffa726"
                         label="Lactato"
@@ -137,7 +136,7 @@ export function VeterinarianRecords() {
                         icon={() => <Entypo name="area-graph" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label="Glicemia"
                         iconZoneColor="#00796b"
@@ -145,7 +144,7 @@ export function VeterinarianRecords() {
                         icon={() => <AntDesign name="piechart" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label="Hematócrito"
                         iconZoneColor="#7e57c2"
@@ -153,7 +152,7 @@ export function VeterinarianRecords() {
                         icon={() => <FontAwesome5 name="percentage" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label="Proteínas Totais"
                         iconZoneColor="#f44336"
@@ -161,7 +160,7 @@ export function VeterinarianRecords() {
                         icon={() => <AntDesign name="sharealt" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         label="Plaquetas"
                         iconZoneColor="#2196f3"
@@ -169,7 +168,7 @@ export function VeterinarianRecords() {
                         icon={() => <AntDesign name="dotchart" size={18} color="#FFF" />}
                     />
 
-                    <InformationBox
+                    <CardInfo
                         unified
                         borderBottom
                         label="Albumina"
@@ -178,7 +177,7 @@ export function VeterinarianRecords() {
                         icon={() => <Entypo name="lab-flask" size={18} color="#FFF" />}
                     />
 
-                    <SectionTitle value={"SBAR (Situação)"} />
+                    <SectionTitle>SBAR (Situação)</SectionTitle>
 
                     <DetailedInformationBox
                         label="Background"

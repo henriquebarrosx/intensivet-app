@@ -10,7 +10,7 @@ import { DocumentView } from "./DocumentView"
 import { Message } from "../../../domain/entities/message"
 import { localDate } from "../../../infra/adapters/local-date-adapter"
 import { ContainerArea, DoctorName, MessageTime, styles } from "./styles"
-import { LocalDateFormatEnum } from "../../../infra/adapters/local-date-adapter/index.gateway"
+import { LocalDateFormatEnum } from "../../../infra/adapters/local-date-adapter/types"
 
 type Props = {
     message: Message

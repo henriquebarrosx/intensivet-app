@@ -3,7 +3,7 @@ import { Container, Label } from "./styles"
 import { useSession } from "../../../context/UserContext"
 import { useVetCaseContext } from "../../../context/VetCaseContext"
 import { localDate } from "../../../infra/adapters/local-date-adapter"
-import { LocalDateFormatEnum } from "../../../infra/adapters/local-date-adapter/index.gateway"
+import { LocalDateFormatEnum } from "../../../infra/adapters/local-date-adapter/types"
 
 export default function WelcomeChatMessage() {
     const sessionContext = useSession()

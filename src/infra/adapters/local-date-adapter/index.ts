@@ -4,26 +4,17 @@ import { ILocalDate } from "./index.gateway"
 
 export const localDate: ILocalDate = {
     format(date, format): string {
-        if (localDate.isValid(date)) {
-            return moment(date).format(format)
-        }
-
+        if (localDate.isValid(date)) return moment(date).format(format)
         throw new Error("Invalid date format")
     },
 
     isToday(date): boolean {
-        if (localDate.isValid(date)) {
-            return moment(date).isSame(moment(), "day")
-        }
-
+        if (localDate.isValid(date)) return moment(date).isSame(moment(), "day")
         throw new Error("Invalid date format")
     },
 
     isSameYear(date): boolean {
-        if (localDate.isValid(date)) {
-            return moment(date).isSame(moment(), "year")
-        }
-
+        if (localDate.isValid(date)) return moment(date).isSame(moment(), "year")
         throw new Error("Invalid date format")
     },
 

@@ -36,17 +36,18 @@ export const DoctorEmail = styled.Text`
   font-family: ${({ theme }) => theme.FONTS.REGULAR};
 `;
 
-export const Description = styled.Text`
-  font-size: 14px;
-  line-height: 18px;
-  margin: 10px 30px 0;
-  color: rgb(127, 127, 132);
-  font-family: ${({ theme }) => theme.FONTS.REGULAR};
-`;
+export const SectionTitle = styled.Text`
+    font-size: 14px;
+    line-height: 18px;
+    margin: 40px 30px 10px;
+    color: rgb(127, 127, 132);
+    text-transform: uppercase;
+    font-family: ${({ theme }) => theme.FONTS.REGULAR};
+`
 
 interface SpaceAreaProps {
-  top: number;
-  bottom: number;
+    top: number;
+    bottom: number;
 }
 
 export const SpaceArea = styled.View<SpaceAreaProps>`

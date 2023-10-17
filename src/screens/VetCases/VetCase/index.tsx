@@ -7,7 +7,7 @@ import { VetCaseModel } from "../../../schemas/VetCase"
 import { useVetCaseContext } from "../../../context/VetCaseContext"
 import { useVetCasesContext } from "../../../context/VetCasesContext"
 import { localDate } from "../../../infra/adapters/local-date-adapter"
-import { LocalDateFormatEnum } from "../../../infra/adapters/local-date-adapter/index.gateway"
+import { LocalDateFormatEnum } from "../../../infra/adapters/local-date-adapter/types"
 
 export interface Props {
     item: VetCaseModel
