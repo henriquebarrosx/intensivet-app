@@ -30,4 +30,4 @@ const PRODUCTION: IEnvironment = {
     }
 }
 
-export const env: IEnvironment = STAGING
+export const env: IEnvironment = PRODUCTION
