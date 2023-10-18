@@ -10,10 +10,10 @@
 <h1 align="center">Intensivet</h1>
 <p align="center">Aplicativo de mensagens para interconsultas</p>
 
-<img height=500 src="https://github.com/henriquebarrosx/IntensivetApp/assets/48387142/2d85fa7b-69b3-4036-96cb-89e2b95ecbba" />
-<img height=500 src="https://github.com/henriquebarrosx/IntensivetApp/assets/48387142/acca54a5-f855-4503-af7c-479c2e44bef5" />
-<img height=500 src="https://github.com/henriquebarrosx/IntensivetApp/assets/48387142/1d091866-0c2b-492d-afbd-d5e679f944cc" />
-<img height=500 src="https://github.com/henriquebarrosx/IntensivetApp/assets/48387142/4c7e7d64-4310-4e9a-9d29-4a1138372a90" />
+<img height=400 src="https://github.com/henriquebarrosx/IntensivetApp/assets/48387142/2d85fa7b-69b3-4036-96cb-89e2b95ecbba" />
+<img height=400 src="https://github.com/henriquebarrosx/IntensivetApp/assets/48387142/acca54a5-f855-4503-af7c-479c2e44bef5" />
+<img height=400 src="https://github.com/henriquebarrosx/IntensivetApp/assets/48387142/1d091866-0c2b-492d-afbd-d5e679f944cc" />
+<img height=400 src="https://github.com/henriquebarrosx/IntensivetApp/assets/48387142/4c7e7d64-4310-4e9a-9d29-4a1138372a90" />
 
 ### Funcionalidades
 
