@@ -5,7 +5,7 @@ export interface ILocalDate {
     isSameYear(date: Period): boolean
     isToday(date: Period): boolean
     isValid(date: Period): boolean
-    toISO(date: Period): Date
+    toISO(date: Period): string
     toUTC(date: Period): Date
     toZone(date: Period): Date
     diffBetweenTimes(from: Period, to: Period, unit?: UnitPeriod): number

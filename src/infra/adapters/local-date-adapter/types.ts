@@ -1,15 +1,6 @@
 export type Period = Date | string | number
 
-export type UnitPeriod = (
-    "year" | "years" |
-    "month" | "months" |
-    "week" | "weeks" |
-    "day" | "days" |
-    "hour" | "hours" |
-    "minute" | "minutes" |
-    "second" | "seconds" |
-    "millisecond" | "milliseconds"
-)
+export type UnitPeriod = "years" | "months" | "days" | "hours" | "minutes" | "seconds"
 
 export enum LocalDateFormatEnum {
     datetime = "DD/MM/YYYY HH:mm",
